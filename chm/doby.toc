@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HEAD></HEAD><HTML><BODY>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package doBy:  Contents">
+<param name="Local" value="00Index.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package doBy:  R objects">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="budworm">
+<param name="Local" value="budworm.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="codstom">
+<param name="Local" value="codstom.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="dietox">
+<param name="Local" value="dietox.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="doBy">
+<param name="Local" value="doBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="dose.LD50">
+<param name="Local" value="dose.LD50.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="esticon">
+<param name="Local" value="esticon.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="esticon.coxph">
+<param name="Local" value="esticon.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="esticon.geeglm">
+<param name="Local" value="esticon.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="esticon.glm">
+<param name="Local" value="esticon.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="esticon.gls">
+<param name="Local" value="esticon.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="esticon.lm">
+<param name="Local" value="esticon.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="esticon.lme">
+<param name="Local" value="esticon.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="esticon.mer">
+<param name="Local" value="esticon.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="firstobs">
+<param name="Local" value="firstlastobs.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="firstobs.default">
+<param name="Local" value="firstlastobs.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="firstobs.formula">
+<param name="Local" value="firstlastobs.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="lapplyBy">
+<param name="Local" value="lapplyBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="lastobs">
+<param name="Local" value="firstlastobs.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="lastobs.default">
+<param name="Local" value="firstlastobs.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="lastobs.formula">
+<param name="Local" value="firstlastobs.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="orderBy">
+<param name="Local" value="orderBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="print.splitByData">
+<param name="Local" value="splitBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="recodevar">
+<param name="Local" value="recodevar.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="sampleBy">
+<param name="Local" value="sampleBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="splitBy">
+<param name="Local" value="splitBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="subsetBy">
+<param name="Local" value="subsetBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="summaryBy">
+<param name="Local" value="summaryBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="transformBy">
+<param name="Local" value="transformBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="which.maxn">
+<param name="Local" value="which.maxn.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="which.minn">
+<param name="Local" value="which.maxn.html">
+</OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package doBy:  Titles">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Calculate LD50">
+<param name="Local" value="dose.LD50.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Contrasts for lm, glm, lme, and geeglm objects">
+<param name="Local" value="esticon.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Diet of Atlantic cod in the Gulf of St. Lawrence (Canada)">
+<param name="Local" value="codstom.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Effect of Insecticide on survivial of tobacco budworms">
+<param name="Local" value="budworm.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Finds subsets of a dataframe which is split by variables in a formula.">
+<param name="Local" value="subsetBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Formula based version of lapply">
+<param name="Local" value="lapplyBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Function to calculate groupwise summary statistics">
+<param name="Local" value="summaryBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Function to make groupwise transformations">
+<param name="Local" value="transformBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Growth curves of pigs in a 3x3 factorial experiment">
+<param name="Local" value="dietox.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Locate the index of the first/last unique value">
+<param name="Local" value="firstlastobs.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Ordering (sorting) rows of a data frame">
+<param name="Local" value="orderBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="recode levels of variable">
+<param name="Local" value="recodevar.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Sampling from a data frame">
+<param name="Local" value="sampleBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Split a data frame">
+<param name="Local" value="splitBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Various utilities which includes functions for creating groupwise calculations etc.">
+<param name="Local" value="doBy.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Where are the n largest or n smallest elements in a numeric vector ?">
+<param name="Local" value="which.maxn.html">
+</OBJECT>
+</UL>
+</UL>
+</BODY></HTML>

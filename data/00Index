@@ -1,0 +1,4 @@
+dietox                  Growth curves of pigs in a 3x3 factorial
+                        experiment
+hist.by                 Making groupwise histograms 
+qqnorm.by               Function to make qqplots for grouped data
