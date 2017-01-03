@@ -2,9 +2,9 @@
 
 Groupwise Statistics, LSmeans, Linear Contrasts, Utilities
 
-1) Facilities for working with grouped data: 'do' something to data stratified 'by' some variables.
-2) LSmeans (least-squares means), general linear contrasts. 
-3) Miscellaneous other utilities
+1. Facilities for working with grouped data: 'do' something to data stratified 'by' some variables.
+2. LSmeans (least-squares means), general linear contrasts. 
+3. Miscellaneous other utilities
 
 Author: Søren Højsgaard,  Ulrich Halekoh
 
