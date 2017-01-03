@@ -12,11 +12,11 @@
 \usepackage{boxedminipage,color}
 \usepackage[utf8]{inputenc}
 
-\usepackage[inline,nomargin,draft]{fixme}
-\newcommand\FXInline[2]{\textbf{\color{blue}#1}:
-  \emph{\color{blue} - #2}}
+%% \usepackage[inline,nomargin,draft]{fixme}
+%% \newcommand\FXInline[2]{\textbf{\color{blue}#1}:
+%%   \emph{\color{blue} - #2}}
+%% \usepackage[cm]{fullpage}
 
-\usepackage[cm]{fullpage}
 
 \usepackage[authoryear,round]{natbib}
 \bibliographystyle{plainnat}
