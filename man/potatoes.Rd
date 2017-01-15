@@ -13,6 +13,9 @@
 \source{
 My own garden; autumn 2015.
 }
+\usage{
+potatoes
+}
 \description{
 Weight and size of 20 potatoes. Weight in grams; size in milimeter. There
 are two sizes: \code{length} is the longest length and \code{width} is the
@@ -21,7 +24,7 @@ shortest length across a potato. #'
 \examples{
 
 data(potatoes)
-plot(potatoes) ...
+plot(potatoes) 
 
 }
 \author{

@@ -20,6 +20,6 @@
 #' @examples
 #' 
 #' data(potatoes)
-#' plot(potatoes) ...
+#' plot(potatoes) 
 #' 
-NULL
+"potatoes"

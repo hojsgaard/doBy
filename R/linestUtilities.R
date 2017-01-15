@@ -72,7 +72,11 @@ null_basis <- function(object){
         object <- matrix(object, ncol=1)
     }
 
-    if (class(object) %in% c("matrix","Matrix")){
+
+    ##if (class(object) %in% c("matrix","Matrix")){
+    ##    .null_basis(object)
+
+    if (inherits(object, c("matrix","Matrix"))){
         .null_basis(object)
     } else {
         m <- try(model.matrix(object), silent=TRUE)

@@ -23,8 +23,8 @@
 
 \RequirePackage{color,fancyvrb,amsmath,amsfonts}
 
-\usepackage{framed}
-\usepackage{comment}
+%\usepackage{framed}
+%\usepackage{comment}
 \definecolor{shadecolor}{gray}{0.91}
 
 \def\R{\texttt{R}}

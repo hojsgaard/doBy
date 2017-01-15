@@ -20,6 +20,13 @@
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
+vignettes/*.R
+vignettes/*.aux
+vignettes/*.log
+vignettes/*.out
+vignettes/*.tex
+vignettes/*.toc
+vignettes/figures/
 
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
 .httr-oauth
