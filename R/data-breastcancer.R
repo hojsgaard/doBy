@@ -37,6 +37,7 @@
 #'
 #' train <- sample(1:nrow(bc), 50)
 #' table(bc$code[train])
+#' library(MASS)
 #' z <- lda(code ~ ., data=bc, prior = c(1,1)/2, subset = train)
 #' pc <- predict(z, bc[-train, ])$class
 #' pc
