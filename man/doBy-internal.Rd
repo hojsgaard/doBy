@@ -1,6 +1,10 @@
 \name{internal}
 \alias{internal}
 
+\alias{orderByOLD}
+\alias{splitByOLD}
+\alias{summaryByOLD}
+
 \alias{LSmatrix-class}
 
 \alias{asNumericMatrix2}

@@ -6,24 +6,24 @@
 #' @param x An atomic vector.
 #' @param item Optionally a specific value to look for in 'x'.
 #' @return A dataframe.
-#' @author S<f8>ren H<f8>jsgaard, \email{sorenh@@math.aau.dk}
+#' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @seealso \code{\link{rle}}
 #' @keywords utilities
 #' @examples
 #' 
-#' x <- c(1,1,1,0,0,1,1,1,2,2,2,1,2,2,2,3)
+#' x <- c(1, 1, 1, 0, 0, 1, 1, 1, 2, 2, 2, 1, 2, 2, 2, 3)
 #' (ans <- subSeq(x))
 #' ans$value
 #' # Notice: Same results below
-#' subSeq(x,item=1)
-#' subSeq(x,item="1")
+#' subSeq(x, item=1)
+#' subSeq(x, item="1")
 #' 
-#' x <- as.character(c(1,1,1,0,0,1,1,1,2,2,2,1,2,2,2,3))
+#' x <- as.character(c(1, 1, 1, 0, 0, 1, 1, 1, 2, 2, 2, 1, 2, 2, 2, 3))
 #' (ans<-subSeq(x))
 #' ans$value
 #' # Notice: Same results below
-#' subSeq(x,item="1")
-#' subSeq(x,item=1)
+#' subSeq(x, item="1")
+#' subSeq(x, item=1)
 #' 
 #' @export subSeq
 subSeq <- function (x, item = NULL) {

@@ -8,7 +8,8 @@
 #' 
 #' @name by-split
 #' 
-#' @param formula The right hand side of a formula (or a character vector)
+#' @param formula Variables to split data frame by, as ‘as.quoted’ variables,
+#'     a formula or character vector.
 #' @param data A data frame
 #' @param drop Logical indicating if levels that do not occur should be
 #'     dropped. Deprecated; levels that do not occur are ignored.
@@ -32,11 +33,8 @@
 
 
 #' @rdname by-split
-#' @param .data A dataframe
-#' @param .variables Variables to split data frame by, as ‘as.quoted’ variables,
-#'     a formula or character vector
-split_by <- function(.data, .variables){
-    plyr::dlply(.data, .variables, base::identity)
+split_by <- function(data, formula){
+    plyr::dlply(data, formula, base::identity)
 }
 
 
@@ -45,7 +43,7 @@ splitBy <- function(formula, data, drop=TRUE){
     plyr::dlply(data, formula, identity)
 }
 
-#' @rdname by-split
+
 splitByOLD <-function (formula, data = parent.frame(), drop=TRUE) { #, return.matrix=FALSE){
 
   data.var  <- names(data)

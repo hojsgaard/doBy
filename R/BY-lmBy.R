@@ -7,21 +7,20 @@
 #' 
 #' @aliases lmBy coef.lmBy coef.summary_lmBy summary.lmBy fitted.lmBy
 #'     residuals.lmBy getBy
-#' @param formula A linear model formula object of the form y ~ x1+...+xn |
-#'     g1+...gm.  In the formula object, y represents the response, x1,...,xn
+#' @param formula A linear model formula object of the form y ~ x1 + ... + xn |
+#'     g1 + ... + gm.  In the formula object, y represents the response, x1,...,xn
 #'     the covariates, and the grouping factors specifying the partitioning of
 #'     the data according to which different lm fits should be performed.
 #' @param data A dataframe
 #' @param id A formula describing variables from data which are to be available
 #'     also in the output.
 #' @param \dots Additional arguments passed on to \code{lm()}.
-#' @return A list of lm fits. 
-#' @note This is a recent addition to the package; please report bugs.
+#' @return A list of lm fits.
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @keywords models
 #' @examples
 #' 
-#' bb <- lmBy(1/uptake~log(conc)|Treatment, data=CO2)
+#' bb <- lmBy(1 / uptake ~ log(conc) | Treatment, data=CO2)
 #' 
 #' coef(bb)
 #' 

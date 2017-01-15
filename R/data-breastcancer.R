@@ -32,6 +32,15 @@
 #' @examples
 #' 
 #' data(breastcancer)
-#' ## maybe str(breastcancer) ; plot(breastcancer) ...
+#' bc <- breastcancer
+#' pairs(bc[,1:5], col=bc$code)
+#'
+#' train <- sample(1:nrow(bc), 50)
+#' table(bc$code[train])
+#' z <- lda(code ~ ., data=bc, prior = c(1,1)/2, subset = train)
+#' pc <- predict(z, bc[-train, ])$class
+#' pc
+#' bc[-train, "code"]
+#' table(pc, bc[-train, "code"])
 #' 
 "breastcancer"

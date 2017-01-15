@@ -3,17 +3,12 @@
 \name{by-summary}
 \alias{by-summary}
 \alias{summaryBy}
-\alias{summaryByOLD}
 \alias{summary_by}
 \title{Function to calculate groupwise summary statistics}
 \usage{
 summary_by(data, formula, FUN)
 
 summaryBy(formula, data, FUN)
-
-summaryByOLD(formula, data = parent.frame(), id = NULL, FUN = mean,
-  keep.names = FALSE, p2d = FALSE, order = TRUE, full.dimension = FALSE,
-  var.names = NULL, fun.names = NULL, ...)
 }
 \arguments{
 \item{data}{A data frame}
@@ -21,30 +16,6 @@ summaryByOLD(formula, data = parent.frame(), id = NULL, FUN = mean,
 \item{formula}{A formula object, see examples below}
 
 \item{FUN}{A list of functions to be applied, see examples below.}
-
-\item{id}{A formula specifying variables which data are not grouped by but
-which should appear in the output. See examples below.}
-
-\item{keep.names}{If TRUE and if there is only ONE function in FUN, then the
-variables in the output will have the same name as the variables in the
-input, see 'examples'.}
-
-\item{p2d}{Should parentheses in output variable names be replaced by dots?}
-
-\item{order}{Should the resulting dataframe be ordered according to the
-variables on the right hand side of the formula? (using \link{orderBy}}
-
-\item{full.dimension}{If TRUE then rows of summary statistics are repeated
-such that the result will have the same number of rows as the input
-dataset.}
-
-\item{var.names}{Option for user to specify the names of the variables on the
-left hand side.}
-
-\item{fun.names}{Option for user to specify function names to apply to the
-variables on the left hand side.}
-
-\item{...}{Additional arguments to FUN. This could for example be NA actions.}
 }
 \value{
 A data frame

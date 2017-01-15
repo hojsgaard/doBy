@@ -3,25 +3,18 @@
 \name{by-split}
 \alias{by-split}
 \alias{splitBy}
-\alias{splitByOLD}
 \alias{split_by}
 \title{Split a data frame}
 \usage{
-split_by(.data, .variables)
+split_by(data, formula)
 
 splitBy(formula, data, drop = TRUE)
-
-splitByOLD(formula, data = parent.frame(), drop = TRUE)
 }
 \arguments{
-\item{.data}{A dataframe}
-
-\item{.variables}{Variables to split data frame by, as ‘as.quoted’ variables,
-a formula or character vector}
-
-\item{formula}{The right hand side of a formula (or a character vector)}
-
 \item{data}{A data frame}
+
+\item{formula}{Variables to split data frame by, as ‘as.quoted’ variables,
+a formula or character vector.}
 
 \item{drop}{Logical indicating if levels that do not occur should be
 dropped. Deprecated; levels that do not occur are ignored.}

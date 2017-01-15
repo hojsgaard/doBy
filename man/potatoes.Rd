@@ -21,7 +21,7 @@ shortest length across a potato. #'
 \examples{
 
 data(potatoes)
-## maybe str(potatoes) ; plot(potatoes) ...
+plot(potatoes) ...
 
 }
 \author{

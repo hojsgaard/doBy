@@ -9,18 +9,18 @@
 #' @param tgt Target: Vector with corresponding new names in the output.
 #' @return A dataframe if 'indata' is a dataframe; a matrix in 'indata' is a
 #' matrix.
-#' @author S<f8>ren H<f8>jsgaard, \email{sorenh@@math.aau.dk}
+#' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @seealso \code{\link[gdata]{rename.vars}}
 #' @keywords utitlities
 #' @examples
 #' 
 #' 
-#' renameCol(CO2, 1:2, c("kk","ll"))
-#' renameCol(CO2, c("Plant","Type"), c("kk","ll"))
+#' renameCol(CO2, 1:2, c("kk", "ll"))
+#' renameCol(CO2, c("Plant", "Type"), c("kk", "ll"))
 #' 
 #' # These fail - as they should:
-#' # renameCol(CO2, c("Plant","Type","conc"), c("kk","ll"))
-#' # renameCol(CO2, c("Plant","Type","Plant"), c("kk","ll"))
+#' # renameCol(CO2, c("Plant", "Type", "conc"), c("kk", "ll"))
+#' # renameCol(CO2, c("Plant", "Type", "Plant"), c("kk", "ll"))
 #' 
 #' @export renameCol
 renameCol <- function(indata, src, tgt){

@@ -14,8 +14,8 @@
 lmBy(formula, data, id = NULL, ...)
 }
 \arguments{
-\item{formula}{A linear model formula object of the form y ~ x1+...+xn |
-g1+...gm.  In the formula object, y represents the response, x1,...,xn
+\item{formula}{A linear model formula object of the form y ~ x1 + ... + xn |
+g1 + ... + gm.  In the formula object, y represents the response, x1,...,xn
 the covariates, and the grouping factors specifying the partitioning of
 the data according to which different lm fits should be performed.}
 
@@ -33,12 +33,9 @@ A list of lm fits.
 The data is split into strata according to the levels of the
     grouping factors and individual lm fits are obtained for each stratum.
 }
-\note{
-This is a recent addition to the package; please report bugs.
-}
 \examples{
 
-bb <- lmBy(1/uptake~log(conc)|Treatment, data=CO2)
+bb <- lmBy(1 / uptake ~ log(conc) | Treatment, data=CO2)
 
 coef(bb)
 

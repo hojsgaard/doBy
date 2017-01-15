@@ -39,7 +39,7 @@ Locate the index of the first/last unique value in i) a vector
     or of a variable in a data frame.
 }
 \details{
-If writing ~a+b+c as formula, then only a is considered.
+If writing ~a + b + c as formula, then only a is considered.
 }
 \examples{
 

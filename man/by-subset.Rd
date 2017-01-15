@@ -12,7 +12,8 @@ subsetBy(formula, subset, data = parent.frame(), select, drop = FALSE,
 subset_by(data, formula, subset, select, drop = FALSE, join = TRUE, ...)
 }
 \arguments{
-\item{formula}{A formula to split by.}
+\item{formula}{A right hand sided formula or a character vector of variables
+to split by.}
 
 \item{subset}{logical expression indicating elements or rows to keep: missing
 values are taken as false.}
@@ -21,7 +22,7 @@ values are taken as false.}
 
 \item{select}{expression, indicating columns to select from a data frame.}
 
-\item{drop}{passed on to [ indexing operator.}
+\item{drop}{passed on to \code{[} indexing operator.}
 
 \item{join}{If FALSE the result is a list of data frames (as defined by
 'formula'); if TRUE one data frame is returned.}
@@ -45,7 +46,7 @@ subsetBy(~Evit, Weight < mean(Weight), data=dietox)
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
 \seealso{
-See Also \code{\link{splitBy}}
+\code{\link{splitBy}}
 }
 \keyword{utilities}
 

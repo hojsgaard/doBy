@@ -13,23 +13,8 @@
 #' 
 #' @param formula A formula object, see examples below
 #' @param data A data frame
-#' @param id A formula specifying variables which data are not grouped by but
-#'     which should appear in the output. See examples below.
 #' @param FUN A list of functions to be applied, see examples below.
-#' @param keep.names If TRUE and if there is only ONE function in FUN, then the
-#'     variables in the output will have the same name as the variables in the
-#'     input, see 'examples'.
-#' @param p2d Should parentheses in output variable names be replaced by dots?
-#' @param order Should the resulting dataframe be ordered according to the
-#'     variables on the right hand side of the formula? (using \link{orderBy}
-#' @param full.dimension If TRUE then rows of summary statistics are repeated
-#'     such that the result will have the same number of rows as the input
-#'     dataset.
-#' @param var.names Option for user to specify the names of the variables on the
-#'     left hand side.
-#' @param fun.names Option for user to specify function names to apply to the
-#'     variables on the left hand side.
-#' @param ... Additional arguments to FUN. This could for example be NA actions.
+#'
 #' @return A data frame
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @seealso \code{\link{ave}}, \code{\link{descStat}}, \code{\link{orderBy}},
@@ -106,7 +91,7 @@ summaryBy <- function(formula, data, FUN){
     aggregate(formula, data, FUN)
 }
 
-#' @rdname by-summary
+
 summaryByOLD <-
   function (formula, data=parent.frame(), id=NULL, FUN=mean, keep.names=FALSE,
             p2d=FALSE, order=TRUE, full.dimension=FALSE,
@@ -405,3 +390,21 @@ summaryByOLD <-
   }
   return(value)
 }
+
+
+## @param id A formula specifying variables which data are not grouped by but
+##     which should appear in the output. See examples below.
+## @param keep.names If TRUE and if there is only ONE function in FUN, then the
+##     variables in the output will have the same name as the variables in the
+##     input, see 'examples'.
+## @param p2d Should parentheses in output variable names be replaced by dots?
+## @param order Should the resulting dataframe be ordered according to the
+##     variables on the right hand side of the formula? (using \link{orderBy}
+## @param full.dimension If TRUE then rows of summary statistics are repeated
+##     such that the result will have the same number of rows as the input
+##     dataset.
+## @param var.names Option for user to specify the names of the variables on the
+##     left hand side.
+## @param fun.names Option for user to specify function names to apply to the
+##     variables on the left hand side.
+## @param ... Additional arguments to FUN. This could for example be NA actions.

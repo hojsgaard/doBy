@@ -54,7 +54,7 @@ linest( mod.nst, K )
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
 \seealso{
-\code{\link{LSmeans}},½ \code{\link{LSmatrix}}
+\code{\link{LSmeans}}, \code{\link{LSmatrix}}
 }
 \keyword{utilities}
 

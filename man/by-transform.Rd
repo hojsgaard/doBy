@@ -34,7 +34,7 @@ The ... arguments are tagged vector expressions, which are evaluated
  
 data(dietox)
 transformBy(~Pig, data=dietox, minW=min(Weight), maxW=max(Weight), 
-    gain=sum(range(Weight)*c(-1,1)))
+    gain=diff(range(Weight)))
 
 }
 \author{

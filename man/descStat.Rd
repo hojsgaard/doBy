@@ -20,7 +20,7 @@ Computing simple descriptive statistics of a numeric vector --
 }
 \examples{
 
-x <- c(1,2,3,4,NA,NaN)
+x <- c(1, 2, 3, 4, NA, NaN)
 descStat(x)
 
 }

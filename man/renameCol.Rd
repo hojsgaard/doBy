@@ -24,16 +24,16 @@ Rename columns in a matrix or a dataframe.
 \examples{
 
 
-renameCol(CO2, 1:2, c("kk","ll"))
-renameCol(CO2, c("Plant","Type"), c("kk","ll"))
+renameCol(CO2, 1:2, c("kk", "ll"))
+renameCol(CO2, c("Plant", "Type"), c("kk", "ll"))
 
 # These fail - as they should:
-# renameCol(CO2, c("Plant","Type","conc"), c("kk","ll"))
-# renameCol(CO2, c("Plant","Type","Plant"), c("kk","ll"))
+# renameCol(CO2, c("Plant", "Type", "conc"), c("kk", "ll"))
+# renameCol(CO2, c("Plant", "Type", "Plant"), c("kk", "ll"))
 
 }
 \author{
-S<f8>ren H<f8>jsgaard, \email{sorenh@math.aau.dk}
+Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
 \seealso{
 \code{\link[gdata]{rename.vars}}

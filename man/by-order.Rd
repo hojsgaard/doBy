@@ -3,15 +3,12 @@
 \name{by-order}
 \alias{by-order}
 \alias{orderBy}
-\alias{orderByOLD}
 \alias{order_by}
 \title{Ordering (sorting) rows of a data frame}
 \usage{
 orderBy(formula, data)
 
 order_by(data, formula)
-
-orderByOLD(formula, data)
 }
 \arguments{
 \item{formula}{The right hand side of a formula}
@@ -23,7 +20,7 @@ The ordered data frame
 }
 \description{
 Ordering (sorting) rows of a data frame by the certain variables
-    in the data frame. This function is essentially a wrapper for the order()
+    in the data frame. This function is essentially a wrapper for the \code{order()}
     function - the important difference being that variables to order by can
     be given by a model formula.
 }

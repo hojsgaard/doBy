@@ -5,7 +5,7 @@
 #'
 #' @name firstlastobs
 #' 
-#' @details If writing ~a+b+c as formula, then only a is considered.
+#' @details If writing ~a + b + c as formula, then only a is considered.
 #' 
 #' @aliases firstobs lastobs firstobs.default lastobs.default firstobs.formula
 #'     lastobs.formula

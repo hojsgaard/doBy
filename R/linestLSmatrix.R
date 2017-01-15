@@ -61,11 +61,11 @@
 #' LSmatrix(m1, effect="wool")
 #' LSmeans(m1, effect="wool")
 #' 
-#' LSmatrix(m0, effect=c("wool","tension"))
-#' LSmeans(m0, effect=c("wool","tension"))
+#' LSmatrix(m0, effect=c("wool", "tension"))
+#' LSmeans(m0, effect=c("wool", "tension"))
 #' 
-#' LSmatrix(m1, effect=c("wool","tension"))
-#' LSmeans(m1, effect=c("wool","tension"))
+#' LSmatrix(m1, effect=c("wool", "tension"))
+#' LSmeans(m1, effect=c("wool", "tension"))
 #' 
 #' 
 #' ## Regression; two parallel regression lines:
@@ -98,9 +98,10 @@
 #' #      'BB' is nested within 'CC' so BB=1 is only found when CC=1
 #' #       and BB=2,3 are found in each CC=2,3,4
 #' dat.nst <- dat.bal
-#' dat.nst$CC <-factor(c(1,1,2,2,2,2,1,1,3,3,3,3,1,1,4,4,4,4))
+#' dat.nst$CC <-factor(c(1, 1, 2, 2, 2, 2, 1, 1, 3, 3,
+#'                       3, 3, 1, 1, 4, 4, 4, 4))
 #' 
-#' mod.bal  <- lm(y ~ AA + BB*CC,    data=dat.bal)
+#' mod.bal  <- lm(y ~ AA + BB * CC,    data=dat.bal)
 #' mod.nst  <- lm(y ~ AA + BB : CC, data=dat.nst)
 #' 
 #' LSmeans(mod.bal, effect=c("BB", "CC"))

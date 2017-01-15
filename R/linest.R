@@ -21,7 +21,7 @@
 #' @param ...  Additional arguments; currently not used.
 #' @return A dataframe with results from computing the contrasts.
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
-#' @seealso \code{\link{LSmeans}},½ \code{\link{LSmatrix}}
+#' @seealso \code{\link{LSmeans}}, \code{\link{LSmatrix}}
 #' @keywords utilities
 #' @examples
 #' 

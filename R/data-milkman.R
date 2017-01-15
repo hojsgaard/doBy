@@ -31,6 +31,5 @@
 #' @examples
 #' 
 #' data(milkman)
-#' ## maybe str(milkman) ; plot(milkman) ...
 #' 
 NULL

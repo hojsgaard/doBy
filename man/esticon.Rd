@@ -78,18 +78,18 @@ A linear function of the estimates is of the form \deqn{c=\lambda_1
 
 The esticon function calculates c, its standard error and by default also a
 95 pct confidence interval.  It is sometimes of interest to test the
-hypothesis \eqn{latex}{H_0: c=\beta_0} for some value \eqn{latex}{\beta_0}
-given by the user. A test is provided for the hypothesis \eqn{latex}{H_0:
-c=0} but other values of \eqn{latex}{\beta_0} can be specified.
+hypothesis \eqn{H_0: c=\beta_0} for some value \eqn{\beta_0}
+given by the user. A test is provided for the hypothesis \eqn{H_0:
+c=0} but other values of \eqn{\beta_0} can be specified.
 
 In general, one can specify r such linear functions at one time by
-speficying cm to be an \eqn{latex}{r\times p} matrix where each row consists
-of p numbers \eqn{latex}{\lambda_1,\lambda_2,\dots, \lambda_p}. Default is
-then that \eqn{latex}{\beta_0} is a p vector of 0s but other values can be
+speficying cm to be an \eqn{r\times p} matrix where each row consists
+of p numbers \eqn{\lambda_1,\lambda_2,\dots, \lambda_p}. Default is
+then that \eqn{\beta_0} is a p vector of 0s but other values can be
 given.
 
 It is possible to test simulatneously that all speficied linear functions
-are equal to the corresponding values in \eqn{latex}{\beta_0}.
+are equal to the corresponding values in \eqn{\beta_0}.
 
 For computing contrasts among levels of a single factor, 'contrast.lm' may
 be more convenient.
@@ -107,12 +107,12 @@ lm1  <- lm(Sepal.Length ~ Sepal.Width + Species + Sepal.Width : Species, data=ir
 coef(lm1)
 
 ## Estimate the intercept for versicolor
-lambda1 <- c(1,0,1,0,0,0)
+lambda1 <- c(1, 0, 1, 0, 0, 0)
 esticon(lm1,lambda1)
 
 ## Estimate the difference between versicolor and virgica intercept
 ## and test if the difference is 1
-lambda2 <- c(0,1,-1,0,0,0)
+lambda2 <- c(0, 1, -1, 0, 0, 0)
 esticon(lm1,lambda2,beta0=1)
 
 ## Do both estimates at one time
@@ -140,18 +140,16 @@ summary(coxmod)
 # compare a subject 50 years old with celltype 1
 # to a subject 70 years old with celltype 2
 # both subjects on the same treatment
-AvB<-c(-20,-1,0,0,0)
+AvB <- c(-20, -1, 0, 0, 0)
 
 # compare a subject 40 years old with celltype 2 on treat=0
 # to a subject 35 years old with celltype 3 on treat=1
-CvB<-c(5,1,-1,0,-1)
+CvB <- c(5, 1, -1, 0, -1)
 
-esti<-esticon(coxmod,rbind(AvB,CvB))
+esti<-esticon(coxmod, rbind(AvB, CvB))
 esti
-exp(esti[,c(2,7,8)])
+exp(esti[,c(2, 7, 8)])
 }
-
-
 
 
 }

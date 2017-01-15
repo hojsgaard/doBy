@@ -19,23 +19,23 @@ Find sub-sequences of identical elements in a vector.
 }
 \examples{
 
-x <- c(1,1,1,0,0,1,1,1,2,2,2,1,2,2,2,3)
+x <- c(1, 1, 1, 0, 0, 1, 1, 1, 2, 2, 2, 1, 2, 2, 2, 3)
 (ans <- subSeq(x))
 ans$value
 # Notice: Same results below
-subSeq(x,item=1)
-subSeq(x,item="1")
+subSeq(x, item=1)
+subSeq(x, item="1")
 
-x <- as.character(c(1,1,1,0,0,1,1,1,2,2,2,1,2,2,2,3))
+x <- as.character(c(1, 1, 1, 0, 0, 1, 1, 1, 2, 2, 2, 1, 2, 2, 2, 3))
 (ans<-subSeq(x))
 ans$value
 # Notice: Same results below
-subSeq(x,item="1")
-subSeq(x,item=1)
+subSeq(x, item="1")
+subSeq(x, item=1)
 
 }
 \author{
-S<f8>ren H<f8>jsgaard, \email{sorenh@math.aau.dk}
+Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
 \seealso{
 \code{\link{rle}}

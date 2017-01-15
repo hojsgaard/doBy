@@ -119,35 +119,36 @@
 
 
 
-#' Calculate "time since event" in a vector.
+#' @title Calculate "time since event" in a vector.
 #' 
-#' Events are coded as 1 in numeric vector (and non-events are coded with
-#' values different from 1). \code{timeSinceEvent} will give the time since
-#' event (with and without sign). In a logical vector, events are coded as TRUE
-#' and all non-events as FALSE.
-#' 
+#' @description Calculate "time since event" in a vector.
+#'
+#' @details Events are coded as 1 in numeric vector (and non-events are
+#'     coded with values different from 1). \code{timeSinceEvent} will give the
+#'     time since event (with and without sign). In a logical vector, events are
+#'     coded as TRUE and all non-events as FALSE.
 #' 
 #' @param yvar A numerical or logical vector specifying the events
 #' @param tvar An optional vector specifying time
 #' @return A dataframe with columns 'yvar', 'tvar', 'abs.tse' (absolute time
-#' since nearest event), 'sign.tse' (signed time since nearest event) and 'run'
-#' (indicator of the time window around each event).
+#'     since nearest event), 'sign.tse' (signed time since nearest event) and
+#'     'run' (indicator of the time window around each event).
 #' @note NA's in yvar are converted to zeros.
-#' @author S<f8>ren H<f8>jsgaard, \email{sorenh@@math.aau.dk}
+#' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @seealso \code{\link{subSeq}}, \code{\link{rle}}
 #' @keywords utilities
 #' @examples
 #' 
 #' ## Events:
-#' yvar <- c(0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0)
+#' yvar <- c(0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0)
 #' 
 #' ## Plot results:
 #' tse<- timeSinceEvent(yvar)
 #' plot(sign.tse~tvar, data=tse, type="b")
 #' grid()
-#' rug(tse$tvar[tse$yvar==1], col=4,lwd=4)
-#' points(scale(tse$run), col=tse$run,lwd=2)
-#' lines(abs.tse+.2~tvar, data=tse, type="b",col=3)
+#' rug(tse$tvar[tse$yvar==1], col=4, lwd=4)
+#' points(scale(tse$run), col=tse$run, lwd=2)
+#' lines(abs.tse+.2~tvar, data=tse, type="b", col=3)
 #' 
 #' ## Find times for which time since an event is at most 1:
 #' tse$tvar[tse$abs<=1]

@@ -1,7 +1,7 @@
 #' @title Ordering (sorting) rows of a data frame
 #' 
 #' @description Ordering (sorting) rows of a data frame by the certain variables
-#'     in the data frame. This function is essentially a wrapper for the order()
+#'     in the data frame. This function is essentially a wrapper for the \code{order()}
 #'     function - the important difference being that variables to order by can
 #'     be given by a model formula.
 #'
@@ -36,7 +36,6 @@ order_by <- function(data, formula){
     dplyr::arrange_(data, formula)    
 }
 
-#' @rdname by-order
 orderByOLD <- function (formula, data){
 
   myrank <- function(x){
@@ -109,34 +108,3 @@ orderByOLD <- function (formula, data){
 
 
 
-
-
-# orderBy <- function (formula, data, na.last = TRUE, decreasing = FALSE){
-#   data <- data
-#   form <- unlist(strsplit(paste(formula)[2],"\\+"))
-#   form <- gsub(" ","",form)
-  
-#   dodo<-data[,form,drop=FALSE]
-  
-#   z <- NULL
-#   for (j in 1:ncol(dodo)){
-#     z <- c(z, list(dodo[,j]))
-#   }
-#   if (any(diff(sapply(z, length)) != 0))
-#     stop("argument lengths differ")
-#   ans <- sapply(z, is.na)
-#   ok <- if (is.matrix(ans)){
-#     !apply(ans, 1, any)
-#   } else {
-#     !any(ans)
-#   }
-  
-#   if (all(!ok))
-#     return(integer(0))
-#   z[[1]][!ok] <- NA
-#   ans <- do.call("order", c(z, decreasing = decreasing))
-#   keep <- seq(along = ok)[ok]
-#   ord<-ans[ans %in% keep]
-#   return(data[ord,])
-
-# }

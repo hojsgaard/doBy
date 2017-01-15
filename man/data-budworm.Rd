@@ -30,9 +30,9 @@ the pyrethroid trans-cypermethrin differentiated with respect to sex
 data(budworm)
 
 ## function to caclulate the empirical logits
-empirical.logit<- function(nevent,ntotal) {
-   y <- log((nevent + 0.5) / (ntotal - nevent + 0.5))
-   y
+empirical.logit<- function(y, n) {
+   el <- log((y + 0.5) / (n - y + 0.5))
+   el
 }
 
 
@@ -40,13 +40,13 @@ empirical.logit<- function(nevent,ntotal) {
 
 log.dose <- log(budworm$dose)
 emp.logit <- empirical.logit(budworm$ndead, budworm$ntotal)
-plot(log.dose, emp.logit, type='n', xlab='log-dose',ylab='emprirical logit')
+plot(log.dose, emp.logit, type='n', xlab='log-dose', ylab='emprirical logit')
 title('budworm: emprirical logits of probability to die ')
 male <- budworm$sex=='male'
 female <- budworm$sex=='female'
 lines(log.dose[male], emp.logit[male], type='b', lty=1, col=1)
 lines(log.dose[female], emp.logit[female], type='b', lty=2, col=2)
-legend(0.5, 2, legend=c('male', 'female'), lty=c(1,2), col=c(1,2))
+legend(0.5, 2, legend=c('male', 'female'), lty=c(1, 2), col=c(1, 2))
 
 \dontrun{
 * SAS example;

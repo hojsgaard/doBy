@@ -5,18 +5,19 @@
 #' 
 #' @name by-subset
 #' 
-#' @param formula A formula to split by.
+#' @param formula A right hand sided formula or a character vector of variables
+#'     to split by.
 #' @param subset logical expression indicating elements or rows to keep: missing
 #'     values are taken as false.
 #' @param data A data frame.
 #' @param select expression, indicating columns to select from a data frame.
-#' @param drop passed on to [ indexing operator.
+#' @param drop passed on to \code{[} indexing operator.
 #' @param join If FALSE the result is a list of data frames (as defined by
 #'     'formula'); if TRUE one data frame is returned.
 #' @param ... further arguments to be passed to or from other methods.
 #' @return A data frame.
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
-#' @seealso See Also \code{\link{splitBy}}
+#' @seealso \code{\link{splitBy}}
 #' @keywords utilities
 #' @examples
 #' 

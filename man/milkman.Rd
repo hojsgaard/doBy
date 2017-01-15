@@ -31,7 +31,6 @@ There are data for 222 cows. Some cows appear more than once in the dataset
 \examples{
 
 data(milkman)
-## maybe str(milkman) ; plot(milkman) ...
 
 }
 \keyword{datasets}
