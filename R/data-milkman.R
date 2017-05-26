@@ -32,4 +32,4 @@
 #' 
 #' data(milkman)
 #' 
-NULL
+"milkman"

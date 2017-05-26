@@ -5,15 +5,15 @@
 \alias{splitByOLD}
 \alias{summaryByOLD}
 
-\alias{linest_matrix-class}
+\alias{linest_matrix_class-class}
+\alias{print.linest_class}
+\alias{print.linest_matrix_class}
 
 \alias{asNumericMatrix2}
 \alias{matrix2dataFrame2}
 \alias{subsAttr2}
 \alias{doby.xtabs}
 
-\alias{print.linearEstimate}
-\alias{print.linest_matrix}
 
 \alias{print.lmBy}
 \alias{print.summary_lmBy}

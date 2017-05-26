@@ -243,12 +243,12 @@ linest.merMod <- function(object, K=NULL, level=0.95, ...){
     if (!is.null(rownames(K)))
         rownames(.coef) <- rownames(K)
     res  <- list(coef=.coef, grid=attr(K, "grid"), K=K)
-    class(res) <- "linearEstimate"
+    class(res) <- "linest_class"
     res
 }
 
-print.linearEstimate <- function(x, ...){
-    print(cbind(x$coef, x$grid))
+print.linest_class <- function(x, ...){
+    print(cbind(x$coef, x$grid)) ## FIXME: Somewhat misleading:
     invisible(x)
 }
 

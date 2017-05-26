@@ -98,7 +98,7 @@ linest_matrix <- function(object, effect=NULL, at=NULL){
 linest_matrix.default <- function(object, effect=NULL, at=NULL){
     res <- get_linest_list( object, effect, at )
     res <- .finalize_linest_list ( res )
-    class(res) <- c("linest_matrix", "matrix")
+    class(res) <- c("linest_matrix_class", "matrix")
     res
 }
 
@@ -111,7 +111,7 @@ linest_matrix.default <- function(object, effect=NULL, at=NULL){
     res
 }
 
-print.linest_matrix <- function(x, ...){
+print.linest_matrix_class <- function(x, ...){
   prmatrix(x)
   ## atr <- attributes(x)[c("at","grid")]
   ## aa <- !unlist(lapply(atr, is.null))
@@ -201,16 +201,16 @@ get_linest_list <- function(object, effect=NULL, at=NULL){
 
 ## --------------------------------------------------------------------
 
-setOldClass("linest_matrix")
+setOldClass("linest_matrix_class")
 
-setAs("linest_matrix", "matrix",
+setAs("linest_matrix_class", "matrix",
       function(from){
           attr(from, "at") <- attr(from, "grid") <- NULL
           class(from) <- "matrix"
           from
       })
 
-setAs("linest_matrix","Matrix",
+setAs("linest_matrix_class","Matrix",
       function(from){
           attr(from, "at") <- attr(from, "grid") <- NULL
           class(from) <- "matrix"

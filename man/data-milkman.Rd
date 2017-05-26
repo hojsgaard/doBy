@@ -3,6 +3,7 @@
 \docType{data}
 \name{data-milkman}
 \alias{data-milkman}
+\alias{milkman}
 \title{Milk yield data for manually milked cows.}
 \format{A data frame with 161836 observations on the following 12 variables.
 \describe{
@@ -21,6 +22,9 @@
     because the same cow may appear more than once in the dataset (in
     different lactations)}
 }}
+\usage{
+milkman
+}
 \description{
 Milk yield data for cows milked manually twice a day (morning and evening).
 }
