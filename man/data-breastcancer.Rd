@@ -2,8 +2,8 @@
 % Please edit documentation in R/data-breastcancer.R
 \docType{data}
 \name{data-breastcancer}
-\alias{breastcancer}
 \alias{data-breastcancer}
+\alias{breastcancer}
 \title{Gene expression signatures for p53 mutation status in 250 breast cancer
 samples}
 \format{A data frame with 250 observations on 1001 variables. The
@@ -50,4 +50,3 @@ Miller et al (2005, PubMed
     ID:16141321)
 }
 \keyword{datasets}
-

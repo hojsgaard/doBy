@@ -2,8 +2,8 @@
 % Please edit documentation in R/data-NIRmilk.R
 \docType{data}
 \name{data-NIRmilk}
-\alias{NIRmilk}
 \alias{data-NIRmilk}
+\alias{NIRmilk}
 \title{NIRmilk}
 \format{This data frame contains 18 rows and 158 columns.  The first column
     is the sample number.  The columns Xwww contains the infra red light
@@ -28,4 +28,3 @@ data(NIRmilk)
 
 }
 \keyword{datasets}
-

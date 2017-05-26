@@ -4,7 +4,7 @@
 #' composition.
 #' 
 #' 
-#' @name haldCement
+#' @name data-haldCement
 #' @docType data
 #'
 #' @format A data frame with 13 observations on the following 5 variables.
@@ -34,5 +34,5 @@
 #' # yet none of the explanatory variables appear to be statistically
 #' # significant...
 #'
+"haldCement"
 
-NULL

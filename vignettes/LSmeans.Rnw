@@ -36,7 +36,7 @@
 
 \def\esticon{\code{esticon()}}
 \def\lsmeans{\code{LSmeans}}
-\def\linmat{\code{LSmatrix()}}
+\def\linmat{\code{linest_matrix()}}
 \def\linest{\code{linest()}}
 
 
@@ -316,7 +316,7 @@ coef( summary( warp.lm2 ))
 In this case the contrast matrix becomes:
 @
 <<>>=
-K2 <- LSmatrix(warp.lm2, effect="tension"); K2
+K2 <- linest_matrix(warp.lm2, effect="tension"); K2
 linest(warp.lm2, K=K2)
 @ %def
 
@@ -357,7 +357,7 @@ coef(summary(rr))
 The contrast matrix for \cc{Diet} becomes:
 @
 <<>>=
-LSmatrix(rr, effect="Diet")
+linest_matrix(rr, effect="Diet")
 @ %def
 
 The value of \cc{Time} is by default taken to be the average of that
@@ -365,14 +365,14 @@ variable. Hence the \lsmeans\ is the predicted weight for each diet at
 that specific point of time. We can consider other points of time with
 @
 <<>>=
-K1 <- LSmatrix(rr, effect="Diet", at=list(Time=1)); K1
+K1 <- linest_matrix(rr, effect="Diet", at=list(Time=1)); K1
 @ %def
 
 The \lsmeans\ for the intercepts is the predictions at
 \cc{Time=0}. The \lsmeans\ for the slopes becomes
 @
 <<>>=
-K0 <- LSmatrix(rr, effect="Diet", at=list(Time=0))
+K0 <- linest_matrix(rr, effect="Diet", at=list(Time=0))
 K1-K0
 LSmeans(rr, K=K1-K0)
 @ %def
@@ -382,8 +382,8 @@ We can cook up our own function for comparing trends:
 <<>>=
 LSmeans_trend <- function(object, effect, trend){
 
-    K<-LSmatrix(object, effect=effect, at=as.list(setNames(1, trend))) -
-        LSmatrix(object, effect=effect, at=as.list(setNames(0, trend)))
+    K<-linest_matrix(object, effect=effect, at=as.list(setNames(1, trend))) -
+        linest_matrix(object, effect=effect, at=as.list(setNames(0, trend)))
     LSmeans(object, K=K)
 }
 LSmeans_trend(rr, effect="Diet", trend="Time")
@@ -482,7 +482,7 @@ LSmeans(warp.poi, effect="tension", type="response")
 %% SANITY CHECK
 %% @
 %% <<>>=
-%% K <- LSmatrix(warp.poi, effect="tension")
+%% K <- linest_matrix(warp.poi, effect="tension")
 %% doBy::esticon(warp.poi, K)
 %% @ %def
 
@@ -507,7 +507,7 @@ LSmeans(warp.poi2, effect="tension", type="link")
 %% SANITY CHECK
 %% @
 %% <<>>=
-%% K <- LSmatrix(warp.poi2, effect="tension")
+%% K <- linest_matrix(warp.poi2, effect="tension")
 %% doBy::esticon(warp.poi2, K)
 %% @ %def
 
@@ -522,7 +522,7 @@ LSmeans(warp.gam, effect="tension", type="link")
 %% SANITY CHECK
 %% @
 %% <<>>=
-%% K <- LSmatrix(warp.gam, effect="tension")
+%% K <- linest_matrix(warp.gam, effect="tension")
 %% doBy::esticon(warp.gam, K)
 %% @ %def
 
@@ -591,7 +591,7 @@ LSmeans(warp.gee, effect="tension", type="response")
 Under the hood, \cc{LSmeans()} generates a contrast matrix
 @
 <<>>=
-K <- LSmatrix(warp.lm, effect="tension"); K
+K <- linest_matrix(warp.lm, effect="tension"); K
 @ %def
 and passes this matrix onto \linest:
 @
@@ -662,7 +662,7 @@ interested in linear functions of $\beta$, say
 
 @
 <<>>=
-K <- LSmatrix(mod.nst, effect="BB", at=list(CC=2));K
+K <- linest_matrix(mod.nst, effect="BB", at=list(CC=2));K
 LSmeans(mod.nst, K=K)
 @ %def
 

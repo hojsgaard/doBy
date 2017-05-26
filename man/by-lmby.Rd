@@ -2,13 +2,13 @@
 % Please edit documentation in R/BY-lmBy.R
 \name{by-lmby}
 \alias{by-lmby}
+\alias{lmBy}
 \alias{coef.lmBy}
 \alias{coef.summary_lmBy}
-\alias{fitted.lmBy}
-\alias{getBy}
-\alias{lmBy}
-\alias{residuals.lmBy}
 \alias{summary.lmBy}
+\alias{fitted.lmBy}
+\alias{residuals.lmBy}
+\alias{getBy}
 \title{List of lm objects with a common model}
 \usage{
 lmBy(formula, data, id = NULL, ...)
@@ -51,4 +51,3 @@ coef(summary(bb), simplify=TRUE)
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
 \keyword{models}
-

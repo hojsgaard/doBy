@@ -37,12 +37,11 @@ transformBy(~Pig, data=dietox, minW=min(Weight), maxW=max(Weight),
     gain=diff(range(Weight)))
 
 }
-\author{
-Søren Højsgaard, \email{sorenh@math.aau.dk}
-}
 \seealso{
 \code{\link{orderBy}}, \code{\link{summaryBy}},
     \code{\link{splitBy}}
 }
+\author{
+Søren Højsgaard, \email{sorenh@math.aau.dk}
+}
 \keyword{univar}
-

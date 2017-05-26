@@ -42,11 +42,10 @@ data(dietox)
 subsetBy(~Evit, Weight < mean(Weight), data=dietox)
 
 }
-\author{
-Søren Højsgaard, \email{sorenh@math.aau.dk}
-}
 \seealso{
 \code{\link{splitBy}}
 }
+\author{
+Søren Højsgaard, \email{sorenh@math.aau.dk}
+}
 \keyword{utilities}
-

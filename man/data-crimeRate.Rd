@@ -2,8 +2,8 @@
 % Please edit documentation in R/data-crimerate.R
 \docType{data}
 \name{data-crimeRate}
-\alias{crimeRate}
 \alias{data-crimeRate}
+\alias{crimeRate}
 \title{crimeRate}
 \format{This data frame contains:
 \describe{
@@ -29,4 +29,3 @@ data(crimeRate)
 
 }
 \keyword{datasets}
-

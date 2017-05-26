@@ -40,4 +40,3 @@ plot(dietox)
 
 }
 \keyword{datasets}
-

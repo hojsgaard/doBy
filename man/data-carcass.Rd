@@ -2,9 +2,9 @@
 % Please edit documentation in R/data-carcass.R
 \docType{data}
 \name{data-carcass}
+\alias{data-carcass}
 \alias{carcass}
 \alias{carcassall}
-\alias{data-carcass}
 \title{Lean meat contents of 344 pig carcasses}
 \format{carcassall: A data frame with 344 observations on the following 17
 variables.
@@ -49,4 +49,3 @@ head(carcass)
 
 }
 \keyword{datasets}
-

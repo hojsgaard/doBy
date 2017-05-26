@@ -2,8 +2,8 @@
 % Please edit documentation in R/data-codstom.R
 \docType{data}
 \name{data-codstom}
-\alias{codstom}
 \alias{data-codstom}
+\alias{codstom}
 \title{Diet of Atlantic cod in the Gulf of St. Lawrence (Canada)}
 \format{A data frame with 10000 observations on the following 10 variables.
 \describe{
@@ -120,4 +120,3 @@ codstom5$total.content <- rowSums(codstom5[, prey_col])
 
 }
 \keyword{datasets}
-

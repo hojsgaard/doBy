@@ -2,8 +2,8 @@
 % Please edit documentation in R/BY-splitBy2.R
 \name{by-split}
 \alias{by-split}
-\alias{splitBy}
 \alias{split_by}
+\alias{splitBy}
 \title{Split a data frame}
 \usage{
 split_by(data, formula)
@@ -39,12 +39,11 @@ splitBy(~Month, data=airquality)
 splitBy("Month", data=airquality)
 
 }
-\author{
-Søren Højsgaard, \email{sorenh@math.aau.dk}
-}
 \seealso{
 \code{\link{orderBy}}, \code{\link{summaryBy}},
     \code{\link{transformBy}}
 }
+\author{
+Søren Højsgaard, \email{sorenh@math.aau.dk}
+}
 \keyword{utilities}
-

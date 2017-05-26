@@ -12,4 +12,3 @@ rhsf2list(f)
 \description{
 Convert right hand sided formula to a list
 }
-

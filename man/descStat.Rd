@@ -24,11 +24,10 @@ x <- c(1, 2, 3, 4, NA, NaN)
 descStat(x)
 
 }
-\author{
-Gregor Gorjanc; gregor.gorjanc <at> bf.uni-lj.si
-}
 \seealso{
 \code{\link{summaryBy}}
 }
+\author{
+Gregor Gorjanc; gregor.gorjanc <at> bf.uni-lj.si
+}
 \keyword{utilities}
-

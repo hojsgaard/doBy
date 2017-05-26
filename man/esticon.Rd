@@ -2,7 +2,6 @@
 % Please edit documentation in R/esticon.R
 \name{esticon}
 \alias{esticon}
-\alias{esticon.coxph}
 \alias{esticon.geeglm}
 \alias{esticon.glm}
 \alias{esticon.gls}
@@ -10,6 +9,14 @@
 \alias{esticon.lme}
 \alias{esticon.mer}
 \alias{esticon.merMod}
+\alias{esticon.coxph}
+\alias{esticon.gls}
+\alias{esticon.geeglm}
+\alias{esticon.lm}
+\alias{esticon.glm}
+\alias{esticon.mer}
+\alias{esticon.coxph}
+\alias{esticon.lme}
 \title{Contrasts for lm, glm, lme, and geeglm objects}
 \usage{
 esticon(obj, cm, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE,
@@ -157,4 +164,3 @@ exp(esti[,c(2, 7, 8)])
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
 \keyword{utilities}
-

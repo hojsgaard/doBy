@@ -30,6 +30,7 @@ Recodes a vector with values, say 1,2 to a variable with values, say 'a',
  Care should be taken if x is a factor. A safe approach may
     be to convert x to a character vector using as.character.
 }
+
 \examples{
 
 x <- c("dec", "jan", "feb", "mar", "apr", "may")
@@ -68,12 +69,11 @@ recodeVar(x, src = c("no", "yes"), tgt = c("0", "1"), default = NA)
 
 
 }
-\author{
-Søren Højsgaard, \email{sorenh@math.aau.dk}
-}
 \seealso{
 \code{\link[base]{cut}}, \code{\link[base]{factor}},
     \code{\link[doBy]{recodeVar}}
 }
+\author{
+Søren Højsgaard, \email{sorenh@math.aau.dk}
+}
 \keyword{utilities}
-

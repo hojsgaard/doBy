@@ -34,11 +34,10 @@ subSeq(x, item="1")
 subSeq(x, item=1)
 
 }
-\author{
-Søren Højsgaard, \email{sorenh@math.aau.dk}
-}
 \seealso{
 \code{\link{rle}}
 }
+\author{
+Søren Højsgaard, \email{sorenh@math.aau.dk}
+}
 \keyword{utilities}
-

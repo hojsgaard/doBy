@@ -36,11 +36,10 @@ orderBy(~ Time + Evit, data=dietox)
 orderBy(~ - Time + Evit, data=dietox)
 
 }
-\author{
-Søren Højsgaard, \email{sorenh@math.aau.dk} and Kevin Wright
-}
 \seealso{
 \code{\link{transformBy}}, \code{\link{splitBy}}
 }
+\author{
+Søren Højsgaard, \email{sorenh@math.aau.dk} and Kevin Wright
+}
 \keyword{utilities}
-

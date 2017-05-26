@@ -2,12 +2,17 @@
 % Please edit documentation in R/firstlastObs.R
 \name{firstlastobs}
 \alias{firstlastobs}
+\alias{lastobs}
 \alias{firstobs}
 \alias{firstobs.default}
-\alias{firstobs.formula}
-\alias{lastobs}
 \alias{lastobs.default}
+\alias{firstobs.formula}
 \alias{lastobs.formula}
+\alias{firstobs}
+\alias{lastobs.default}
+\alias{firstobs.default}
+\alias{lastobs.formula}
+\alias{firstobs.formula}
 \title{Locate the index of the first/last unique value}
 \usage{
 lastobs(x, ...)
@@ -25,11 +30,11 @@ firstobs(x, ...)
 \arguments{
 \item{x}{A vector}
 
+\item{\dots}{Currently not used}
+
 \item{formula}{A formula (only the first term is used, see 'details').}
 
 \item{data}{A data frame}
-
-\item{\dots}{Currently not used}
 }
 \value{
 A vector.
@@ -59,4 +64,3 @@ lastobs(~Pig, data=dietox)
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
 \keyword{utilities}
-

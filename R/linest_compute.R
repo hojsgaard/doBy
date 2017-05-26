@@ -14,14 +14,15 @@
 #' @aliases linest linest.lm linest.glm linest.geeglm linest.lmerMod
 #'     linest.merMod linest.default
 #' @param object Model object
-#' @param K Either \code{NULL} or a matrix with p columns where p is the number
-#'     of parameters in the systematic effects in the model. If \code{NULL} then
-#'     \code{K} is taken to be the p times p identity matrix
+#' @param K Either \code{NULL} or a matrix with p columns where p is
+#'     the number of parameters in the systematic effects in the
+#'     model. If \code{NULL} then \code{K} is taken to be the p times
+#'     p identity matrix
 #' @param level The level of the (asymptotic) confidence interval.
 #' @param ...  Additional arguments; currently not used.
 #' @return A dataframe with results from computing the contrasts.
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
-#' @seealso \code{\link{LSmeans}}, \code{\link{LSmatrix}}
+#' @seealso \code{\link{LSmeans}}, \code{\link{linest_matrix}}
 #' @keywords utilities
 #' @examples
 #' 
@@ -36,10 +37,10 @@
 #' dat.nst <- dat.bal
 #' dat.nst$CC <-factor(c(1,1,2,2,2,2,1,1,3,3,3,3,1,1,4,4,4,4))
 #' 
-#' mod.bal  <- lm(y ~ AA + BB*CC,    data=dat.bal)
+#' mod.bal  <- lm(y ~ AA + BB * CC, data=dat.bal)
 #' mod.nst  <- lm(y ~ AA + BB : CC, data=dat.nst)
 #' 
-#' K <- LSmatrix(mod.nst, effect=c("BB","CC"))
+#' K <- linest_matrix(mod.nst, effect=c("BB", "CC"))
 #' linest( mod.nst, K )
 #' 
 #' @export linest
@@ -241,7 +242,7 @@ linest.merMod <- function(object, K=NULL, level=0.95, ...){
     ## print(rownames(K))
     if (!is.null(rownames(K)))
         rownames(.coef) <- rownames(K)
-    res  <- list(coef=.coef, grid=attr(K,"grid"), K=K)
+    res  <- list(coef=.coef, grid=attr(K, "grid"), K=K)
     class(res) <- "linearEstimate"
     res
 }

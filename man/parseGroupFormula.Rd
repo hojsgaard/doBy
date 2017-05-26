@@ -28,4 +28,3 @@ gf
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
 \keyword{utilities}
-

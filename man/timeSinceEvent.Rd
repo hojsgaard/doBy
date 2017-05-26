@@ -58,11 +58,10 @@ timeSinceEvent(yvar, tvar)
 
 
 }
-\author{
-Søren Højsgaard, \email{sorenh@math.aau.dk}
-}
 \seealso{
 \code{\link{subSeq}}, \code{\link{rle}}
 }
+\author{
+Søren Højsgaard, \email{sorenh@math.aau.dk}
+}
 \keyword{utilities}
-

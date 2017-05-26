@@ -5,7 +5,7 @@
 \alias{splitByOLD}
 \alias{summaryByOLD}
 
-\alias{LSmatrix-class}
+\alias{linest_matrix-class}
 
 \alias{asNumericMatrix2}
 \alias{matrix2dataFrame2}
@@ -13,12 +13,7 @@
 \alias{doby.xtabs}
 
 \alias{print.linearEstimate}
-
-%\alias{LSmatrix}
-%\alias{LSmatrix.default}
-\alias{print.LSmatrix}
-
-\alias{funBy}
+\alias{print.linest_matrix}
 
 \alias{print.lmBy}
 \alias{print.summary_lmBy}
@@ -28,23 +23,16 @@
 
 
 \alias{\%>\%}
-
-     
-
-
-
-
+ 
 \title{Internal functions for the doBy package}
 \description{Internal functions for the doBy package}
 \keyword{internal}% at least one, from doc/KEYWORDS
 
 
 
-%% \alias{linestMatrix}
-%% \alias{linestMatrix.default}
 
-%% \alias{print.linestMatrix}
-%% \alias{print.linest}
+
+%%\alias{funBy}
 
 %%\alias{pdiff}
 

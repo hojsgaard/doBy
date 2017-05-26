@@ -4,7 +4,7 @@
 #' are two sizes: \code{length} is the longest length and \code{width} is the
 #' shortest length across a potato. #' 
 #' 
-#' @name potatoes
+#' @name data-potatoes
 #' @docType data
 #'
 #' @format A data frame with 20 observations on the following 3 variables.

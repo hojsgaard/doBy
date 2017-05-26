@@ -2,8 +2,8 @@
 % Please edit documentation in R/BY-summaryBy2.R
 \name{by-summary}
 \alias{by-summary}
-\alias{summaryBy}
 \alias{summary_by}
+\alias{summaryBy}
 \title{Function to calculate groupwise summary statistics}
 \usage{
 summary_by(data, formula, FUN)
@@ -73,12 +73,11 @@ summaryBy(breaks ~ ., warpbreaks, FUN=mean)
 summaryBy(. ~ wool + tension, warpbreaks, FUN=mean)
 
 }
-\author{
-Søren Højsgaard, \email{sorenh@math.aau.dk}
-}
 \seealso{
 \code{\link{ave}}, \code{\link{descStat}}, \code{\link{orderBy}},
     \code{\link{splitBy}}, \code{\link{transformBy}}
 }
+\author{
+Søren Højsgaard, \email{sorenh@math.aau.dk}
+}
 \keyword{univar}
-

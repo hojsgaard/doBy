@@ -5,7 +5,7 @@
 #' There are data for 222 cows. Some cows appear more than once in the dataset
 #' (in different lactations) and there are 288 different lactations.
 #' 
-#' @name milkman
+#' @name data-milkman
 #' @docType data
 #'
 #' @format

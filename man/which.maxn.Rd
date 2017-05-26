@@ -31,11 +31,10 @@ ii <- which.minn(x, 5)
 
 
 }
-\author{
-Søren Højsgaard, \email{sorenh@math.aau.dk}
-}
 \seealso{
 \code{\link{which.max}}, \code{\link{which.min}}
 }
+\author{
+Søren Højsgaard, \email{sorenh@math.aau.dk}
+}
 \keyword{utilities}
-

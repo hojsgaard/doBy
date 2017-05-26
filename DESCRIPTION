@@ -4,7 +4,7 @@ Title: Groupwise Statistics, LSmeans, Linear Contrasts, Utilities
 Author: Søren Højsgaard <sorenh@math.aau.dk> and Ulrich Halekoh
     <uhalekoh@health.sdu.dk>
 Maintainer: Søren Højsgaard <sorenh@math.aau.dk>
-Description: 
+Description: Contains:
 		1) Facilities for working with grouped data: 'do' something to data
     stratified 'by' some variables.
     2) LSmeans (least-squares means), general linear contrasts. 
@@ -29,4 +29,4 @@ Suggests:
     geepack,
     lme4,
     survival
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
