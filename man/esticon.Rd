@@ -19,34 +19,34 @@
 \alias{esticon.lme}
 \title{Contrasts for lm, glm, lme, and geeglm objects}
 \usage{
-esticon(obj, cm, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE,
+esticon(obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE,
   ...)
 
-\method{esticon}{gls}(obj, cm, beta0, conf.int = TRUE, level = 0.95,
+\method{esticon}{gls}(obj, L, beta0, conf.int = TRUE, level = 0.95,
   joint.test = FALSE, ...)
 
-\method{esticon}{geeglm}(obj, cm, beta0, conf.int = TRUE, level = 0.95,
+\method{esticon}{geeglm}(obj, L, beta0, conf.int = TRUE, level = 0.95,
   joint.test = FALSE, ...)
 
-\method{esticon}{lm}(obj, cm, beta0, conf.int = TRUE, level = 0.95,
+\method{esticon}{lm}(obj, L, beta0, conf.int = TRUE, level = 0.95,
   joint.test = FALSE, ...)
 
-\method{esticon}{glm}(obj, cm, beta0, conf.int = TRUE, level = 0.95,
+\method{esticon}{glm}(obj, L, beta0, conf.int = TRUE, level = 0.95,
   joint.test = FALSE, ...)
 
-\method{esticon}{mer}(obj, cm, beta0, conf.int = TRUE, level = 0.95,
+\method{esticon}{mer}(obj, L, beta0, conf.int = TRUE, level = 0.95,
   joint.test = FALSE, ...)
 
-\method{esticon}{coxph}(obj, cm, beta0, conf.int = TRUE, level = 0.95,
+\method{esticon}{coxph}(obj, L, beta0, conf.int = TRUE, level = 0.95,
   joint.test = FALSE, ...)
 
-\method{esticon}{lme}(obj, cm, beta0, conf.int = NULL, level = 0.95,
+\method{esticon}{lme}(obj, L, beta0, conf.int = NULL, level = 0.95,
   joint.test = FALSE, ...)
 }
 \arguments{
 \item{obj}{Regression object (of type lm, glm, lme, geeglm)}
 
-\item{cm}{Matrix specifying linear functions of the regresson parameters (one
+\item{L}{Matrix (or vector) specifying linear functions of the regresson parameters (one
 linear function per row).  The number of columns must match the number of
 fitted regression parameters in the model. See 'details' below.}
 
@@ -57,7 +57,7 @@ fitted regression parameters in the model. See 'details' below.}
 \item{level}{The confidence level}
 
 \item{joint.test}{Logical value. If TRUE a 'joint' Wald test for the
-hypothesis L beta=beta0 is made. Default is that the 'row-wise' tests are
+hypothesis L beta = beta0 is made. Default is that the 'row-wise' tests are
 made, i.e. (L beta)i=beta0i.  If joint.test is TRUE, then no confidence
 inteval etc. is calculated.}
 
@@ -76,21 +76,21 @@ Computes linear functions (i.e. weighted sums) of the estimated
 }
 \details{
 Let the estimated parameters of the model be
-\deqn{\beta_1, \beta_2, \dots,\beta_p}
+\deqn{\beta_1, \beta_2, \dots, \beta_p}
 
-A linear function of the estimates is of the form \deqn{c=\lambda_1
+A linear function of the estimates is of the form \deqn{l=\lambda_1
     \beta_1+\lambda_2 \beta_2+ \dots+\lambda_p \beta_p} where
     \eqn{\lambda_1, \lambda_2, \dots,\lambda_p} is specified by the
     user.
 
-The esticon function calculates c, its standard error and by default also a
+The esticon function calculates l, its standard error and by default also a
 95 pct confidence interval.  It is sometimes of interest to test the
-hypothesis \eqn{H_0: c=\beta_0} for some value \eqn{\beta_0}
+hypothesis \eqn{H_0: l=\beta_0} for some value \eqn{\beta_0}
 given by the user. A test is provided for the hypothesis \eqn{H_0:
-c=0} but other values of \eqn{\beta_0} can be specified.
+l=0} but other values of \eqn{\beta_0} can be specified.
 
 In general, one can specify r such linear functions at one time by
-speficying cm to be an \eqn{r\times p} matrix where each row consists
+speficying L to be an \eqn{r\times p} matrix where each row consists
 of p numbers \eqn{\lambda_1,\lambda_2,\dots, \lambda_p}. Default is
 then that \eqn{\beta_0} is a p vector of 0s but other values can be
 given.
@@ -101,11 +101,6 @@ are equal to the corresponding values in \eqn{\beta_0}.
 For computing contrasts among levels of a single factor, 'contrast.lm' may
 be more convenient.
 }
-\note{
-'esticon' works on geese/geeglm objects from the geepack package (for
-    Generalized Estimating Equations), on 'lm' and 'glm' objects, and on
-    'gls' objects.
-}
 \examples{
 
 data(iris)
@@ -115,33 +110,32 @@ coef(lm1)
 
 ## Estimate the intercept for versicolor
 lambda1 <- c(1, 0, 1, 0, 0, 0)
-esticon(lm1,lambda1)
+esticon(lm1, L=lambda1)
 
 ## Estimate the difference between versicolor and virgica intercept
 ## and test if the difference is 1
 lambda2 <- c(0, 1, -1, 0, 0, 0)
-esticon(lm1,lambda2,beta0=1)
+esticon(lm1, L=lambda2, beta0=1)
 
 ## Do both estimates at one time
-esticon(lm1, rbind(lambda1, lambda2), beta0=c(0, 1))
+esticon(lm1, L=rbind(lambda1, lambda2), beta0=c(0, 1))
 
 ## Make a combined test for that the difference between versicolor and virgica intercept
 ## and difference between versicolor and virginica slope is zero:
 lambda3 <- c(0, 0, 0, 0, 1, -1)
-esticon(lm1, rbind(lambda2, lambda3), joint.test=TRUE)
+esticon(lm1, L=rbind(lambda2, lambda3), joint.test=TRUE)
 
 # Example using esticon on coxph objects (thanks to Alessandro A. Leidi).
 # Using dataset 'veteran' in the survival package
 # from the Veterans' Administration Lung Cancer study
 
 if (require(survival)){
-library(survival);
 data(veteran)
-sapply(veteran,class)
+sapply(veteran, class)
 levels(veteran$celltype)
 attach(veteran)
-veteran.s<-Surv(time,status)
-coxmod<-coxph(veteran.s~age+celltype+trt,method='breslow')
+veteran.s <- Surv(time, status)
+coxmod <- coxph(veteran.s ~ age + celltype + trt, method='breslow')
 summary(coxmod)
 
 # compare a subject 50 years old with celltype 1
@@ -153,9 +147,9 @@ AvB <- c(-20, -1, 0, 0, 0)
 # to a subject 35 years old with celltype 3 on treat=1
 CvB <- c(5, 1, -1, 0, -1)
 
-esti<-esticon(coxmod, rbind(AvB, CvB))
-esti
-exp(esti[,c(2, 7, 8)])
+est <- esticon(coxmod, L=rbind(AvB, CvB))
+est
+exp(est[, c(2, 7, 8)])
 }
 
 

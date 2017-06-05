@@ -7,21 +7,21 @@
 #' @name esticon
 #' 
 #' @details Let the estimated parameters of the model be
-#' \deqn{\beta_1, \beta_2, \dots,\beta_p}
+#' \deqn{\beta_1, \beta_2, \dots, \beta_p}
 #'
-#' A linear function of the estimates is of the form \deqn{c=\lambda_1
+#' A linear function of the estimates is of the form \deqn{l=\lambda_1
 #'     \beta_1+\lambda_2 \beta_2+ \dots+\lambda_p \beta_p} where
 #'     \eqn{\lambda_1, \lambda_2, \dots,\lambda_p} is specified by the
 #'     user.
 #' 
-#' The esticon function calculates c, its standard error and by default also a
+#' The esticon function calculates l, its standard error and by default also a
 #' 95 pct confidence interval.  It is sometimes of interest to test the
-#' hypothesis \eqn{H_0: c=\beta_0} for some value \eqn{\beta_0}
+#' hypothesis \eqn{H_0: l=\beta_0} for some value \eqn{\beta_0}
 #' given by the user. A test is provided for the hypothesis \eqn{H_0:
-#' c=0} but other values of \eqn{\beta_0} can be specified.
+#' l=0} but other values of \eqn{\beta_0} can be specified.
 #' 
 #' In general, one can specify r such linear functions at one time by
-#' speficying cm to be an \eqn{r\times p} matrix where each row consists
+#' speficying L to be an \eqn{r\times p} matrix where each row consists
 #' of p numbers \eqn{\lambda_1,\lambda_2,\dots, \lambda_p}. Default is
 #' then that \eqn{\beta_0} is a p vector of 0s but other values can be
 #' given.
@@ -35,14 +35,14 @@
 #' @aliases esticon esticon.geeglm esticon.glm esticon.gls esticon.lm
 #'     esticon.lme esticon.mer esticon.merMod esticon.coxph
 #' @param obj Regression object (of type lm, glm, lme, geeglm)
-#' @param cm Matrix specifying linear functions of the regresson parameters (one
+#' @param L Matrix (or vector) specifying linear functions of the regresson parameters (one
 #'     linear function per row).  The number of columns must match the number of
 #'     fitted regression parameters in the model. See 'details' below.
 #' @param beta0 A vector of numbers
 #' @param conf.int TRUE
 #' @param level The confidence level
 #' @param joint.test Logical value. If TRUE a 'joint' Wald test for the
-#'     hypothesis L beta=beta0 is made. Default is that the 'row-wise' tests are
+#'     hypothesis L beta = beta0 is made. Default is that the 'row-wise' tests are
 #'     made, i.e. (L beta)i=beta0i.  If joint.test is TRUE, then no confidence
 #'     inteval etc. is calculated.
 #' @param ... Additional arguments; currently not used.
@@ -50,9 +50,6 @@
 #'     estimated coefficients, standard errors, t values, degrees of freedom,
 #'     two-sided p-values, and the lower and upper endpoints of the 1-alpha
 #'     confidence intervals.
-#' @note 'esticon' works on geese/geeglm objects from the geepack package (for
-#'     Generalized Estimating Equations), on 'lm' and 'glm' objects, and on
-#'     'gls' objects.
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @keywords utilities
 #' @examples
@@ -64,33 +61,32 @@
 #' 
 #' ## Estimate the intercept for versicolor
 #' lambda1 <- c(1, 0, 1, 0, 0, 0)
-#' esticon(lm1,lambda1)
+#' esticon(lm1, L=lambda1)
 #' 
 #' ## Estimate the difference between versicolor and virgica intercept
 #' ## and test if the difference is 1
 #' lambda2 <- c(0, 1, -1, 0, 0, 0)
-#' esticon(lm1,lambda2,beta0=1)
+#' esticon(lm1, L=lambda2, beta0=1)
 #' 
 #' ## Do both estimates at one time
-#' esticon(lm1, rbind(lambda1, lambda2), beta0=c(0, 1))
+#' esticon(lm1, L=rbind(lambda1, lambda2), beta0=c(0, 1))
 #' 
 #' ## Make a combined test for that the difference between versicolor and virgica intercept
 #' ## and difference between versicolor and virginica slope is zero:
 #' lambda3 <- c(0, 0, 0, 0, 1, -1)
-#' esticon(lm1, rbind(lambda2, lambda3), joint.test=TRUE)
+#' esticon(lm1, L=rbind(lambda2, lambda3), joint.test=TRUE)
 #' 
 #' # Example using esticon on coxph objects (thanks to Alessandro A. Leidi).
 #' # Using dataset 'veteran' in the survival package
 #' # from the Veterans' Administration Lung Cancer study
 #' 
 #' if (require(survival)){
-#' library(survival);
 #' data(veteran)
-#' sapply(veteran,class)
+#' sapply(veteran, class)
 #' levels(veteran$celltype)
 #' attach(veteran)
-#' veteran.s<-Surv(time,status)
-#' coxmod<-coxph(veteran.s~age+celltype+trt,method='breslow')
+#' veteran.s <- Surv(time, status)
+#' coxmod <- coxph(veteran.s ~ age + celltype + trt, method='breslow')
 #' summary(coxmod)
 #' 
 #' # compare a subject 50 years old with celltype 1
@@ -102,104 +98,95 @@
 #' # to a subject 35 years old with celltype 3 on treat=1
 #' CvB <- c(5, 1, -1, 0, -1)
 #' 
-#' esti<-esticon(coxmod, rbind(AvB, CvB))
-#' esti
-#' exp(esti[,c(2, 7, 8)])
+#' est <- esticon(coxmod, L=rbind(AvB, CvB))
+#' est
+#' exp(est[, c(2, 7, 8)])
 #' }
 #' 
 #' 
 #' @export esticon
-esticon <- function(obj, cm, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...)
+esticon <- function(obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...)
   UseMethod("esticon")
 
 #' @rdname esticon
-esticon.gls <- function (obj, cm, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
-  if (joint.test==TRUE){
-    .wald(obj, cm, beta0)
-  } else {
-    stat.name <- "X2.stat"
-    vcv <- vcov(obj)
-    coef.mat  <- matrix(coef(obj))
-    df  <- 1
-    .esticonCore(obj, cm, beta0, conf.int=conf.int,level,coef.mat,vcv,df,stat.name)
-  }
-}
-
-#' @rdname esticon
-esticon.geeglm <- function (obj, cm, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
-  if (joint.test==TRUE){
-    .wald(obj, cm, beta0)
-  } else {
-    stat.name <- "X2.stat"
-    coef.mat  <- summary(obj)$coef
-    vcv <- summary(obj)$cov.scaled
-    df  <- 1
-    .esticonCore(obj, cm, beta0, conf.int=conf.int,level,coef.mat,vcv,df,stat.name)
-  }
-}
-
-#' @rdname esticon
-esticon.lm <- function (obj, cm, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
-  if (joint.test==TRUE){
-    .wald(obj, cm, beta0)
-  } else {
-    stat.name <- "t.stat"
-    coef.mat  <- summary.lm(obj)$coefficients
-    coef.vec  <- coef(obj)
-    vcv <- summary.lm(obj)$cov.unscaled * summary.lm(obj)$sigma^2
-    df  <- obj$df.residual
-    .esticonCore(obj, cm, beta0, conf.int=conf.int, level, coef.mat, vcv, df, stat.name, coef.vec=coef.vec)
-  }
-}
-
-#' @rdname esticon
-esticon.glm <- function (obj, cm, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
-  if (joint.test==TRUE){
-    .wald(obj, cm, beta0)
-  } else {
-    coef.mat <- summary.lm(obj)$coefficients
-    vcv <- summary(obj)$cov.scaled
-    if(family(obj)[1] %in% c("poisson","binomial")){
-      stat.name <- "X2.stat"
-      df <- 1
-    } else {
-      stat.name <- "t.stat"
-      df <- obj$df.residual
+esticon.gls <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
+    if (joint.test) .wald(obj, L, beta0)
+    else {
+        stat.name <- "X2.stat"
+        vcv <- vcov(obj)
+        coef.mat  <- matrix(coef(obj))
+        df  <- 1
+        .esticonCore(obj, L, beta0, conf.int=conf.int,level,coef.mat,vcv,df,stat.name)
     }
-    .esticonCore(obj, cm, beta0, conf.int=conf.int,level=level,coef.mat,vcv,df,stat.name)
+}
+
+#' @rdname esticon
+esticon.geeglm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
+    if (joint.test) .wald(obj, L, beta0)
+    else {
+        stat.name <- "X2.stat"
+        coef.mat  <- summary(obj)$coef
+        vcv <- summary(obj)$cov.scaled
+        df  <- 1
+        .esticonCore(obj, L, beta0, conf.int=conf.int,level,coef.mat,vcv,df,stat.name)
+    }
+}
+
+#' @rdname esticon
+esticon.lm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
+    if (joint.test) .wald(obj, L, beta0)
+    else {
+        stat.name <- "t.stat"
+        coef.mat  <- summary.lm(obj)$coefficients
+        coef.vec  <- coef(obj)
+        vcv <- summary.lm(obj)$cov.unscaled * summary.lm(obj)$sigma^2
+        df  <- obj$df.residual
+        .esticonCore(obj, L, beta0, conf.int=conf.int, level, coef.mat, vcv, df, stat.name, coef.vec=coef.vec)
   }
 }
 
 #' @rdname esticon
-esticon.mer <- esticon.merMod <- function (obj, cm, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
-  if (joint.test==TRUE){
-    .wald(obj, cm, beta0)
-  } else {
-    stat.name <- "X2.stat"
-    coef.mat  <- matrix(lme4::fixef(obj))
-    vcv <- as.matrix(vcov(obj))
-    df  <- 1
-    .esticonCore(obj, cm, beta0, conf.int=conf.int, level, coef.mat, vcv, df, stat.name)
-  }
+esticon.glm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
+    if (joint.test) .wald(obj, L, beta0)
+    else {
+        coef.mat <- summary.lm(obj)$coefficients
+        vcv <- summary(obj)$cov.scaled
+        if(family(obj)[1] %in% c("poisson", "binomial")){
+            stat.name <- "X2.stat"
+            df <- 1
+        } else {
+            stat.name <- "t.stat"
+            df <- obj$df.residual
+        }
+        .esticonCore(obj, L, beta0, conf.int=conf.int,level=level,coef.mat,vcv,df,stat.name)
+    }
+}
+
+#' @rdname esticon
+esticon.mer <- esticon.merMod <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
+    if (joint.test) .wald(obj, L, beta0)
+    else {
+        stat.name <- "X2.stat"
+        coef.mat  <- matrix(lme4::fixef(obj))
+        vcv <- as.matrix(vcov(obj))
+        df  <- 1
+        .esticonCore(obj, L, beta0, conf.int=conf.int, level, coef.mat, vcv, df, stat.name)
+    }
 }
 
 #' @rdname esticon
 esticon.coxph <-
-  function (obj, cm, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE, ...)
-{
-  if (joint.test == TRUE) {
-    .wald(obj, cm, beta0)
-  }
-  else {
-    cf <- summary(obj)$coefficients
-    vcv <- obj$var
-    stat.name <- "X2.stat"
-    df <- 1
-    .esticonCore(obj, cm, beta0, conf.int = conf.int, level = level,
-                 cf, vcv, df, stat.name)
-  }
-}
-
+    function (obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE, ...){
+        if (joint.test == TRUE) .wald(obj, L, beta0)
+        else {
+            cf <- summary(obj)$coefficients
+            vcv <- obj$var
+            stat.name <- "X2.stat"
+            df <- 1
+            .esticonCore(obj, L, beta0, conf.int = conf.int, level = level,
+                         cf, vcv, df, stat.name)
+        }
+    }
 
 
 ### ######################################################
@@ -209,44 +196,43 @@ esticon.coxph <-
 ### ######################################################
 
 #' @rdname esticon
-esticon.lme <- function (obj, cm, beta0, conf.int = NULL, level=0.95, joint.test=FALSE,...){
+esticon.lme <- function (obj, L, beta0, conf.int = NULL, level=0.95, joint.test=FALSE,...){
   warning("The esticon function has not been thoroughly teste on 'lme' objects")
-  if (joint.test==TRUE){
-    .wald(obj, cm, beta0)
-  } else {
-    stat.name <- "t.stat"
-    coef.mat <- summary(obj)$tTable
-    rho <- summary(obj)$cor
-    vcv <- rho * outer(coef.mat[, 2], coef.mat[, 2])
-    tmp <- cm
-    tmp[tmp == 0] <- NA
-    df.all <- t(abs(t(tmp) * obj$fixDF$X))
-    df <- apply(df.all, 1, min, na.rm = TRUE)
-    problem <- apply(df.all != df, 1, any, na.rm = TRUE)
-    if (any(problem))
-      warning(paste("Degrees of freedom vary among parameters used to ",
-                    "construct linear contrast(s): ",
-                    paste((1:nrow(tmp))[problem],
-                          collapse = ","),
-                    ". Using the smallest df among the set of parameters.",
-                    sep = ""))
-    df <- min(df)
-    .esticonCore(obj, cm, beta0, conf.int=conf.int,level,coef.mat,vcv,df,stat.name)
+  if (joint.test) .wald(obj, L, beta0)
+  else {
+      stat.name <- "t.stat"
+      coef.mat <- summary(obj)$tTable
+      rho <- summary(obj)$cor
+      vcv <- rho * outer(coef.mat[, 2], coef.mat[, 2])
+      tmp <- L
+      tmp[tmp == 0] <- NA
+      df.all <- t(abs(t(tmp) * obj$fixDF$X))
+      df <- apply(df.all, 1, min, na.rm = TRUE)
+      problem <- apply(df.all != df, 1, any, na.rm = TRUE)
+      if (any(problem))
+          warning(paste("Degrees of freedom vary among parameters used to ",
+                        "construct linear contrast(s): ",
+                        paste((1:nrow(tmp))[problem],
+                              collapse = ","),
+                        ". Using the smallest df among the set of parameters.",
+                        sep = ""))
+      df <- min(df)
+      .esticonCore(obj, L, beta0, conf.int=conf.int,level,coef.mat,vcv,df,stat.name)
   }
 }
 
 
 ### .functions below here ###
 
-.wald <- function (obj, cm,beta0)
+.wald <- function (obj, L, beta0)
 {
-    if (!is.matrix(cm) && !is.data.frame(cm))
-        cm <- matrix(cm, nrow = 1)
+    if (!is.matrix(L) && !is.data.frame(L))
+        L <- matrix(L, nrow = 1)
 
     if (missing(beta0))
-      beta0 <- rep(0,nrow(cm))
+      beta0 <- rep(0, nrow(L))
 
-    df <- nrow(cm)
+    df <- nrow(L)
     if ("geese" %in% class(obj)) {
       coef.mat  <- obj$beta
       vcv <- obj$vbeta
@@ -273,87 +259,80 @@ esticon.lme <- function (obj, cm, beta0, conf.int = NULL, level=0.95, joint.test
     }
     else
       stop("obj must be of class 'lm', 'glm', 'aov', 'gls', 'gee', 'geese', 'coxph'")
-    u      <- (cm %*% coef.mat)-beta0
-    vcv.u  <- cm %*% vcv %*% t(cm)
+    u      <- (L %*% coef.mat)-beta0
+    vcv.u  <- L %*% vcv %*% t(L)
     W      <- t(u) %*% solve(vcv.u) %*% u
     prob   <- 1 - pchisq(W, df = df)
-    retval <- as.data.frame(cbind(W, df, prob))
-    names(retval) <- c("X2.stat", "DF", "Pr(>|X^2|)")
-    return(as.data.frame(retval))
+    out <- as.data.frame(cbind(W, df, prob))
+    names(out) <- c("X2.stat", "DF", "Pr(>|X^2|)")
+    as.data.frame(out)
 }
 
 
-.esticonCore <- function (obj, cm, beta0, conf.int = NULL, level,coef.mat ,vcv,df,stat.name, coef.vec=coef.mat[,1] ) {
+.esticonCore <- function (obj, L, beta0, conf.int = NULL, level,coef.mat ,vcv,df,stat.name, coef.vec=coef.mat[,1] ) {
 
-  ## Notice
-  ## coef.mat: summary(obj)$coefficients
-  ## coef.vec: coef(obj)
-  ## cl <- match.call(); print(cl);  print(coef.mat)
-
-  if (missing(cm)) stop("Contrast matrix 'cm' is missing")
-  if (!is.matrix(cm) && !is.data.frame(cm))
-    cm <- matrix(cm, nrow = 1)
-  if (missing(beta0))
-    beta0 <- rep(0,nrow(cm))
-
-  idx <- !is.na(coef.vec) ## Only want columns of cm for identifiable parameters
-  cm <- cm[ , idx, drop=FALSE]
-
-  if (!dim(cm)[2] == dim(coef.mat)[1])
-    stop(paste("\n Dimension of ",
-               deparse(substitute(cm)),
-               ": ", paste(dim(cm), collapse = "x"),
-               ", not compatible with no of parameters in ",
-               deparse(substitute(obj)), ": ", dim(coef.mat)[1], sep = ""))
-  ct      <- cm %*% coef.mat[, 1]
-  ct.diff <- cm %*% coef.mat[, 1] - beta0
-  vc      <- sqrt(diag(cm %*% vcv %*% t(cm)))
-
-  switch(stat.name,
-         t.stat = {
-           prob <- 2 * (1 - pt(abs(ct.diff/vc), df))
-         },
-         X2.stat = {
-           prob <- 1 - pchisq((ct.diff/vc)^2, df = 1)
-         })
-
-  if (stat.name == "X2.stat") {
-    retval <- cbind(hyp=beta0, est = ct, stderr = vc, t.value = (ct.diff/vc)^2,
-                    df = df, prob = prob )
-    dimnames(retval) <-
-      list(NULL, c("beta0","Estimate","Std.Error","X2.value","DF","Pr(>|X^2|)"))
-  }
-  else if (stat.name == "t.stat") {
-    retval <- cbind(hyp=beta0, est = ct, stderr = vc, t.value = ct.diff/vc,
-                    df = df, prob = prob)
-    dimnames(retval) <-
-      list(NULL, c("beta0","Estimate","Std.Error","t.value","DF","Pr(>|t|)"))
-  }
-
-  conf.int <- "wald"
-  if (!is.null(conf.int)) {
-    if (level <= 0 || level >= 1)
-      stop("level should be betweeon 0 and 1. Usual values are 0.95, 0.90")
-
-    alpha <- 1 - level
+    ## Notice
+    ## coef.mat: summary(obj)$coefficients
+    ## coef.vec: coef(obj)
+    ## cl <- match.call(); print(cl);  print(coef.mat)
+    
+    if (missing(L)) stop("Contrast matrix 'L' is missing")
+    if (!is.matrix(L) && !is.data.frame(L))
+        L <- matrix(L, nrow = 1)
+    if (missing(beta0))
+        beta0 <- rep(0,nrow(L))
+    
+    idx <- !is.na(coef.vec) ## Only want columns of L for identifiable parameters
+    L <- L[ , idx, drop=FALSE]
+    
+    if (!dim(L)[2] == dim(coef.mat)[1])
+        stop(paste("\n Dimension of ",
+                   deparse(substitute(L)),
+                   ": ", paste(dim(L), collapse = "x"),
+                   ", not compatible with no of parameters in ",
+                   deparse(substitute(obj)), ": ", dim(coef.mat)[1], sep = ""))
+    ct      <- L %*% coef.mat[, 1]
+    ct.diff <- L %*% coef.mat[, 1] - beta0
+    vc      <- sqrt(diag(L %*% vcv %*% t(L)))
+    
     switch(stat.name,
-           t.stat  = { quant <- qt(1 - alpha/2, df  )  },
-           X2.stat = { quant <- qnorm(1 - alpha/2) })
-
-    vvv <- cbind(ct.diff-vc*quant, ct.diff+vc*quant)
-    colnames(vvv) <- c("Lower", "Upper")
-    retval <- cbind(retval, vvv)
-  }
-  retval[,6] <- round(retval[,6],7)
-  return(as.data.frame(retval))
+           t.stat = {
+               prob <- 2 * (1 - pt(abs(ct.diff/vc), df))
+           },
+           X2.stat = {
+               prob <- 1 - pchisq((ct.diff/vc)^2, df = 1)
+           })
+    
+    if (stat.name == "X2.stat") {
+        out <- cbind(hyp=beta0, est = ct, stderr = vc, t.value = (ct.diff/vc)^2,
+                     df = df, prob = prob )
+        dimnames(out) <-
+            list(NULL, c("beta0","Estimate","Std.Error","X2.value","DF","Pr(>|X^2|)"))
+    }
+    else if (stat.name == "t.stat") {
+        out <- cbind(hyp=beta0, est = ct, stderr = vc, t.value = ct.diff/vc,
+                     df = df, prob = prob)
+        dimnames(out) <-
+            list(NULL, c("beta0","Estimate","Std.Error","t.value","DF","Pr(>|t|)"))
+    }
+    
+    conf.int <- "wald"
+    if (!is.null(conf.int)) {
+        if (level <= 0 || level >= 1)
+            stop("level should be betweeon 0 and 1. Usual values are 0.95, 0.90")
+        
+        alpha <- 1 - level
+        switch(stat.name,
+               t.stat  = { quant <- qt(1 - alpha/2, df  )  },
+               X2.stat = { quant <- qnorm(1 - alpha/2) })
+        
+        cint <- cbind(ct.diff - vc * quant, ct.diff + vc * quant)
+        colnames(cint) <- c("Lower", "Upper")
+        out <- cbind(out, cint)
+    }
+    ## out[, 6] <- round(out[, 6], 7)
+    as.data.frame(out)
 }
-
-
-##  rn <- NULL
-##   if (is.null(rownames(cm)))
-##     rn <- paste("(", apply(cm, 1, paste, collapse = " "), ")", sep = "")
-##   else
-##     rn <- rownames(cm)
 
 
 
