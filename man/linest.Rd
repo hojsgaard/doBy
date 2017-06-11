@@ -10,14 +10,14 @@
 \alias{linest.default}
 \title{Compute linear estimates}
 \usage{
-linest(object, K = NULL, level = 0.95, ...)
+linest(object, L = NULL, level = 0.95, ...)
 }
 \arguments{
 \item{object}{Model object}
 
-\item{K}{Either \code{NULL} or a matrix with p columns where p is
+\item{L}{Either \code{NULL} or a matrix with p columns where p is
 the number of parameters in the systematic effects in the
-model. If \code{NULL} then \code{K} is taken to be the p times
+model. If \code{NULL} then \code{L} is taken to be the p times
 p identity matrix}
 
 \item{level}{The level of the (asymptotic) confidence interval.}
@@ -47,8 +47,8 @@ dat.nst$CC <-factor(c(1,1,2,2,2,2,1,1,3,3,3,3,1,1,4,4,4,4))
 mod.bal  <- lm(y ~ AA + BB * CC, data=dat.bal)
 mod.nst  <- lm(y ~ AA + BB : CC, data=dat.nst)
 
-K <- linest_matrix(mod.nst, effect=c("BB", "CC"))
-linest( mod.nst, K )
+L <- linest_matrix(mod.nst, effect=c("BB", "CC"))
+linest( mod.nst, L )
 
 }
 \seealso{

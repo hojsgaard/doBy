@@ -280,7 +280,7 @@ esticon.lme <- function (obj, L, beta0, conf.int = NULL, level=0.95, joint.test=
     if (!is.matrix(L) && !is.data.frame(L))
         L <- matrix(L, nrow = 1)
     if (missing(beta0))
-        beta0 <- rep(0,nrow(L))
+        beta0 <- rep(0, nrow(L))
     
     idx <- !is.na(coef.vec) ## Only want columns of L for identifiable parameters
     L <- L[ , idx, drop=FALSE]
@@ -331,7 +331,11 @@ esticon.lme <- function (obj, L, beta0, conf.int = NULL, level=0.95, joint.test=
         out <- cbind(out, cint)
     }
     ## out[, 6] <- round(out[, 6], 7)
-    as.data.frame(out)
+    out <- as.data.frame(out)
+    ## FIXME esticon_class added; not sure if this is good idea?
+    class(out) <- c("esticon_class", "data.frame")
+    attr(out, "L") <- L
+    out
 }
 
 
