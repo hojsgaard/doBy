@@ -9,7 +9,8 @@
 #' 
 #' @description Compute linear estimates for a range of models. One example of
 #'     linear estimates is population means (also known as LSMEANS).
-#' 
+#'
+#' @name linest
 #' 
 #' @aliases linest linest.lm linest.glm linest.geeglm linest.lmerMod
 #'     linest.merMod linest.default
@@ -258,29 +259,41 @@ linest.merMod <- function(object, L=NULL, level=0.95, ...){
     res
 }
 
+#' @rdname linest
 coef.linest_class <- function (object, ...) {
     object$coef
 }
 
-print.linest_class <- function (x, digits = max(3L, getOption("digits") - 3L), ...) 
+print.linest_class <- function (x, ...){
+    print(x$coef)
+}
+
+#' @rdname linest
+summary.linest_class <- function (object, ...) 
 {
     cat("Coefficients:\n")
-    printCoefmat(x$coef)
+    printCoefmat(object$coef)
     cat("\n")
 
-    if (!is.null(x$grid)){
+    if (!is.null(object$grid)){
         cat("Grid:\n")
-        print(x$grid)
+        print(object$grid)
         cat("\n")
     }
 
     cat("L:\n")
-    print(x$L)
+    print(object$L)
     cat("\n")
 
-    invisible(x)
+    invisible(object)
 }
 
+
+
+
+#' @rdname linest
+#' @param parm Specification of the parameters estimates for which
+#'     confidence inctervals are to be calculated.
 confint.linest_class <- function (object, parm, level = 0.95, ...) 
 {
     object <- coef(object) 
@@ -292,7 +305,7 @@ confint.linest_class <- function (object, parm, level = 0.95, ...)
         parm <- pnames[parm]
     a <- (1 - level)/2
     a <- c(a, 1 - a)
-    pct <- stats:::format.perc(a, 3)
+    pct <- a ## FIXME ::: gives problems. stats:::format.perc(a, 3)
     fac <- qnorm(a)
     ci <- array(NA, dim = c(length(parm), 2L), dimnames = list(parm, 
         pct))

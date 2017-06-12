@@ -17,7 +17,7 @@ importFrom("stats", "as.formula", "coef", "delete.response", "family",
            "fitted", "formula", "lm", "logLik", "median",
            "model.frame", "model.matrix", "pchisq", "pnorm", "pt",
            "qnorm", "qt", "residuals", "sd", "summary.lm", "terms",
-           "vcov", "aggregate")
+           "vcov", "aggregate", "printCoefmat")
 
 importFrom(plyr, dlply)
 importFrom(dplyr, arrange_)
@@ -25,10 +25,17 @@ importFrom(dplyr, arrange_)
 importFrom(magrittr, "%>%")
 export("%>%")
 
+importFrom(methods, setOldClass) 
+
 ## S3method(coerceGraph, dgCMatrix)
 ## S3method(coerceGraph, graphNEL)
 ## S3method(coerceGraph, igraph)
 ## S3method(coerceGraph, matrix)
+
+S3method( coef,             linest_class    )
+S3method( summary,          linest_class    )
+S3method( confint,          linest_class    )
+
 
 S3method( coef,             lmBy            )
 S3method( coef,             summary_lmBy    )

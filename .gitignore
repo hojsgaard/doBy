@@ -20,6 +20,8 @@
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
+vignettes/*.bbl
+vignettes/*.blg
 vignettes/*.R
 vignettes/*.aux
 vignettes/*.log

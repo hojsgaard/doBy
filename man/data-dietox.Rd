@@ -7,11 +7,16 @@
 \title{Growth curves of pigs in a 3x3 factorial experiment}
 \format{This data frame contains the following columns:
 
-\describe{ \item{Weight}{Weight} \item{Feed}{Cumulated feed intake}
-\item{Time}{Time (in weeks) in the experiment} \item{Pig}{Id of each pig}
-\item{Evit}{Vitamin E dose} \item{Cu}{Copper dose} \item{Start}{Start weight
-in experiment, i.e. weight at week 1.} \item{Litter}{Id of litter of each
-pig} }}
+\describe{
+\item{Weight}{Weight}
+\item{Feed}{Cumulated feed intake}
+\item{Time}{Time (in weeks) in the experiment}
+\item{Pig}{Id of each pig}
+\item{Evit}{Vitamin E dose}
+\item{Cu}{Copper dose}
+\item{Start}{Start weight in experiment, i.e. weight at week 1.}
+\item{Litter}{Id of litter of each pig}
+}}
 \source{
 Lauridsen, C., Højsgaard, S.,Sørensen, M.T. C. (1999) Influence of
     Dietary Rapeseed Oli, Vitamin E, and Copper on Performance and

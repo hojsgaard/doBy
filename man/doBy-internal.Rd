@@ -20,6 +20,7 @@
 \alias{specialize}
 \alias{print.splitByData}
 
+\alias{linest_class-class}
 
 
 \alias{\%>\%}

@@ -8,9 +8,18 @@
 \alias{linest.lmerMod}
 \alias{linest.merMod}
 \alias{linest.default}
+\alias{coef.linest_class}
+\alias{summary.linest_class}
+\alias{confint.linest_class}
 \title{Compute linear estimates}
 \usage{
 linest(object, L = NULL, level = 0.95, ...)
+
+\method{coef}{linest_class}(object, ...)
+
+\method{summary}{linest_class}(object, ...)
+
+\method{confint}{linest_class}(object, parm, level = 0.95, ...)
 }
 \arguments{
 \item{object}{Model object}
@@ -23,6 +32,9 @@ p identity matrix}
 \item{level}{The level of the (asymptotic) confidence interval.}
 
 \item{...}{Additional arguments; currently not used.}
+
+\item{parm}{Specification of the parameters estimates for which
+confidence inctervals are to be calculated.}
 }
 \value{
 A dataframe with results from computing the contrasts.
