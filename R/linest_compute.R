@@ -265,7 +265,8 @@ coef.linest_class <- function (object, ...) {
 }
 
 print.linest_class <- function (x, ...){
-    print(x$coef)
+    cat("Coefficients:\n")
+    printCoefmat(x$coef)
 }
 
 #' @rdname linest
@@ -275,11 +276,11 @@ summary.linest_class <- function (object, ...)
     printCoefmat(object$coef)
     cat("\n")
 
-    if (!is.null(object$grid)){
+#    if (!is.null(object$grid)){
         cat("Grid:\n")
         print(object$grid)
         cat("\n")
-    }
+#    }
 
     cat("L:\n")
     print(object$L)
@@ -306,11 +307,15 @@ confint.linest_class <- function (object, parm, level = 0.95, ...)
     a <- (1 - level)/2
     a <- c(a, 1 - a)
     pct <- a ## FIXME ::: gives problems. stats:::format.perc(a, 3)
-    fac <- qnorm(a)
+    if (!is.null(DF <- coef(object)$df))
+        fac <- qt(a, DF)
+    else
+        fac <- qnorm(a)
+       
     ci <- array(NA, dim = c(length(parm), 2L), dimnames = list(parm, 
         pct))
     #ses <- sqrt(diag(vcov(object)))[parm]
-    ses <- object$se[parm]
+    ses  <- object$se[parm]
     ci[] <- cf[parm] + ses %o% fac
     ci
 }

@@ -57,7 +57,7 @@ prettyDate <- format(Sys.Date())
 <<include=FALSE>>=
 library(knitr)
 opts_chunk$set(
-tidy=FALSE,fig.path='figures/LSmeans', fig.height=4
+tidy=FALSE,fig.path='figures/LSmeans', fig.height=3.5 
 )
 @
 
@@ -67,6 +67,7 @@ tidy=FALSE,fig.path='figures/LSmeans', fig.height=4
 \date{\pkg{doBy} version \Sexpr{prettyVersion} as of \Sexpr{prettyDate}}
 
 \begin{document}
+%%\SweaveOpts{concordance=TRUE}
 
 
 
@@ -121,8 +122,8 @@ two delivery methods, (orange juice (coded as OJ) or ascorbic acid
 (a form of vitamin C and (coded as VC)).
 
 <<>>=
-head(ToothGrowth)
-ftable(xtabs( ~ dose + supp, data=ToothGrowth))
+head(ToothGrowth, 4)
+ftable(xtabs(~ dose + supp, data=ToothGrowth))
 @ %def
 
 <<echo=F>>=
@@ -141,8 +142,7 @@ par(opar)
 with(ToothGrowth, interaction.plot(dose, supp, len))
 @
 
-The interaction plot suggests an interaction, which turns out to be
-somewhat significant:
+The interaction plot suggests a mild interaction which is supported by a formal comparison:
 
 << >>= 
 ToothGrowth$dose <- factor(ToothGrowth$dose)
@@ -156,13 +156,18 @@ anova(tooth1, tooth2)
 \label{sec:comp-line-estim}
 
 
-For now, we focus on the additive model.
-
+For now, we focus on the additive model:
 << >>= 
-coef(tooth1)
+tooth1
 @
 
-The estimated length for each dose of orange juice (OJ) can be found as
+The estimated length for each dose of orange juice (OJ) can be found
+as follows. Notice: \verb|esticon| has been in the \doby\ package for
+many years; \verb|linest| is a newer addition; \verb|esticon| is not
+actively maintained but remains in \doby\ for historical reasons.
+
+
+
 << >>= 
 L <- matrix(c(1, 0, 0, 0, 
               1, 1, 0, 0,
@@ -175,9 +180,7 @@ c2
 
 
 
-Notice: \verb|esticon| has been in the \doby\ package for many years;
-\verb|linest| is a newer addition; \verb|esticon| is not actively
-maintained but remains in \doby\ for historical reasons. We can do:
+We can do:
 
 << >>= 
 summary(c2)
@@ -185,17 +188,20 @@ coef(c2)
 confint(c2)
 @
 
+\section{Automatic generation of $L$}
+\label{sec:autom-gener-l}
+
+
+
 The matrix $L$ can be generated as follows:
 << >>= 
 L <- linest_matrix(tooth1, effect="dose", at=list(supp="OJ"))
 L
 @
 
-
-
-<< >>= 
-LSmeans(tooth1, effect="dose", at=list(supp="OJ"))
-@
+% << >>= 
+% LSmeans(tooth1, effect="dose", at=list(supp="OJ"))
+% @
 
 
 
@@ -217,27 +223,34 @@ simdat<-structure(list(treat = structure(c(1L, 1L, 1L, 2L, 1L, 2L, 2L, 2L
 "y"), row.names = c(NA, -8L), class = "data.frame")
 @ %def
 
-Consider these simulated data
+\subsection{LS--means on a simple example}
+\label{sec:ls-means-simple}
+
+Consider these simulated data, also shown in Fig.~\ref{fig:simdat2-fig}:
 <<>>=
 simdat
 @ %def
-shown in the figure below.
+
 <<simdat2-fig, fig.cap="LSmeans - simulated data.">>=
 library(ggplot2)
 qplot(treat, y, data=simdat, color=year)
 @ %def
 
 
-The LS--means under an additive model for the factor \cc{treat} is
+The LS--means under an additive model for the factor \cc{treat} is the predicted outcome for each level of \cc{treat} for an ``average year'':
 <<>>=
 msim <- lm(y ~ treat + year, data=simdat)
-LSmeans( msim, effect="treat")
+lsm <- LSmeans(msim, effect="treat")
+lsm
 @ %def
+
 
 Notice that the population means are
 <<>>=
-summaryBy(y ~ treat, data=simdat, FUN=mean)
+summaryBy(y ~ treat, data=simdat, FUN=function(x) c(m=mean(x), s=sd(x)))
+## or aggregate(y ~ treat, data=simdat, FUN=function(x) c(m=mean(x), s=sd(x)))
 @ %def
+
 Had data been balanced (same number of observations for each
 combination of \cc{treat} and \cc{year}) the results would have been the
 same. An argument in favor of the LS--means is that these figures
@@ -264,6 +277,10 @@ to consider such a random effects model.
   (because there are only two years in the study).
 \end{itemize}
 
+\subsection{Additive model}
+\label{sec:additive-model}
+
+
 Returning to the \verb|ToothGrowth| data, orange juice and ascorbic
 acid are just two of many ways of supplying vitamin C (citrus and lime
 juice would be two alternatives). Here one can therefore argue, that
@@ -275,19 +292,26 @@ LSmeans(tooth1, effect="dose")
 @
 
 which is the same as
-<<eval=F>>= 
+<<>>= 
 L <- linest_matrix(tooth1, effect="dose")
 L
 le <- linest(tooth1, L=L)
 coef(le)
 @
 
+\subsection{Interaction model}
+\label{sec:interaction-model}
 
-For a model with interactions, the $L$ matrix becomes
+
+For a model with interactions, the LSmeans are
+<< >>= 
+LSmeans(tooth2, effect="dose")
+@
+
+In this case, the $L$ matrix is
 << >>= 
 L <- linest_matrix(tooth2, effect="dose")
-L
-linest(tooth2, L=L)
+t(L)
 @
 
 
@@ -330,21 +354,23 @@ coef(summary(chick))
 
 The contrast matrix for \cc{Diet} becomes:
 <<>>=
-linest_matrix(chick, effect="Diet")
+L <- linest_matrix(chick, effect="Diet")
+t(L)
 @ %def
 
 The value of \cc{Time} is by default taken to be the average of that
 variable. Hence the \lsmeans\ is the predicted weight for each diet at
 that specific point of time. We can consider other points of time with
 <<>>=
-K1 <- linest_matrix(chick, effect="Diet", at=list(Time=1)); K1
+K1 <- linest_matrix(chick, effect="Diet", at=list(Time=1))
+t(K1)
 @ %def
 
 The \lsmeans\ for the intercepts is the predictions at
 \cc{Time=0}. The \lsmeans\ for the slopes becomes
 <<>>=
 K0 <- linest_matrix(chick, effect="Diet", at=list(Time=0))
-K1 - K0
+t(K1 - K0)
 linest(chick, L=K1-K0)
 @ %def
 
@@ -535,8 +561,8 @@ VarCorr(tooth.mm)
 
 Notice that the degrees of freedom by default are adjusted using a
 Kenward--Roger approximation (provided that \pkg{pbkrtest} is
-installed). Unadjusted degrees of freedom are obtained with
-<<>>=
+installed). Unadjusted degrees of freedom are obtained by setting \verb|adjust.df=FALSE|. 
+<<echo=F, results='hide'>>=
 LSmeans(tooth.mm, effect="dose", adjust.df=FALSE)
 @ %def
 
@@ -604,12 +630,15 @@ dat.nst$CC <-factor(c(1,1,2,2,2,2,1,1,3,3,3,3,1,1,4,4,4,4))
 @ %def
 
 
-Consider this highly unbalanced simulated dataset:
+Consider this simulated dataset:
 <<>>=
-head(dat.nst)
-ftable(xtabs( ~ AA + BB + CC, data=dat.nst))
+head(dat.nst, 4)
+ftable(xtabs( ~ AA + BB + CC, data=dat.nst), row.vars="AA")
 @ %def
 
+Data is highly "unbalanced":
+Whenever \verb|BB=1| then \verb|CC| is always \verb|1|; whenever
+\verb|BB| is not \verb|1| then \verb|CC| is never \verb|1|.
 We have
 <<>>=
 mod.nst  <- lm(y ~ AA + BB : CC, data=dat.nst)
@@ -617,13 +646,16 @@ coef(summary(mod.nst))
 @ %def
 
 
-In this case some of the \lsmeans\ values are not estimable (see
-Section~\ref{sec:handl-non-estim} for details):
+In this case some of the \lsmeans\ values are not estimable; for example:
 <<>>=
-LSmeans(mod.nst, effect="BB")
-LSmeans(mod.nst, effect=c("BB", "CC"))
+lsm.BC <- LSmeans(mod.nst, effect=c("BB", "CC"))
+lsm.BC
+lsm.BC2 <- LSmeans(mod.nst, effect="BB", at=list(CC=2))
+lsm.BC2
 @ %def
 
+We describe the situation in 
+Section~\ref{sec:handl-non-estim} where we focus on \verb|lsm.BC2|.
 
 \subsection{Handling non--estimability}
 \label{sec:handl-non-estim}
@@ -633,29 +665,26 @@ does not have full column rank and therefore not all values are
 calculated by \cc{LSmeans()}.
 
 <<>>=
-X <- model.matrix( mod.nst ); as(X,"Matrix")
+X <- model.matrix( mod.nst ) 
+Matrix::rankMatrix(X)
+dim(X)
+as(X, "Matrix")
 @ %def
 
-We consider a linear normal model, i.e.\
+We consider a  model, i.e.\
 an $n$ dimensional random vector $y=(y_i)$ for which
-$\EE(y)=\mu=X\beta$ and $\cov(y)=\sigma^2I$ where $X$ does not have
+$\EE(y)=\mu=X\beta$ and $\cov(y)=V$ where $X$ does not have
 full column rank
 We are
 interested in linear functions of $\beta$, say
 \begin{displaymath}
-  c=k\transp\beta= \sum_j k_j \beta_j .
+  c=l\transp\beta= \sum_j l_j \beta_j .
 \end{displaymath}
 
 <<>>=
-K <- linest_matrix(mod.nst, effect="BB")
-t(K)
-linest(mod.nst, L=K)
-
-K <- linest_matrix(mod.nst, effect="BB", at=list(CC=2))
-t(K)
-linest(mod.nst, L=K)
-
-
+L <- linest_matrix(mod.nst, effect="BB", at=list(CC=2))
+t(L)
+linest(mod.nst, L=L)
 @ %def
 
 A least squares estimate of $\beta$ is
@@ -665,33 +694,37 @@ A least squares estimate of $\beta$ is
 
 where $G$ is a generalized inverse of $X\transp  X$. Since the
 generalized inverse is not unique then neither is the estimate
-$\hat\beta$. One least squares estimate of $\beta$ is
+$\hat\beta$. Hence $\hat c = l\transp\hat \beta$ is in general not
+unique.
+
+One least squares estimate of $\beta$ and one corresponding linear estimate $L\hat\beta$ is: 
 <<>>=
 XtXinv <- MASS::ginv(t(X)%*%X)
 bhat <- as.numeric(XtXinv %*% t(X) %*% dat.nst$y)
 zapsmall(bhat)
+L %*% bhat
 @ %def
 
-Hence $\hat c = k\transp\hat \beta$ is in general not
-unique.
-<<>>=
-K %*% bhat
-@ %def
-
-However, for some values of $k$, the estimate $\hat c$ is
+For some values of $l$ (i.e.\ for some rows of $L$)
+the estimate $\hat c=l\transp \beta$ is
 unique (i.e.\ it does not depend on the choice of generalized
-inverse). Such linear functions are said to be estimable and can be
+inverse). 
+Such linear functions are said to be estimable and can be
 described as follows:
 
-All we specify with $\mu=X\beta$ is that $\mu$ is a vector in the
-linear subspace $L=C(X)$ where $C(X)$ denotes the column space of
-$X$.
+All we specify with $\mu=X\beta$
+is that $\mu$ is a vector in the column space $C(X)$ of $X$.
 We can only learn about $\beta$ through $X\beta$ so the only thing we can
 say something about is linear combinations $\rho\transp X\beta$. Hence
-we can only say something about $k\transp\beta$ if there exists
-$\rho$ such that $k\transp\beta=\rho\transp X \beta$, i.e., if
-$k=X\transp\rho$, that is, if $k$ is in the column space
-$C(X\transp)$ of $X\transp$. That is, if $k$ is perpendicular to
+we can only say something about $l\transp\beta$ if there exists
+$\rho$ such that 
+$$
+l\transp\beta=\rho\transp X \beta,
+$$ 
+i.e., if
+$l=X\transp\rho$ for some $\rho$, which is if $l$ is in the column space
+$C(X\transp)$ of $X\transp$. This is the same as saying that $l$ must be 
+perpendicular to
 all vectors in the null space $N(X)$ of $X$. To check
 this, we find a basis $B$ for $N(X)$. This can be done in many ways,
 for example via a singular value decomposition of $X$, i.e.\
@@ -703,14 +736,18 @@ to zeros on the diagonal of $D$.
 
 <<>>=
 S <- svd(X)
-names(S)
+B <- S$v[, S$d < 1e-10, drop=FALSE ]; 
+head(B) ## Basis for N(X)
 @ %def
 
-<<>>=
-B<-S$v[, S$d < 1e-10, drop=FALSE ]; zapsmall(B) ## Basis for N(X)
-zapsmall( rowSums(K %*% B) )
-@ %def
-
+From 
+<< >>= 
+rowSums(L %*% B)
+@
+we conclude that the first row of $L$ is not perpendicular to all vectors in thenull space $N(X)$ whereas the two last rows of $L$ are. Hence these two linear estimates are estimable; their value does not depend on the choice of generalized inverse:
+<< >>= 
+lsm.BC2
+@
 
 
 \subsection{Pairwise comparisons}

@@ -330,16 +330,49 @@ esticon.lme <- function (obj, L, beta0, conf.int = NULL, level=0.95, joint.test=
         colnames(cint) <- c("Lower", "Upper")
         out <- cbind(out, cint)
     }
-    ## out[, 6] <- round(out[, 6], 7)
-    out <- as.data.frame(out)
-    ## FIXME esticon_class added; not sure if this is good idea?
-    class(out) <- c("esticon_class", "data.frame")
-    attr(out, "L") <- L
+    ## out <- as.data.frame(out)
+    ## ## FIXME esticon_class added; not sure if this is good idea?
+    ## class(out) <- c("esticon_class", "data.frame")
+    ## attr(out, "L") <- L
+    ## out
+
+    out <- list(coef=as.data.frame(out),
+                L = L)
+    class(out) <- "esticon_class"
     out
+
 }
 
 
 
+#' @rdname esticon
+coef.esticon_class <- function (object, ...) {
+    ## as.data.frame(object)
+    object$coef
+}
+
+
+#' @rdname linest
+summary.esticon_class <- function (object, ...) 
+{
+    cat("Coefficients:\n")
+    printCoefmat(object$coef)
+    cat("\n")
+
+    cat("L:\n")
+    print(object$L)
+    #print(attr(object, "L"))
+    cat("\n")
+
+    invisible(object)
+}
+
+
+print.esticon_class <- function(x, ...){
+    cat("Coefficients:\n")
+    ##print.data.frame(x)
+    printCoefmat(x$coef)
+}
 
 
 
