@@ -62,7 +62,7 @@ tidy=FALSE,fig.path='figures/LSmeans', fig.height=3.5
 @
 
 
-\title{LS--means (least--squares means) and other linear estimates}
+\title{Linear estimates -- including LS--means (least--squares means)}
 \author{S{\o}ren H{\o}jsgaard and Ulrich Halekoh}
 \date{\pkg{doBy} version \Sexpr{prettyVersion} as of \Sexpr{prettyDate}}
 

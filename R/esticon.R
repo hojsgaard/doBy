@@ -100,7 +100,7 @@
 #' 
 #' est <- esticon(coxmod, L=rbind(AvB, CvB))
 #' est
-#' exp(est[, c(2, 7, 8)])
+#' ##exp(est[, c(2, 7, 8)])
 #' }
 #' 
 #' 
@@ -330,25 +330,27 @@ esticon.lme <- function (obj, L, beta0, conf.int = NULL, level=0.95, joint.test=
         colnames(cint) <- c("Lower", "Upper")
         out <- cbind(out, cint)
     }
-    ## out <- as.data.frame(out)
-    ## ## FIXME esticon_class added; not sure if this is good idea?
-    ## class(out) <- c("esticon_class", "data.frame")
-    ## attr(out, "L") <- L
-    ## out
-
-    out <- list(coef=as.data.frame(out),
-                L = L)
-    class(out) <- "esticon_class"
+    out <- as.data.frame(out)
+    ## FIXME esticon_class added; not sure if this is good idea?
+    class(out) <- c("esticon_class", "data.frame")
+    attr(out, "L") <- L
     out
+
+    ## out <- list(coef=as.data.frame(out),
+    ##             L = L)
+    ## class(out) <- "esticon_class"
+    ## out
 
 }
 
 
 
 #' @rdname esticon
+#' @param object An \code{esticon_class} object. 
+
 coef.esticon_class <- function (object, ...) {
-    ## as.data.frame(object)
-    object$coef
+    as.data.frame(object)
+    ##object$coef
 }
 
 
@@ -356,12 +358,13 @@ coef.esticon_class <- function (object, ...) {
 summary.esticon_class <- function (object, ...) 
 {
     cat("Coefficients:\n")
-    printCoefmat(object$coef)
+    ##printCoefmat(object$coef)
+    printCoefmat(object)
     cat("\n")
 
     cat("L:\n")
-    print(object$L)
-    #print(attr(object, "L"))
+    ##print(object$L)
+    print(attr(object, "L"))
     cat("\n")
 
     invisible(object)
@@ -369,9 +372,9 @@ summary.esticon_class <- function (object, ...)
 
 
 print.esticon_class <- function(x, ...){
-    cat("Coefficients:\n")
+    ##cat("Coefficients:\n")
     ##print.data.frame(x)
-    printCoefmat(x$coef)
+    printCoefmat(x)
 }
 
 

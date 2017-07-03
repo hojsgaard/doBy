@@ -17,6 +17,7 @@
 \alias{esticon.mer}
 \alias{esticon.coxph}
 \alias{esticon.lme}
+\alias{coef.esticon_class}
 \title{Contrasts for lm, glm, lme, and geeglm objects}
 \usage{
 esticon(obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE,
@@ -42,6 +43,8 @@ esticon(obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE,
 
 \method{esticon}{lme}(obj, L, beta0, conf.int = NULL, level = 0.95,
   joint.test = FALSE, ...)
+
+\method{coef}{esticon_class}(object, ...)
 }
 \arguments{
 \item{obj}{Regression object (of type lm, glm, lme, geeglm)}
@@ -62,6 +65,8 @@ made, i.e. (L beta)i=beta0i.  If joint.test is TRUE, then no confidence
 inteval etc. is calculated.}
 
 \item{...}{Additional arguments; currently not used.}
+
+\item{object}{An \code{esticon_class} object.}
 }
 \value{
 Returns a matrix with one row per linear function.  Columns contain
@@ -149,7 +154,7 @@ CvB <- c(5, 1, -1, 0, -1)
 
 est <- esticon(coxmod, L=rbind(AvB, CvB))
 est
-exp(est[, c(2, 7, 8)])
+##exp(est[, c(2, 7, 8)])
 }
 
 

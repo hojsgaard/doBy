@@ -7,6 +7,7 @@
 
 \alias{linest_matrix_class-class}
 \alias{print.linest_class}
+\alias{print.esticon_class}
 \alias{print.linest_matrix_class}
 
 \alias{asNumericMatrix2}
