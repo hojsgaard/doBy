@@ -1,3 +1,11 @@
+2017-07-03 Søren Højsgaard <sorenh@math.aau.dk>
+
+	* Improvements of esticon and linest; methods added.
+
+	* Improvements of LSmeans vignette.
+
+	* Version 4.6-0 uploaded.
+	
 2016-01-01 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Converted to roxygen format
