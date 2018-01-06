@@ -50,19 +50,6 @@ linest <- function(object, L=NULL, level=0.95, ...){
 }
 
 
-.defineL <- function( bhat ){
-    L <- diag( 1, length( bhat ) )
-    rownames( L ) <- names( bhat )
-    L
-}
-
-.createL <- function(L, bhat){
-    if (is.null(L))
-        L <- .defineL( bhat )
-    
-
-}
-
 linest.lm <- function(object, L=NULL, level=0.95, ...){
     bhat <- coef(object)
     if (is.null(L))
@@ -72,7 +59,8 @@ linest.lm <- function(object, L=NULL, level=0.95, ...){
 
     is.est <- is_estimable(L, null_basis( object ))
 
-    VV0  <- vcov(object)
+    ##VV0  <- vcov(object)
+    VV0  <- vcov(object, complete=FALSE)
     ddf  <- object$df.residual
     ddf.vec <- rep(ddf, nrow( L ))
     res    <- .getLb( L, bhat, VV0, ddf.vec, is.est)
@@ -98,7 +86,9 @@ linest.glm <- function(object, L=NULL, level=0.95, type=c("link", "response"), .
 
     is.est <- is_estimable(L, null_basis( object ))
 
-    VV0  <- vcov(object)
+    ##VV0  <- vcov(object)
+    VV0  <- vcov(object, complete=FALSE)
+    
     ddf.vec <- rep(object$df.residual, nrow( L ))
     res     <- .getLb( L, bhat, VV0, ddf.vec, is.est)
 
@@ -181,7 +171,8 @@ linest.lmerMod <- function(object, L=NULL, level=0.95, adjust.df=TRUE, ...){
 
     if (adjust.df){
         if (requireNamespace("pbkrtest", quietly=TRUE)){
-            VVu  <- vcov(object)
+            ##VVu  <- vcov(object)
+            VVu  <- vcov(object, complete=FALSE)
             VV   <- pbkrtest::vcovAdj(object)
             ddf.vec <- unlist(lapply(1:nrow(L),
                                      function(ii) pbkrtest::ddf_Lb(VV , L[ii,], VVu)))
@@ -192,7 +183,8 @@ linest.lmerMod <- function(object, L=NULL, level=0.95, adjust.df=TRUE, ...){
         a   <- logLik(object)
         ddf <- attributes(a)$nall - attributes(a)$df
         ddf.vec <- rep(ddf, length(bhat))
-        VV  <- vcov(object)
+        ##VV  <- vcov(object)
+        VV  <- vcov(object, complete=FALSE)
     }
 
 
@@ -217,6 +209,18 @@ linest.merMod <- function(object, L=NULL, level=0.95, ...){
 
 
 ### UTILITIES ###
+
+.defineL <- function( bhat ){
+    L <- diag( 1, length( bhat ) )
+    rownames( L ) <- names( bhat )
+    L
+}
+
+.createL <- function(L, bhat){
+    if (is.null(L))
+        L <- .defineL( bhat )
+    L
+}
 
 .getLb <- function(L, bhat, VV, ddf.vec, is.est, level=0.95){
     #' cat(".getLb")

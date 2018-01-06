@@ -10,7 +10,7 @@
 #' @return A dataframe if 'indata' is a dataframe; a matrix in 'indata' is a
 #' matrix.
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
-#' @seealso \code{\link[gdata]{rename.vars}}
+
 #' @keywords utitlities
 #' @examples
 #' 

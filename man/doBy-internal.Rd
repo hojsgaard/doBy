@@ -9,6 +9,7 @@
 \alias{print.linest_class}
 \alias{print.esticon_class}
 \alias{print.linest_matrix_class}
+\alias{summary.linest_matrix_class}
 
 \alias{asNumericMatrix2}
 \alias{matrix2dataFrame2}

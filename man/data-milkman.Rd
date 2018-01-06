@@ -37,4 +37,14 @@ There are data for 222 cows. Some cows appear more than once in the dataset
 data(milkman)
 
 }
+\references{
+Friggens, N. C.; Ridder, C. and Løvendahl, P. (2007). 
+On the Use of Milk Composition Measures to Predict the Energy Balance of Dairy Cows.
+J. Dairy Sci. 90:5453–5467 doi:10.3168/jds.2006-821.
+
+This study was part of the Biosens project used data from the
+“Mælkekoens energibalance og mobilisering” project; both were
+funded by the Danish Ministry of Food, Agriculture and Fisheries
+and the Danish Cattle Association.
+}
 \keyword{datasets}

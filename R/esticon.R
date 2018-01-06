@@ -113,7 +113,8 @@ esticon.gls <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=
     if (joint.test) .wald(obj, L, beta0)
     else {
         stat.name <- "X2.stat"
-        vcv <- vcov(obj)
+        ##vcv <- vcov(obj)
+        vcv <- vcov(obj, complete=FALSE)
         coef.mat  <- matrix(coef(obj))
         df  <- 1
         .esticonCore(obj, L, beta0, conf.int=conf.int,level,coef.mat,vcv,df,stat.name)
@@ -168,7 +169,10 @@ esticon.mer <- esticon.merMod <- function (obj, L, beta0, conf.int = TRUE, level
     else {
         stat.name <- "X2.stat"
         coef.mat  <- matrix(lme4::fixef(obj))
-        vcv <- as.matrix(vcov(obj))
+        ##vcv <- as.matrix(vcov(obj))
+        vcv <- as.matrix(vcov(obj, complete=FALSE))
+
+        
         df  <- 1
         .esticonCore(obj, L, beta0, conf.int=conf.int, level, coef.mat, vcv, df, stat.name)
     }
@@ -240,7 +244,8 @@ esticon.lme <- function (obj, L, beta0, conf.int = NULL, level=0.95, joint.test=
       coef.mat  <- obj$coef
       vcv <- summary(obj)$cov.scaled
     } else if ("gls" %in% class(obj)) {
-      vcv <- vcov(obj)
+        ##vcv <- vcov(obj)
+        vcv <- vcov(obj, complete=FALSE)
       coef.mat  <- matrix(coef(obj))
     } else if ("gee" %in% class(obj)) {
       coef.mat  <- obj$coef

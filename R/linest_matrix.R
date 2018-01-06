@@ -106,6 +106,7 @@ linest_matrix.default <- function(object, effect=NULL, at=NULL){
 }
 
 
+
 #' @rdname linest-matrix
 aggregate_linest_list <- function (lel){
     out               <- lapply( lel, function( mm ) apply( mm, 2, mean ) )
@@ -119,6 +120,16 @@ aggregate_linest_list <- function (lel){
 print.linest_matrix_class <- function(x, ...){
   prmatrix(x)
   invisible(x)
+}
+
+summary.linest_matrix_class <- function(object, ...){
+    print(object)
+
+    cat("at: \n"); print(attr(object, "at"))
+
+    cat("grid: \n"); print(attr(object, "grid"))
+    
+    invisible(object)      
 }
 
 ## This is the workhorse for generating the "contrast matrix"

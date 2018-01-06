@@ -32,9 +32,6 @@ renameCol(CO2, c("Plant", "Type"), c("kk", "ll"))
 # renameCol(CO2, c("Plant", "Type", "Plant"), c("kk", "ll"))
 
 }
-\seealso{
-\code{\link[gdata]{rename.vars}}
-}
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
