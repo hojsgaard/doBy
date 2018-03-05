@@ -67,7 +67,7 @@ The \code{LSmeans} method is a recent addition to the
 Some of the code has been inspired by the \bold{lsmeans} package.
 }
 \section{Warning}{
- Notice that \code{LSmeans} and \code{linest_matrix}
+ Notice that \code{LSmeans} and \code{LE_matrix}
     fails if the model formula contains an offset (as one would
     have in connection with e.g. Poisson regression. It is on the
     todo-list to fix this
@@ -86,21 +86,21 @@ LSmeans(m0)
 LSmeans(m1)
 
 ## same as:
-K <- linest_matrix(m0);K
+K <- LE_matrix(m0);K
 linest(m0, K)
-K <- linest_matrix(m1);K
+K <- LE_matrix(m1);K
 linest(m1, K)
 
-linest_matrix(m0, effect="wool")
+LE_matrix(m0, effect="wool")
 LSmeans(m0, effect="wool")
 
-linest_matrix(m1, effect="wool")
+LE_matrix(m1, effect="wool")
 LSmeans(m1, effect="wool")
 
-linest_matrix(m0, effect=c("wool", "tension"))
+LE_matrix(m0, effect=c("wool", "tension"))
 LSmeans(m0, effect=c("wool", "tension"))
 
-linest_matrix(m1, effect=c("wool", "tension"))
+LE_matrix(m1, effect=c("wool", "tension"))
 LSmeans(m1, effect=c("wool", "tension"))
 
 
@@ -109,18 +109,18 @@ LSmeans(m1, effect=c("wool", "tension"))
 data(Puromycin)
 
 m0 <- lm(rate ~ state + log(conc), data=Puromycin)
-## Can not use LSmeans / linest_matrix here because of
+## Can not use LSmeans / LE_matrix here because of
 ## the log-transformation. Instead we must do:
 Puromycin$lconc <- log( Puromycin$conc )
 m1 <- lm(rate ~ state + lconc, data=Puromycin)
 
-linest_matrix(m1)
+LE_matrix(m1)
 LSmeans(m1)
 
-linest_matrix(m1, effect="state")
+LE_matrix(m1, effect="state")
 LSmeans(m1, effect="state")
 
-linest_matrix(m1, effect="state", at=list(lconc=3))
+LE_matrix(m1, effect="state", at=list(lconc=3))
 LSmeans(m1, effect="state", at=list(lconc=3))
 
 ## Non estimable contrasts
@@ -162,7 +162,7 @@ LSmeans(warp.mm, effect="tension")
 
 }
 \seealso{
-\code{\link{linest_matrix}}, \code{\link{linest}}
+\code{\link{LE_matrix}}, \code{\link{linest}}
 }
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}

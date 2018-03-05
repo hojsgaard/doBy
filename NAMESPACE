@@ -25,6 +25,8 @@ importFrom(dplyr, arrange_)
 importFrom(magrittr, "%>%")
 export("%>%")
 
+importFrom("utils", "str")
+
 importFrom(methods, setOldClass) 
 
 ## S3method(coerceGraph, dgCMatrix)
@@ -61,12 +63,12 @@ S3method( linest,           glm             )
 S3method( linest,           lm              )
 S3method( linest,           lmerMod         )
 S3method( linest,           merMod          )
-S3method( linest_matrix,    default         )
+S3method( LE_matrix,    default         )
 S3method( LSmeans,          default         )
 S3method( LSmeans,          lmerMod         )
 
 ##S3method( print,            lmBy            )
-S3method( print,            linest_matrix_class )
+S3method( print,            LE_matrix_class )
 S3method( print,            splitByData     )
 ##S3method( print,            summary_lmBy    )
 ##S3method( residuals,        lmBy            )
@@ -84,7 +86,7 @@ S3method( get_xlevels, default)
 S3method( get_xlevels, mer)
 S3method( get_xlevels, merMod)
 
-S3method(summary, linest_matrix_class)
+S3method(summary, LE_matrix_class)
 
 ## S3method( nullBasis,        geeglm          )
 ## S3method( nullBasis,        glm             )

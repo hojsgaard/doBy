@@ -62,12 +62,12 @@ dat.nst$CC <-factor(c(1,1,2,2,2,2,1,1,3,3,3,3,1,1,4,4,4,4))
 mod.bal  <- lm(y ~ AA + BB * CC, data=dat.bal)
 mod.nst  <- lm(y ~ AA + BB : CC, data=dat.nst)
 
-L <- linest_matrix(mod.nst, effect=c("BB", "CC"))
+L <- LE_matrix(mod.nst, effect=c("BB", "CC"))
 linest( mod.nst, L )
 
 }
 \seealso{
-\code{\link{LSmeans}}, \code{\link{linest_matrix}}
+\code{\link{LSmeans}}, \code{\link{LE_matrix}}
 }
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}

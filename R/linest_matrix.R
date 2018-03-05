@@ -33,7 +33,7 @@
 #' m0 <- lm(breaks ~ wool + tension, data=warpbreaks)
 #'
 #' ## Estimate mean for each wool type, for tension="M":
-#' K <- linest_matrix(m0, at=list(wool=c("A", "B"), tension="M"))
+#' K <- LE_matrix(m0, at=list(wool=c("A", "B"), tension="M"))
 #' K
 #' 
 #' ## Vanilla computation:
@@ -45,9 +45,9 @@
 #'
 #' ## Estimate mean for each wool type when averaging over tension;
 #' # two ways of doing this
-#' K <- linest_matrix(m0, at=list(wool=c("A", "B")))
+#' K <- LE_matrix(m0, at=list(wool=c("A", "B")))
 #' K
-#' K <- linest_matrix(m0, effect="wool")
+#' K <- LE_matrix(m0, effect="wool")
 #' K
 #' linest(m0, K)
 #'
@@ -58,7 +58,7 @@
 #'
 #' ## Without mentioning 'effect' or 'at' an average across all
 #' #predictors are calculated:
-#' K <- linest_matrix(m0)
+#' K <- LE_matrix(m0)
 #' K
 #' linest(m0, K)
 #' 
@@ -74,38 +74,35 @@
 #' ## An interaction model 
 #' m1 <- lm(breaks ~ wool * tension, data=warpbreaks)
 #' 
-#' K <- linest_matrix(m1, at=list(wool=c("A", "B"), tension="M"))
+#' K <- LE_matrix(m1, at=list(wool=c("A", "B"), tension="M"))
 #' K
 #' linest(m1, K)
-#' K <- linest_matrix(m1, at=list(wool=c("A", "B")))
+#' K <- LE_matrix(m1, at=list(wool=c("A", "B")))
 #' K
 #' linest(m1, K)
-#' K <- linest_matrix(m1, effect="wool")
+#' K <- LE_matrix(m1, effect="wool")
 #' K
 #' linest(m1, K)
 #' LSmeans(m1, effect="wool")
 #' 
-#' K <- linest_matrix(m1)
+#' K <- LE_matrix(m1)
 #' K
 #' linest(m1, K)
 #' LSmeans(m1)
 
-
 #' @rdname linest-matrix
-linest_matrix <- function(object, effect=NULL, at=NULL){
-  UseMethod("linest_matrix")
+LE_matrix <- function(object, effect=NULL, at=NULL){
+  UseMethod("LE_matrix")
 }
 
-## FIXME: linest_matrix.default: Should be a check of what 'object' is
+## FIXME: LE_matrix.default: Should be a check of what 'object' is
 #' @rdname linest-matrix
-linest_matrix.default <- function(object, effect=NULL, at=NULL){
-    out <- get_linest_list( object, effect, at )
-    out <- aggregate_linest_list ( out )
-    class(out) <- c("linest_matrix_class", "matrix")
+LE_matrix.default <- function(object, effect=NULL, at=NULL){
+    out <- get_linest_list(object, effect, at)
+    out <- aggregate_linest_list (out)
+    class(out) <- c("LE_matrix_class", "matrix")
     out
 }
-
-
 
 #' @rdname linest-matrix
 aggregate_linest_list <- function (lel){
@@ -117,24 +114,23 @@ aggregate_linest_list <- function (lel){
     out
 }
 
-print.linest_matrix_class <- function(x, ...){
+print.LE_matrix_class <- function(x, ...){
   prmatrix(x)
   invisible(x)
 }
 
-summary.linest_matrix_class <- function(object, ...){
+summary.LE_matrix_class <- function(object, ...){
     print(object)
-
     cat("at: \n"); print(attr(object, "at"))
-
     cat("grid: \n"); print(attr(object, "grid"))
-    
     invisible(object)      
 }
 
 ## This is the workhorse for generating the "contrast matrix"
 #' @rdname linest-matrix
 get_linest_list <- function(object, effect=NULL, at=NULL){
+
+    pr <- FALSE
     ##cat(".get_linest_list\n")
     trms     <- delete.response( terms(object) )
     fact.lev <- get_xlevels( object )            ## factor levels
@@ -147,83 +143,195 @@ get_linest_list <- function(object, effect=NULL, at=NULL){
     cov.ave.name   <- names( cov.ave )
     effect         <- setdiff( effect, at.factor.name )
 
-    # tmp <- list(fact.lev=fact.lev, cov.ave=cov.ave, vartype=vartype, at.factor.name=at.factor.name, cov.ave.name=cov.ave.name, effect=effect, at=at)
-    # print(tmp)
-
-    if (is.null(effect)){
-        if (length( at.factor.name ) > 0){
-            new.fact.lev <- at[ at.factor.name ]
-        } else {
-            new.fact.lev <- NULL
-        }
+    if (is.null(effect))
+    {
+        new.fact.lev <- if (length(at.factor.name) > 0) at[ at.factor.name ]
+                        else NULL        
     } else {
-        new.fact.lev  <- set_xlevels( fact.lev, at=at )
-        new.fact.lev  <- new.fact.lev[c(effect, at.factor.name)]#
+        zz  <- set_xlevels(fact.lev, at=at)
+        new.fact.lev  <- zz[c(effect, at.factor.name)]
     }
-    if (is.null(new.fact.lev)){
-        ##cat("No 'effect' and no 'at'-factors; hence just a global average... \n")
-        ## print(fact.lev)
-        ## print(cov.ave.name)
 
-        if ( length(fact.lev) > 0 ){
-            ##cat("yes there are factors\n")
-            newdata <- expand.grid( fact.lev )
+    ## str(list(effect=effect, at=at, fact.lev=fact.lev, new.fact.lev=new.fact.lev, 
+    ##          vartype=vartype, cov.ave=cov.ave, at.factor.name=at.factor.name,
+    ##          cov.ave.name=cov.ave.name))
+
+    if (is.null(new.fact.lev)){
+        ##cat("case: No 'effect' and no 'at'-factors; hence just a global average... \n")
+        if (length(fact.lev) > 0)
+        {
+            ##cat("there are factors in the model\n")
+            newdata <- expand.grid(fact.lev)
             if (length( cov.ave.name ) > 0){
-                ##cat("yes there are covariates\n")
-                newdata[, cov.ave.name] <- cov.ave
+                ##cat("there are covariates in the model\n")
+                newdata[, cov.ave.name] <- cov.ave ## Augment with covariates
             }
         } else {
+            ## cat("No factors in the model\n")
             if (length( cov.ave.name ) > 0){
                 ##cat("yes there are covariates\n")
-                newdata <- matrix(unlist(cov.ave), nrow=1L)
-                colnames(newdata) <- cov.ave.name
-                newdata <- as.data.frame( newdata )
+                newdata <- data.frame(matrix(unlist(cov.ave), nrow=1L))                
+                names(newdata) <- cov.ave.name
             } else {
                 ##cat("there are no factors or covariates\n")
                 newdata <- data.frame(1)
             }
         }
 
-        XXlist <- list(get_X(object, newdata))
+        XXlist <- list(get_X(object, newdata=newdata, at=NULL))
         ## cat("XXlist:\n"); print(XXlist)
-        attr(XXlist,"at")   <- at[intersect(vartype$numeric, names(at))]
-        attr(XXlist,"grid") <- NULL
-    } else {
-        ##cat("The general case; there are 'effect' factors or 'at' factors...\n")
+        attr(XXlist, "at")   <- at[intersect(vartype$numeric, names(at))]
+        attr(XXlist, "grid") <- NULL
+    }
+    else
+    {
+        if(pr)cat("The general case; there are 'effect' factors or 'at' factors...\n")
         grid.data <- expand.grid(new.fact.lev)
         grid.data <- as.data.frame(lapply(grid.data, as.character), stringsAsFactors=FALSE)
+
+        
+        ## nfl <<- new.fact.lev
+        ## gd <<- grid.data
+        ##str(list(new.fact.lev=new.fact.lev, grid.data=grid.data))
+        
         XXlist    <- list()
         for (ii in 1:nrow(grid.data)){
-            config    <- grid.data[ ii, ,drop=FALSE ]
-            fact.lev2 <- set_xlevels(fact.lev,  at=config)
-
-            newdata   <- expand.grid( fact.lev2 )
+            config    <- grid.data[ii, ,drop=FALSE ]
+            fact.lev2 <- set_xlevels(fact.lev, at=config)
+            newdata   <- expand.grid(fact.lev2)
             newdata[, cov.ave.name]  <- cov.ave
-            XX             <- get_X(object, newdata, at)
+            XX             <- get_X(object, newdata=newdata, at=at)
             XXlist[[ ii ]] <- XX
         }
 
         grid.data[, names(cov.ave) ] <- cov.ave
-        attr(XXlist,"at") <- at
-        attr(XXlist,"grid") <- grid.data
-        attr(XXlist,"offset") <- attr(XX, "offset")
+        attr(XXlist, "at") <- at
+        attr(XXlist, "grid") <- grid.data
+        attr(XXlist, "offset") <- attr(XX, "offset")  ## FIXME: reference to XX; what is offset?
     }
     class(XXlist) <- "linest_list_class"
     XXlist
 }
 
+
+
+## .get_linest_list <- function(object, effect=NULL, at=NULL){
+##     ##cat(".get_linest_list\n")
+##     trms     <- delete.response( terms(object) )
+##     fact.lev <- get_xlevels( object )            ## factor levels
+##     ##cat("fact.lev:\n"); print(fact.lev)
+##     cov.ave  <- .get_covariate_ave( object, at )  ## average of covariates (except those mentioned in 'at')
+##     ##cat("cov.ave:\n"); print(cov.ave)
+##     vartype  <- get_vartypes( object )           ## which are factors and which are numerics
+##     ##cat("vartype:\n"); print(vartype)
+##     at.factor.name <- intersect( vartype$factor, names(at) )
+##     cov.ave.name   <- names( cov.ave )
+##     effect         <- setdiff( effect, at.factor.name )
+
+
+    
+##     ## tmp <- list(fact.lev=fact.lev, cov.ave=cov.ave, vartype=vartype, at.factor.name=at.factor.name,
+##     ## cov.ave.name=cov.ave.name, effect=effect, at=at)
+##     ## print(tmp)
+
+##     if (is.null(effect))
+##     {
+##         new.fact.lev <- if (length(at.factor.name) > 0) at[ at.factor.name ]
+##                         else NULL        
+##         ## if (length(at.factor.name) > 0){
+##         ##     new.fact.lev <- at[ at.factor.name ]
+##         ## } else {
+##         ##     new.fact.lev <- NULL
+##         ## }
+##     } else {
+##         new.fact.lev  <- set_xlevels(fact.lev, at=at)
+##         new.fact.lev  <- new.fact.lev[c(effect, at.factor.name)]#
+##     }
+    
+##     if (is.null(new.fact.lev)){
+##         ##cat("case: No 'effect' and no 'at'-factors; hence just a global average... \n")
+##         if (length(fact.lev) > 0)
+##         {
+##             ##cat("there are factors in the model\n")
+##             newdata <- expand.grid( fact.lev )
+##             if (length( cov.ave.name ) > 0){
+##                 ##cat("there are covariates in the model\n")
+##                 newdata[, cov.ave.name] <- cov.ave
+##             }
+##         } else {
+##             ## cat("No factors in the model\n")
+##             if (length( cov.ave.name ) > 0){
+##                 ##cat("yes there are covariates\n")
+##                 newdata <- matrix(unlist(cov.ave), nrow=1L)
+##                 colnames(newdata) <- cov.ave.name
+##                 newdata <- as.data.frame( newdata )
+##             } else {
+##                 ##cat("there are no factors or covariates\n")
+##                 newdata <- data.frame(1)
+##             }
+##         }
+
+##         XXlist <- list(get_X(object, newdata))
+##         ## cat("XXlist:\n"); print(XXlist)
+##         attr(XXlist, "at")   <- at[intersect(vartype$numeric, names(at))]
+##         attr(XXlist, "grid") <- NULL
+##     }
+##     else
+##     {
+##         ##cat("The general case; there are 'effect' factors or 'at' factors...\n")
+##         grid.data <- expand.grid(new.fact.lev)
+##         grid.data <- as.data.frame(lapply(grid.data, as.character), stringsAsFactors=FALSE)
+
+##         XXlist    <- list()
+##         for (ii in 1:nrow(grid.data)){
+##             config    <- grid.data[ ii, ,drop=FALSE ]
+##             fact.lev2 <- set_xlevels(fact.lev,  at=config)
+
+##             newdata   <- expand.grid( fact.lev2 )
+##             newdata[, cov.ave.name]  <- cov.ave
+##             XX             <- get_X(object, newdata, at)
+##             XXlist[[ ii ]] <- XX
+##         }
+
+##         grid.data[, names(cov.ave) ] <- cov.ave
+##         attr(XXlist, "at") <- at
+##         attr(XXlist, "grid") <- grid.data
+##         attr(XXlist, "offset") <- attr(XX, "offset")
+##     }
+##     class(XXlist) <- "linest_list_class"
+##     XXlist
+## }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## --------------------------------------------------------------------
 
-setOldClass("linest_matrix_class")
+setOldClass("LE_matrix_class")
 
-setAs("linest_matrix_class", "matrix",
+setAs("LE_matrix_class", "matrix",
       function(from){
           attr(from, "at") <- attr(from, "grid") <- NULL
           class(from) <- "matrix"
           from
       })
 
-setAs("linest_matrix_class","Matrix",
+setAs("LE_matrix_class","Matrix",
       function(from){
           attr(from, "at") <- attr(from, "grid") <- NULL
           class(from) <- "matrix"

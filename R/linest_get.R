@@ -89,12 +89,12 @@ get_vartypes <- function(obj){
     trms <- delete.response( trms )
     att  <- attributes( trms )
     #cat("factors:\n"); print(att$factors)
-    if (length(att$factors)>0){
-        rhs.terms <- rownames(att$factors)[rowSums(att$factors)>0]
+    if (length(att$factors) > 0){
+        rhs.terms <- rownames(att$factors)[rowSums(att$factors) > 0]
         rhs.class <- att$dataClass[match(rhs.terms, names(att$dataClass))]
-        nums      <- rhs.terms[rhs.class=="numeric"]
+        nums      <- rhs.terms[rhs.class == "numeric"]
         ##print(list(rhs.terms=rhs.terms, rhs.class=rhs.class, nums=nums))
-        fact      <- rhs.terms[rhs.class=="factor"]
+        fact      <- rhs.terms[rhs.class == "factor"]
     } else {
         nums <- character(0)
         rhs.class <- character(0)
@@ -160,33 +160,25 @@ get_X <- function(obj, newdata, at=NULL){
 get_X.default <- function(obj, newdata, at=NULL){
     ##cat("get_X.default\n"); print(newdata)
     tt <- terms(obj)
-
     Terms  <- delete.response(tt)
-    ## print("HHHHHHHHH")
-    ## print(Terms)
-    ## print(newdata)
-
-    ## xlev <<- get_xlevels(obj)
 
     offval <- NULL
-    ## print(newdata)
-    M <- attr(terms(formula(obj)),"factors")
-    idx<-grep("offset\\(", rownames(M))
-    if (length(idx)>0){
-        off<- rownames(M)[idx]
-        offvar<-gsub("offset\\((.*)\\)", "\\1\\", off)
-        if ( !is.null(at) && !is.null(at[offvar]) )
-            offval <- at[offvar]
-        else
-            offval <- 1
+    M <- attr(terms(formula(obj)), "factors")
+    idx <- grep("offset\\(", rownames(M))
+
+    if (length(idx) > 0){
+        off    <- rownames(M)[idx]
+        offvar <- gsub("offset\\((.*)\\)", "\\1\\", off)
+        offval <-
+            if (!is.null(at) && !is.null(at[offvar]))
+                at[offvar]
+            else 1
         d <- data.frame(rep(offval, nrow(newdata)))
         names(d) <- offvar
         newdata <- cbind(d, newdata)
     }
 
-##    print(newdata)
     mf  <- model.frame(Terms, newdata, xlev = get_xlevels(obj))
-
     X   <- model.matrix(Terms, mf, contrasts.arg = get_contrasts(obj))
     attr(X, "assign" )    <- NULL
     attr(X, "contrasts" ) <- NULL
@@ -200,8 +192,8 @@ get_X.merMod <- function(obj, newdata, at=NULL){
    Terms  <- delete.response(tt)
    mf  <- model.frame(Terms, newdata, xlev = get_xlevels(obj))
    X   <- model.matrix(Terms, mf, contrasts.arg = get_contrasts(obj))
-#  X <- getME(obj, "X")
-   attr(X,"assign")<-NULL
+
+   attr(X,"assign")     <- NULL
    attr(X, "contrasts") <- NULL
    X
 }

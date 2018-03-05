@@ -1,13 +1,11 @@
 %\VignetteEngine{knitr::knitr} 
 %\VignettePackage{doBy}
-%\VignetteIndexEntry{doBy: LSmeans and other linear estimates}
+%\VignetteIndexEntry{doBy: Linear estimates and LSmeans}
 %\VignetteIndexEntry{LSMEANS}
 %\VignetteIndexEntry{contrasts}
 %\VignetteIndexEntry{estimable functions}
 
-
-
-\documentclass[11pt]{article}
+\documentclass[10pt]{article}
 \usepackage{hyperref}
 
 \usepackage{url,a4wide}
@@ -30,9 +28,11 @@
 \def\code#1{\texttt{#1}}
 \def\cc#1{\texttt{#1}}
 
+\def\comi#1{{\it #1}}
+
 \def\esticon{\code{esticon()}}
 \def\lsmeans{\code{LSmeans}}
-\def\linmat{\code{linest_matrix()}}
+\def\linmat{\code{LE_matrix()}}
 \def\linest{\code{linest()}}
 
 
@@ -62,7 +62,7 @@ tidy=FALSE,fig.path='figures/LSmeans', fig.height=3.5
 @
 
 
-\title{Linear estimates -- including LS--means (least--squares means)}
+\title{Linear estimates and LS--means}
 \author{S{\o}ren H{\o}jsgaard and Ulrich Halekoh}
 \date{\pkg{doBy} version \Sexpr{prettyVersion} as of \Sexpr{prettyDate}}
 
@@ -99,7 +99,7 @@ options("digits"=4, "width"=90, "prompt"="> ", "continue"="  ")
 \section{Introduction}
 \label{sec:introduction}
 
-\subsection{Linear functions of parameters, contrasts}
+\subsection{Linear functions of parameters}
 \label{sec:line-funct-param}
 
 A linear function of a $p$--dimensional parameter vector $\beta$ has
@@ -107,15 +107,15 @@ the form
 \begin{displaymath}
   C=L\beta
 \end{displaymath}
-where $L$ is a $q\times p$ matrix. The corresponding
-linear estimate is $\hat C = L \hat \beta$.
-A linear hypothesis has the form
-$H_0: L\beta=m$ for some $q$ dimensional vector $m$.
+where $L$ is a $q\times p$ matrix which we call the \comi{Linear
+  Estimate Matrix} of simply \comi{LE-matrix}.  The corresponding
+linear estimate is $\hat C = L \hat \beta$.  A linear hypothesis has
+the form $H_0: L\beta=m$ for some $q$ dimensional vector $m$.
 
 \subsection{Tooth growth}
 \label{sec:tooth-growth}
 
-The response is the length of odontoblasts (cells responsible for
+The response is the length of odontoblasts cells (cells responsible for
 tooth growth) in 60 guinea pigs.  Each animal received one of
 three dose levels of vitamin C (0.5, 1, and 2 mg/day) by one of
 two delivery methods, (orange juice (coded as OJ) or ascorbic acid 
@@ -126,7 +126,7 @@ head(ToothGrowth, 4)
 ftable(xtabs(~ dose + supp, data=ToothGrowth))
 @ %def
 
-<<echo=F>>=
+<<echo=F, fig.cap="Plot of length against dose for difference sources of vitamin C.">>=
 opar <- par(mfrow = c(1, 2), oma = c(0, 0, 1.1, 0))
 plot(len  ~ dose, data = ToothGrowth, col = "lightgray",
      subset = supp == "OJ", main = "supp=OJ")
@@ -138,7 +138,7 @@ par(opar)
 
 
 
-<< >>= 
+<<echo=F, fig.cap="Interaction plot between dose and source of vitamin C.">>= 
 with(ToothGrowth, interaction.plot(dose, supp, len))
 @
 
@@ -146,10 +146,23 @@ The interaction plot suggests a mild interaction which is supported by a formal 
 
 << >>= 
 ToothGrowth$dose <- factor(ToothGrowth$dose)
+head(ToothGrowth)
 tooth1 <- lm(len ~ dose + supp, data=ToothGrowth)
 tooth2 <- lm(len ~ dose * supp, data=ToothGrowth)
 anova(tooth1, tooth2)
 @
+
+
+%% <<linear:interaction, fig.cap="Interaction plot for the ToothGrowth data. The average length for each group is a dot. Boxplot outliers are crosses." >>= 
+%% tooth_avglen <- ToothGrowth %>%
+%%   group_by(dose, supp) %>%
+%%   summarise(val = mean(len))
+%% tooth_avglen
+%% ggplot(ToothGrowth, aes(x = factor(dose), y = len, colour = supp)) +
+%%     geom_boxplot(outlier.shape = 4) +
+%%     geom_point(data = tooth_avglen, aes(y = val)) +
+%%     geom_line(data = tooth_avglen, aes(y = val, group = supp))
+%%@
 
 
 \section{Computing linear estimates}
@@ -161,47 +174,64 @@ For now, we focus on the additive model:
 tooth1
 @
 
-The estimated length for each dose of orange juice (OJ) can be found
-as follows. Notice: \verb|esticon| has been in the \doby\ package for
-many years; \verb|linest| is a newer addition; \verb|esticon| is not
-actively maintained but remains in \doby\ for historical reasons.
-
-
+Consider computing the estimated length for each dose of orange juice (OJ):
+One option: Construct the LE--matrix $L$ directly:
 
 << >>= 
 L <- matrix(c(1, 0, 0, 0, 
               1, 1, 0, 0,
               1, 0, 1, 0), nrow=3, byrow=T)
-c1 <- esticon(tooth1, L)
-c1
-c2 <- linest(tooth1, L)
-c2
 @
 
+Then do:
 
+<< >>= 
+c1 <- linest(tooth1, L)
+c1
+@
 
 We can do:
 
 << >>= 
-summary(c2)
-coef(c2)
-confint(c2)
+summary(c1)
+coef(c1)
+confint(c1)
 @
 
 \section{Automatic generation of $L$}
 \label{sec:autom-gener-l}
 
 
-
 The matrix $L$ can be generated as follows:
 << >>= 
-L <- linest_matrix(tooth1, effect="dose", at=list(supp="OJ"))
+L <- LE_matrix(tooth1, effect="dose", at=list(supp="OJ"))
 L
 @
 
-% << >>= 
-% LSmeans(tooth1, effect="dose", at=list(supp="OJ"))
-% @
+
+\subsection{Alternatives}
+\label{sec:alternatives}
+
+
+An alternative is to do:
+
+<< >>= 
+c1 <- esticon(tooth1, L)
+c1
+@
+
+Notice: \verb|esticon| has been in the \doby\ package for many years;
+\verb|linest| is a newer addition; \verb|esticon| is not actively
+maintained but remains in \doby\ for historical reasons.  Yet another
+alternative in this case is to generate a new data frame and then
+invoke predict (but this approach is not generally applicable, see later):
+
+<< >>= 
+nd <- data.frame(dose=c('0.5', '1', '2'), supp='OJ')
+nd
+predict(tooth1, newdata=nd)
+@
+
 
 
 
@@ -209,98 +239,72 @@ L
 \section{Least-squares means (LS--means)}
 \label{sec:least-squares-means}
 
-A special type of linear estimates is the so called least--squares
-means (or LS--means). Other names for these estimates include
-population means and marginal means. Notice that the \pkg{lsmeans} package
-\cite{Lenth:2013} also provides computations of LS--means, see
-\url{http://cran.r-project.org/web/packages/lsmeans/}.
 
-<<echo=F>>=
-simdat<-structure(list(treat = structure(c(1L, 1L, 1L, 2L, 1L, 2L, 2L, 2L
-), .Label = c("t1", "t2"), class = "factor"), year = structure(c(1L,
-1L, 1L, 1L, 2L, 2L, 2L, 2L), .Label = c("1", "2"), class = "factor"),
-    y = c(0.5, 1, 1.5, 3, 3, 4.5, 5, 5.5)), .Names = c("treat", "year",
-"y"), row.names = c(NA, -8L), class = "data.frame")
-@ %def
+A related question could be: What is the estimated length for each
+dose if we ignore the source of vitamin C (i.e.\ whether it is OJ or
+VC). One approach would be to fit a model in which source does not appear:
 
-\subsection{LS--means on a simple example}
-\label{sec:ls-means-simple}
+<< >>= 
+tooth0 <- update(tooth1, . ~ . - supp)
+L0 <- LE_matrix(tooth0, effect="dose")
+L0
+linest(tooth0, L=L0)
+@
 
-Consider these simulated data, also shown in Fig.~\ref{fig:simdat2-fig}:
-<<>>=
-simdat
-@ %def
+An alternative would be to stick to the original model but compute the
+estimate for an ``average vitamin C source''. That would correspond to
+giving weight $1/2$ to each of the two vitamin C source
+parameters. However, as one of the parameters is already set to zero
+to obtain identifiability, we obtain the LE--matrix $L$ as
 
-<<simdat2-fig, fig.cap="LSmeans - simulated data.">>=
-library(ggplot2)
-qplot(treat, y, data=simdat, color=year)
-@ %def
+<< >>= 
+L1 <- matrix(c(1, 0, 0, 0.5, 
+               1, 1, 0, 0.5,
+               1, 0, 1, 0.5), nrow=3, byrow=T)
+linest(tooth1, L=L1)
+@
 
+Such a particular linear estimate is sometimes called a least-squares
+mean or an LSmean or a marginal mean. Notice that the parameter
+estimates under the two approaches are identical. This is is because
+data is balanced: There are $10$ observations per supplementation
+type. Had data not been balanced, the estimates would in general have been different. 
 
-The LS--means under an additive model for the factor \cc{treat} is the predicted outcome for each level of \cc{treat} for an ``average year'':
-<<>>=
-msim <- lm(y ~ treat + year, data=simdat)
-lsm <- LSmeans(msim, effect="treat")
-lsm
-@ %def
+Notice: One may generate $L$ automatically with
+<< >>= 
+L1 <- LE_matrix(tooth1, effect="dose")
+L1
+@
 
-
-Notice that the population means are
-<<>>=
-summaryBy(y ~ treat, data=simdat, FUN=function(x) c(m=mean(x), s=sd(x)))
-## or aggregate(y ~ treat, data=simdat, FUN=function(x) c(m=mean(x), s=sd(x)))
-@ %def
-
-Had data been balanced (same number of observations for each
-combination of \cc{treat} and \cc{year}) the results would have been the
-same. An argument in favor of the LS--means is that these figures
-better represent what one would expect on in an ``average year''.
-
-An alternative is to think of  \cc{year} as a random
-effect, for example:
-<<eval=F>>=
-library(lme4)
-lmer( y ~ treat  + (1|year), data=simdat)
-@ %def
-
-In this case one would directly obtain $\EE(Y|\cc{treat})$ from the
-model. However, there are at least two reasons why one may be hesitant
-to consider such a random effects model.
-\begin{itemize}
-\item It is a ``never ending'' discussion whether \verb|year| should
-  be treated as fixed or random. For \verb|year| to be a random
-  effect, it should in principle come from a large population of
-  possible years. This is certainly a dubious assumption for the
-  years.
-\item If we accept to think of year as a random effect, then the
-  variance describing this random effect will be poorly determined
-  (because there are only two years in the study).
-\end{itemize}
-
-\subsection{Additive model}
-\label{sec:additive-model}
-
-
-Returning to the \verb|ToothGrowth| data, orange juice and ascorbic
-acid are just two of many ways of supplying vitamin C (citrus and lime
-juice would be two alternatives). Here one can therefore argue, that
-it would make sense to estimate the the effect for each dose for an
-``average vitamin C source'':
+Notice: One may obtain the LSmean directly as:
 
 << >>= 
 LSmeans(tooth1, effect="dose")
 @
 
+%% \subsection{Additive model}
+%% \label{sec:additive-model}
+
+%% Returning to the \verb|ToothGrowth| data, orange juice and ascorbic
+%% acid are just two of many ways of supplying vitamin C (citrus and lime
+%% juice would be two alternatives). Here one can therefore argue, that
+%% it would make sense to estimate the the effect for each dose for an
+%% ``average vitamin C source'':
+
+%% << >>= 
+%% LSmeans(tooth1, effect="dose")
+%% @
+
 which is the same as
-<<>>= 
-L <- linest_matrix(tooth1, effect="dose")
-L
+
+<<results='hide'>>= 
+L <- LE_matrix(tooth1, effect="dose")
 le <- linest(tooth1, L=L)
 coef(le)
 @
 
-\subsection{Interaction model}
-\label{sec:interaction-model}
+%% \subsection{Interaction model}
+%% \label{sec:interaction-model}
 
 
 For a model with interactions, the LSmeans are
@@ -308,26 +312,11 @@ For a model with interactions, the LSmeans are
 LSmeans(tooth2, effect="dose")
 @
 
-In this case, the $L$ matrix is
+In this case, the LE--matrix is
 << >>= 
-L <- linest_matrix(tooth2, effect="dose")
+L <- LE_matrix(tooth2, effect="dose")
 t(L)
 @
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -352,9 +341,9 @@ coef(summary(chick))
 @ %def
 
 
-The contrast matrix for \cc{Diet} becomes:
+The LE--matrix for \cc{Diet} becomes:
 <<>>=
-L <- linest_matrix(chick, effect="Diet")
+L <- LE_matrix(chick, effect="Diet")
 t(L)
 @ %def
 
@@ -362,25 +351,25 @@ The value of \cc{Time} is by default taken to be the average of that
 variable. Hence the \lsmeans\ is the predicted weight for each diet at
 that specific point of time. We can consider other points of time with
 <<>>=
-K1 <- linest_matrix(chick, effect="Diet", at=list(Time=1))
+K1 <- LE_matrix(chick, effect="Diet", at=list(Time=1))
 t(K1)
 @ %def
 
 The \lsmeans\ for the intercepts is the predictions at
 \cc{Time=0}. The \lsmeans\ for the slopes becomes
 <<>>=
-K0 <- linest_matrix(chick, effect="Diet", at=list(Time=0))
+K0 <- LE_matrix(chick, effect="Diet", at=list(Time=0))
 t(K1 - K0)
 linest(chick, L=K1-K0)
 @ %def
 
 We can cook up our own function for comparing trends:
+
 <<>>=
 LSmeans_trend <- function(object, effect, trend){
-
-    K<-linest_matrix(object, effect=effect, at=as.list(setNames(1, trend))) -
-        linest_matrix(object, effect=effect, at=as.list(setNames(0, trend)))
-    linest(object, L=K)
+    L <- LE_matrix(object, effect=effect, at=as.list(setNames(1, trend))) -
+        LE_matrix(object, effect=effect, at=as.list(setNames(0, trend)))
+    linest(object, L=L)
 }
 LSmeans_trend(chick, effect="Diet", trend="Time")
 @ %def
@@ -389,6 +378,7 @@ LSmeans_trend(chick, effect="Diet", trend="Time")
 \label{sec:using-covariates}
 
 Consider the following subset of the \code{CO2} dataset:
+
 <<>>=
 data(CO2)
 CO2 <- transform(CO2, Treat=Treatment, Treatment=NULL)
@@ -400,7 +390,7 @@ ftable(xtabs( ~ Plant + Type + Treat, data=CO2), col.vars=2:3)
 <<co2-fig, fig.cap="CO2 data">>=
 qplot(x=log(conc), y=uptake, data=CO2, color=Treat, facets=~Type)
 @ %def
-%%\includegraphics[height=6cm,width=12cm]{figures/LSmeans-co2-fig}
+
 
 Below, the covariate \code{conc} is fixed at the average value:
 <<>>=
@@ -421,10 +411,12 @@ co2.lm2 <- lm(uptake ~ log.conc + Type + Treat,
              data=transform(CO2, log.conc=log(conc)))
 LSmeans(co2.lm2, effect="Treat")
 @ %def
+
 This also highlights what is computed: The average of the log of
 \code{conc}; not the log of the average of \code{conc}.
 
 In a similar spirit consider
+
 <<>>=
 co2.lm3 <- lm(uptake ~ conc + I(conc^2) + Type + Treat, data=CO2)
 LSmeans(co2.lm3, effect="Treat")
@@ -460,79 +452,13 @@ predictor. However, if
 we think of LS--means as a prediction on the linear scale one may
 argue that it can also make sense to transform this prediction to
 the response scale:
+
 <<>>=
 tooth.gam <- glm(len ~ dose + supp, family=Gamma, data=ToothGrowth)
 LSmeans(tooth.gam, effect="dose", type="link")
 LSmeans(tooth.gam, effect="dose", type="response")
 @ %def
 
-
-% <<>>=
-% warp.poi <- glm(breaks ~ wool + tension, family=poisson, data=warpbreaks)
-% LSmeans(warp.poi, effect="tension", type="link")
-% LSmeans(warp.poi, effect="tension", type="response")
-% @ %def
-
-
-
-
-
-%% SANITY CHECK
-%% @
-%% <<>>=
-%% K <- linest_matrix(warp.poi, effect="tension")
-%% doBy::esticon(warp.poi, K)
-%% @ %def
-
-% <<>>=
-% warp.qpoi <- glm(breaks ~ wool + tension, family=quasipoisson, data=warpbreaks)
-% LSmeans(warp.qpoi, effect="tension", type="link")
-% LSmeans(warp.qpoi, effect="tension", type="response")
-% @ %def
-
-
-% For comparison with the linear model, we use identity link
-% <<echo=F,results='hide'>>=
-% warp.poi2 <- glm(breaks ~ wool + tension, family=poisson(link=identity),
-%                  data=warpbreaks)
-% LSmeans(warp.poi2, effect="tension", type="link")
-% @ %def
-
-
-
-%% SANITY CHECK
-%% @
-%% <<>>=
-%% K <- linest_matrix(warp.poi2, effect="tension")
-%% doBy::esticon(warp.poi2, K)
-%% @ %def
-
-
-% <<>>=
-% warp.gam <- glm(breaks ~ wool + tension, family=Gamma(link=identity),
-%                  data=warpbreaks)
-% LSmeans(warp.gam, effect="tension", type="link")
-% @ %def
-
-%% SANITY CHECK
-%% @
-%% <<>>=
-%% K <- linest_matrix(warp.gam, effect="tension")
-%% doBy::esticon(warp.gam, K)
-%% @ %def
-
-
-% Notice that the linear estimates are practically the same as for the
-% linear model, but the standard errors are smaller and hence the
-% confidence intervals are narrower.
-
-% An alternative is to fit a quasi Poisson ``model''
-
-% <<>>=
-% warp.poi3 <- glm(breaks ~ wool + tension, family=quasipoisson(link=identity),
-%                  data=warpbreaks)
-% LSmeans(warp.poi3, effect="tension")
-% @ %def
 
 \subsection{Linear mixed effects model}
 \label{sec:linear-mixed-effects}
@@ -608,17 +534,17 @@ LSmeans(tooth.gee, effect="dose", type="response")
 
 % Under the hood, \cc{LSmeans()} generates a contrast matrix
 % <<>>=
-% K <- linest_matrix(warp.lm, effect="tension"); K
+% K <- LE_matrix(warp.lm, effect="tension"); K
 % @ %def
 % and passes this matrix onto \linest:
 % <<>>=
 % linest( warp.lm, K=K )
 % @ %def
 
-\subsection{Example: Non--estimable contrasts}
+\subsection{Example: Non--estimable linear functions}
 \label{sec:exampl-non-estim}
 
-<<echo=FALSE>>=
+<<>>=
 ## Make balanced dataset
 dat.bal <- expand.grid(list(AA=factor(1:2), BB=factor(1:3), CC=factor(1:3)))
 dat.bal$y <- rnorm(nrow(dat.bal))
@@ -629,6 +555,9 @@ dat.nst <- dat.bal
 dat.nst$CC <-factor(c(1,1,2,2,2,2,1,1,3,3,3,3,1,1,4,4,4,4))
 @ %def
 
+<< >>= 
+dat.nst
+@
 
 Consider this simulated dataset:
 <<>>=
@@ -682,7 +611,7 @@ interested in linear functions of $\beta$, say
 \end{displaymath}
 
 <<>>=
-L <- linest_matrix(mod.nst, effect="BB", at=list(CC=2))
+L <- LE_matrix(mod.nst, effect="BB", at=list(CC=2))
 t(L)
 linest(mod.nst, L=L)
 @ %def
@@ -788,7 +717,7 @@ glht(tooth1, linfct=L)
 % @ %def
 
 
-\bibliography{doBy}
+%%\bibliography{doBy}
 
 
 \end{document}
@@ -953,7 +882,7 @@ glht(tooth1, linfct=L)
 
 % In this case the contrast matrix becomes:
 % <<>>=
-% K2 <- linest_matrix(warp.lm2, effect="tension"); K2
+% K2 <- LE_matrix(warp.lm2, effect="tension"); K2
 % linest(warp.lm2, K=K2)
 % @ %def
 
@@ -1004,3 +933,147 @@ glht(tooth1, linfct=L)
 %\renewenvironment{Schunk}{\linespread{.90}}{}
 
 %%\renewenvironment{Schunk}{\begin{shaded}\small}{\end{shaded}}
+
+
+
+
+
+
+
+
+
+%% A special type of linear estimates is the so called least--squares
+%% means (or LS--means). Other names for these estimates include
+%% population means and marginal means. Notice that the \pkg{lsmeans} package
+%% \cite{Lenth:2013} also provides computations of LS--means, see
+%% \url{http://cran.r-project.org/web/packages/lsmeans/}.
+
+%% <<echo=F>>=
+%% simdat<-structure(list(treat = structure(c(1L, 1L, 1L, 2L, 1L, 2L, 2L, 2L
+%% ), .Label = c("t1", "t2"), class = "factor"), year = structure(c(1L,
+%% 1L, 1L, 1L, 2L, 2L, 2L, 2L), .Label = c("1", "2"), class = "factor"),
+%%     y = c(0.5, 1, 1.5, 3, 3, 4.5, 5, 5.5)), .Names = c("treat", "year",
+%% "y"), row.names = c(NA, -8L), class = "data.frame")
+%% @ %def
+
+%% \subsection{LS--means on a simple example}
+%% \label{sec:ls-means-simple}
+
+%% Consider these simulated data, also shown in Fig.~\ref{fig:simdat2-fig}:
+%% <<>>=
+%% simdat
+%% @ %def
+
+%% <<simdat2-fig, fig.cap="LSmeans - simulated data.">>=
+%% library(ggplot2)
+%% qplot(treat, y, data=simdat, color=year)
+%% @ %def
+
+
+%% The LS--means under an additive model for the factor \cc{treat} is the predicted outcome for each level of \cc{treat} for an ``average year'':
+%% <<>>=
+%% msim <- lm(y ~ treat + year, data=simdat)
+%% lsm <- LSmeans(msim, effect="treat")
+%% lsm
+%% @ %def
+
+
+%% Notice that the population means are
+%% <<>>=
+%% summaryBy(y ~ treat, data=simdat, FUN=function(x) c(m=mean(x), s=sd(x)))
+%% ## or aggregate(y ~ treat, data=simdat, FUN=function(x) c(m=mean(x), s=sd(x)))
+%% @ %def
+
+%% Had data been balanced (same number of observations for each
+%% combination of \cc{treat} and \cc{year}) the results would have been the
+%% same. An argument in favor of the LS--means is that these figures
+%% better represent what one would expect on in an ``average year''.
+
+%% An alternative is to think of  \cc{year} as a random
+%% effect, for example:
+%% <<eval=F>>=
+%% library(lme4)
+%% lmer( y ~ treat  + (1|year), data=simdat)
+%% @ %def
+
+%% In this case one would directly obtain $\EE(Y|\cc{treat})$ from the
+%% model. However, there are at least two reasons why one may be hesitant
+%% to consider such a random effects model.
+%% \begin{itemize}
+%% \item It is a ``never ending'' discussion whether \verb|year| should
+%%   be treated as fixed or random. For \verb|year| to be a random
+%%   effect, it should in principle come from a large population of
+%%   possible years. This is certainly a dubious assumption for the
+%%   years.
+%% \item If we accept to think of year as a random effect, then the
+%%   variance describing this random effect will be poorly determined
+%%   (because there are only two years in the study).
+%% \end{itemize}
+ 
+
+% <<>>=
+% warp.poi <- glm(breaks ~ wool + tension, family=poisson, data=warpbreaks)
+% LSmeans(warp.poi, effect="tension", type="link")
+% LSmeans(warp.poi, effect="tension", type="response")
+% @ %def
+
+
+
+
+
+%% SANITY CHECK
+%% @
+%% <<>>=
+%% K <- LE_matrix(warp.poi, effect="tension")
+%% doBy::esticon(warp.poi, K)
+%% @ %def
+
+% <<>>=
+% warp.qpoi <- glm(breaks ~ wool + tension, family=quasipoisson, data=warpbreaks)
+% LSmeans(warp.qpoi, effect="tension", type="link")
+% LSmeans(warp.qpoi, effect="tension", type="response")
+% @ %def
+
+
+% For comparison with the linear model, we use identity link
+% <<echo=F,results='hide'>>=
+% warp.poi2 <- glm(breaks ~ wool + tension, family=poisson(link=identity),
+%                  data=warpbreaks)
+% LSmeans(warp.poi2, effect="tension", type="link")
+% @ %def
+
+
+
+%% SANITY CHECK
+%% @
+%% <<>>=
+%% K <- LE_matrix(warp.poi2, effect="tension")
+%% doBy::esticon(warp.poi2, K)
+%% @ %def
+
+
+% <<>>=
+% warp.gam <- glm(breaks ~ wool + tension, family=Gamma(link=identity),
+%                  data=warpbreaks)
+% LSmeans(warp.gam, effect="tension", type="link")
+% @ %def
+
+%% SANITY CHECK
+%% @
+%% <<>>=
+%% K <- LE_matrix(warp.gam, effect="tension")
+%% doBy::esticon(warp.gam, K)
+%% @ %def
+
+
+% Notice that the linear estimates are practically the same as for the
+% linear model, but the standard errors are smaller and hence the
+% confidence intervals are narrower.
+
+% An alternative is to fit a quasi Poisson ``model''
+
+% <<>>=
+% warp.poi3 <- glm(breaks ~ wool + tension, family=quasipoisson(link=identity),
+%                  data=warpbreaks)
+% LSmeans(warp.poi3, effect="tension")
+% @ %def

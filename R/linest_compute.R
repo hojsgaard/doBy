@@ -23,7 +23,7 @@
 #' @param ...  Additional arguments; currently not used.
 #' @return A dataframe with results from computing the contrasts.
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
-#' @seealso \code{\link{LSmeans}}, \code{\link{linest_matrix}}
+#' @seealso \code{\link{LSmeans}}, \code{\link{LE_matrix}}
 #' @keywords utilities
 #' @examples
 #' 
@@ -41,7 +41,7 @@
 #' mod.bal  <- lm(y ~ AA + BB * CC, data=dat.bal)
 #' mod.nst  <- lm(y ~ AA + BB : CC, data=dat.nst)
 #' 
-#' L <- linest_matrix(mod.nst, effect=c("BB", "CC"))
+#' L <- LE_matrix(mod.nst, effect=c("BB", "CC"))
 #' linest( mod.nst, L )
 #' 
 #' @export linest

@@ -2,15 +2,15 @@
 % Please edit documentation in R/linest_matrix.R
 \name{linest-matrix}
 \alias{linest-matrix}
-\alias{linest_matrix}
-\alias{linest_matrix.default}
+\alias{LE_matrix}
+\alias{LE_matrix.default}
 \alias{aggregate_linest_list}
 \alias{get_linest_list}
 \title{Linear estimates matrix}
 \usage{
-linest_matrix(object, effect = NULL, at = NULL)
+LE_matrix(object, effect = NULL, at = NULL)
 
-\method{linest_matrix}{default}(object, effect = NULL, at = NULL)
+\method{LE_matrix}{default}(object, effect = NULL, at = NULL)
 
 aggregate_linest_list(lel)
 
@@ -43,7 +43,7 @@ data(warpbreaks)
 m0 <- lm(breaks ~ wool + tension, data=warpbreaks)
 
 ## Estimate mean for each wool type, for tension="M":
-K <- linest_matrix(m0, at=list(wool=c("A", "B"), tension="M"))
+K <- LE_matrix(m0, at=list(wool=c("A", "B"), tension="M"))
 K
 
 ## Vanilla computation:
@@ -55,9 +55,9 @@ esticon(m0, K)
 
 ## Estimate mean for each wool type when averaging over tension;
 # two ways of doing this
-K <- linest_matrix(m0, at=list(wool=c("A", "B")))
+K <- LE_matrix(m0, at=list(wool=c("A", "B")))
 K
-K <- linest_matrix(m0, effect="wool")
+K <- LE_matrix(m0, effect="wool")
 K
 linest(m0, K)
 
@@ -68,7 +68,7 @@ LSmeans(m0, effect="wool")
 
 ## Without mentioning 'effect' or 'at' an average across all
 #predictors are calculated:
-K <- linest_matrix(m0)
+K <- LE_matrix(m0)
 K
 linest(m0, K)
 
@@ -84,18 +84,18 @@ LSmeans(m0)
 ## An interaction model 
 m1 <- lm(breaks ~ wool * tension, data=warpbreaks)
 
-K <- linest_matrix(m1, at=list(wool=c("A", "B"), tension="M"))
+K <- LE_matrix(m1, at=list(wool=c("A", "B"), tension="M"))
 K
 linest(m1, K)
-K <- linest_matrix(m1, at=list(wool=c("A", "B")))
+K <- LE_matrix(m1, at=list(wool=c("A", "B")))
 K
 linest(m1, K)
-K <- linest_matrix(m1, effect="wool")
+K <- LE_matrix(m1, effect="wool")
 K
 linest(m1, K)
 LSmeans(m1, effect="wool")
 
-K <- linest_matrix(m1)
+K <- LE_matrix(m1)
 K
 linest(m1, K)
 LSmeans(m1)
