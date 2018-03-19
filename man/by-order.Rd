@@ -3,43 +3,40 @@
 \name{by-order}
 \alias{by-order}
 \alias{orderBy}
-\alias{order_by}
 \title{Ordering (sorting) rows of a data frame}
 \usage{
 orderBy(formula, data)
-
-order_by(data, formula)
 }
 \arguments{
 \item{formula}{The right hand side of a formula}
 
-\item{data}{A data frame}
+\item{data}{A dataframe}
 }
 \value{
 The ordered data frame
 }
 \description{
-Ordering (sorting) rows of a data frame by the certain variables
-    in the data frame. This function is essentially a wrapper for the \code{order()}
-    function - the important difference being that variables to order by can
-    be given by a model formula.
+Ordering (sorting) rows of a data frame by the certain
+    variables in the data frame. This function is essentially a
+    wrapper for the \code{order()} function - the important
+    difference being that variables to order by can be given by a
+    model formula.
 }
 \details{
-The sign of the terms in the formula determines whether sorting
-    should be ascending or decreasing; see examples below
+The sign of the terms in the formula determines whether
+    sorting should be ascending or decreasing; see examples below
 }
 \examples{
 
-data(dietox)
-orderBy(~ Time + Evit, data=dietox)
-## Sort decreasingly by Time
-orderBy(~ - Time + Evit, data=dietox)
-
+orderBy(~ conc + Treatment, CO2)
+## Sort decreasingly by conc
+orderBy(~ - conc + Treatment, CO2)
 }
 \seealso{
 \code{\link{transformBy}}, \code{\link{splitBy}}
 }
 \author{
-Søren Højsgaard, \email{sorenh@math.aau.dk} and Kevin Wright
+Søren Højsgaard, \email{sorenh@math.aau.dk} and Kevin
+    Wright
 }
 \keyword{utilities}

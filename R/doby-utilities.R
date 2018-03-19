@@ -32,7 +32,7 @@ parseGroupFormula <- function(form)
 #' @description Convert right hand sided formula to a list
 #' @param f A right hand sided formula
 
-rhsf2list <- function (f) {
+.rhsf2list <- function (f) {
     if (is.character(f))    list(f) 
     else if (is.numeric(f)) lapply(list(f), "as.character")
     else if (is.list(f))    lapply(f, "as.character")

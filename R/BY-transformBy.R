@@ -52,7 +52,7 @@ transformBy <- function (formula, data, ...) {
   do.call("rbind",ee)
 }
 
-#' @rdname by-transform
-transform_by <- function (data, formula, ...) {
-    transformBy(formula, data, ...)
-}
+## #' @rdname by-transform
+## transform_by <- function (data, formula, ...) {
+##     transformBy(formula, data, ...)
+## }

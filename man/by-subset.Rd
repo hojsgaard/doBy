@@ -3,13 +3,10 @@
 \name{by-subset}
 \alias{by-subset}
 \alias{subsetBy}
-\alias{subset_by}
 \title{Finds subsets of a dataframe which is split by variables in a formula.}
 \usage{
 subsetBy(formula, subset, data = parent.frame(), select, drop = FALSE,
   join = TRUE, ...)
-
-subset_by(data, formula, subset, select, drop = FALSE, join = TRUE, ...)
 }
 \arguments{
 \item{formula}{A right hand sided formula or a character vector of variables

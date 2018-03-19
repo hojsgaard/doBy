@@ -100,7 +100,7 @@ codstom2 <- summaryBy(prey.mass ~ region + ship.type + ship.id + trip + set + fi
                       FUN = sum) 
 
 # mean prey mass per stomach for each trip
-codstom3 <- summaryBy(prey.mass ~ region + ship.type + ship.id + trip,
+codstom3 <- summaryBy(prey.mass.sum ~ region + ship.type + ship.id + trip,
                       data = codstom2, FUN = mean) 
 
 \dontrun{          

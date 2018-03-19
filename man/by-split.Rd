@@ -2,19 +2,16 @@
 % Please edit documentation in R/BY-splitBy2.R
 \name{by-split}
 \alias{by-split}
-\alias{split_by}
 \alias{splitBy}
 \title{Split a data frame}
 \usage{
-split_by(data, formula)
-
-splitBy(formula, data, drop = TRUE)
+splitBy(formula, data = parent.frame(), drop = TRUE)
 }
 \arguments{
-\item{data}{A data frame}
-
 \item{formula}{Variables to split data frame by, as ‘as.quoted’ variables,
 a formula or character vector.}
+
+\item{data}{A data frame}
 
 \item{drop}{Logical indicating if levels that do not occur should be
 dropped. Deprecated; levels that do not occur are ignored.}
@@ -32,8 +29,8 @@ Split a dataframe according to the levels of variables in the
 \examples{
 
 data(dietox, package="doBy")
-splitBy(formula = ~Evit+Cu, data = dietox)
-splitBy(formula = c("Evit","Cu"), data = dietox)
+splitBy(formula = ~Evit + Cu, data = dietox)
+splitBy(formula = c("Evit", "Cu"), data = dietox)
 
 splitBy(~Month, data=airquality)
 splitBy("Month", data=airquality)

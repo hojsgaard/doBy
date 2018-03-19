@@ -1,4 +1,11 @@
-2017-03-04 Søren Højsgaard <sorenh@math.aau.dk>
+2018-03-19 Søren Højsgaard <sorenh@math.aau.dk>
+
+	* Previous functionality of core xxBy-functions reestablished to
+	ensure that downstream packages work.
+
+	* Version 4.6-1 uploaded.
+
+2018-03-04 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* Improvements of esticon and linest; methods added.
 

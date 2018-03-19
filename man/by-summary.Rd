@@ -2,20 +2,43 @@
 % Please edit documentation in R/BY-summaryBy2.R
 \name{by-summary}
 \alias{by-summary}
-\alias{summary_by}
 \alias{summaryBy}
 \title{Function to calculate groupwise summary statistics}
 \usage{
-summary_by(data, formula, FUN)
-
-summaryBy(formula, data, FUN)
+summaryBy(formula, data = parent.frame(), id = NULL, FUN = mean,
+  keep.names = FALSE, p2d = FALSE, order = TRUE, full.dimension = FALSE,
+  var.names = NULL, fun.names = NULL, ...)
 }
 \arguments{
-\item{data}{A data frame}
-
 \item{formula}{A formula object, see examples below}
 
+\item{data}{A data frame}
+
+\item{id}{A formula specifying variables which data are not grouped by but
+which should appear in the output. See examples below.}
+
 \item{FUN}{A list of functions to be applied, see examples below.}
+
+\item{keep.names}{If TRUE and if there is only ONE function in FUN, then the
+variables in the output will have the same name as the variables in the
+input, see 'examples'.}
+
+\item{p2d}{Should parentheses in output variable names be replaced by dots?}
+
+\item{order}{Should the resulting dataframe be ordered according to the
+variables on the right hand side of the formula? (using \link{orderBy}}
+
+\item{full.dimension}{If TRUE then rows of summary statistics are repeated
+such that the result will have the same number of rows as the input
+dataset.}
+
+\item{var.names}{Option for user to specify the names of the variables on the
+left hand side.}
+
+\item{fun.names}{Option for user to specify function names to apply to the
+variables on the left hand side.}
+
+\item{...}{Additional arguments to FUN. This could for example be NA actions.}
 }
 \value{
 A data frame
@@ -25,11 +48,13 @@ Function to calculate groupwise summary statistics, much like
     the summary procedure of SAS
 }
 \details{
-Extra arguments ('...') are passed onto the functions in FUN. Hence care
-must be taken that all functions in FUN accept these arguments - OR one can
-explicitly write a functions which get around this.  This can particularly
-be an issue in connection with handling NAs. See examples below.
-Some code for this function has been suggested by Jim Robison-Cox. Thanks.
+Extra arguments ('...') are passed onto the functions in
+    FUN. Hence care must be taken that all functions in FUN accept
+    these arguments - OR one can explicitly write a functions which
+    get around this.  This can particularly be an issue in
+    connection with handling NAs. See examples below.  Some code
+    for this function has been suggested by Jim
+    Robison-Cox. Thanks.
 }
 \examples{
 
@@ -43,16 +68,18 @@ fun <- function(x){
 summaryBy(cbind(Weight, Feed) ~ Evit + Cu, data=dietox12,
           FUN=fun)
 
-summaryBy(list(c("Weight","Feed"), c("Evit","Cu")), data=dietox12,
+summaryBy(list(c("Weight", "Feed"), c("Evit", "Cu")), data=dietox12,
           FUN=fun)
 
+## Computations on several variables is done using cbind( )
 summaryBy(cbind(Weight, Feed) ~ Evit + Cu, data=subset(dietox, Time > 1),
    FUN=fun)
 
-## Calculations on transformed data:
+## Calculations on transformed data is possible using cbind( ), but
+# the transformed variables must be named
 
-summaryBy(cbind( log(Weight), Feed) ~ Evit + Cu, data=dietox12, FUN=mean)
-#' 
+summaryBy(cbind(lw=log(Weight), Feed) ~ Evit + Cu, data=dietox12, FUN=mean)
+ 
 ## There are missing values in the 'airquality' data, so we remove these
 ## before calculating mean and variance with 'na.rm=TRUE'. However the
 ## length function does not accept any such argument. Hence we get
@@ -62,7 +89,7 @@ summaryBy(cbind( log(Weight), Feed) ~ Evit + Cu, data=dietox12, FUN=mean)
 sumfun <- function(x, ...){
   c(m=mean(x, na.rm=TRUE, ...), v=var(x, na.rm=TRUE, ...), l=length(x))
 }
-summaryBy(Ozone + Solar.R ~ Month, data=airquality, FUN=sumfun )
+summaryBy(cbind(Ozone, Solar.R) ~ Month, data=airquality, FUN=sumfun )
 
 ## Using '.' on the right hand side of a formula means to stratify by
 ## all variables not used elsewhere:

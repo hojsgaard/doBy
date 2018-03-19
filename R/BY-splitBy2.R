@@ -22,8 +22,8 @@
 #' @examples
 #' 
 #' data(dietox, package="doBy")
-#' splitBy(formula = ~Evit+Cu, data = dietox)
-#' splitBy(formula = c("Evit","Cu"), data = dietox)
+#' splitBy(formula = ~Evit + Cu, data = dietox)
+#' splitBy(formula = c("Evit", "Cu"), data = dietox)
 #' 
 #' splitBy(~Month, data=airquality)
 #' splitBy("Month", data=airquality)
@@ -31,20 +31,8 @@
 #' @export splitBy
 
 
-
 #' @rdname by-split
-split_by <- function(data, formula){
-    plyr::dlply(data, formula, base::identity)
-}
-
-
-#' @rdname by-split
-splitBy <- function(formula, data, drop=TRUE){
-    plyr::dlply(data, formula, identity)
-}
-
-
-splitByOLD <-function (formula, data = parent.frame(), drop=TRUE) { #, return.matrix=FALSE){
+splitBy <-function (formula, data = parent.frame(), drop=TRUE) { #, return.matrix=FALSE){
 
   data.var  <- names(data)
 
@@ -124,3 +112,14 @@ print.splitByData <- function(x, ...){
   print(cbind(listentry=names(x), attr(x,"groupid")))
   return(invisible(x))
 }
+
+
+
+## #' @rdname by-split
+## split_by <- function(data, formula){
+##     plyr::dlply(data, formula, base::identity)
+## }
+
+## splitBy <- function(formula, data, drop=TRUE){
+##     plyr::dlply(data, formula, identity)
+## }

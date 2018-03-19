@@ -3,12 +3,9 @@
 \name{by-transform}
 \alias{by-transform}
 \alias{transformBy}
-\alias{transform_by}
 \title{Function to make groupwise transformations}
 \usage{
 transformBy(formula, data, ...)
-
-transform_by(data, formula, ...)
 }
 \arguments{
 \item{formula}{A formula with only a right hand side, see examples below}
