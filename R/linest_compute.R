@@ -20,6 +20,7 @@
 #'     model. If \code{NULL} then \code{L} is taken to be the p times
 #'     p identity matrix
 #' @param level The level of the (asymptotic) confidence interval.
+#' @param confint Should confidence interval appear in output.
 #' @param ...  Additional arguments; currently not used.
 #' @return A dataframe with results from computing the contrasts.
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
@@ -45,12 +46,12 @@
 #' linest( mod.nst, L )
 #' 
 #' @export linest
-linest <- function(object, L=NULL, level=0.95, ...){
+linest <- function(object, L=NULL, level=0.95, confint=FALSE, ...){
     UseMethod("linest")
 }
 
 
-linest.lm <- function(object, L=NULL, level=0.95, ...){
+linest.lm <- function(object, L=NULL, level=0.95, confint=FALSE, ...){
     bhat <- coef(object)
     if (is.null(L))
         L <- .defineL( bhat )
@@ -68,15 +69,16 @@ linest.lm <- function(object, L=NULL, level=0.95, ...){
     p.value <- 2*pt(abs(res[,"t.stat"]), df=res[,"df"], lower.tail=FALSE)
 
     qq  <- qt(1-(1-level)/2, df=res[,"df"])
+
     lwr <- res[,"estimate"] - qq * res[,"se"]
     upr <- res[,"estimate"] + qq * res[,"se"]
     #res <- cbind(res, p.value, lwr, upr)
-    res <- cbind( res, p.value )
+    res <- cbind(res, p.value)
 
-    .finalize_linest(res, L)
+    .finalize_linest(res, L, lwr, upr, confint)
 }
 
-linest.glm <- function(object, L=NULL, level=0.95, type=c("link", "response"), ...){
+linest.glm <- function(object, L=NULL, level=0.95, type=c("link", "response"), confint=FALSE, ...){
     type <- match.arg(type)
     bhat <- coef(object)
     if (is.null(L))
@@ -116,12 +118,12 @@ linest.glm <- function(object, L=NULL, level=0.95, type=c("link", "response"), .
 
     ##res <- cbind(res, p.value, lwr, upr)
     res <- cbind( res, p.value )
-    .finalize_linest(res, L)
+    .finalize_linest(res, L, lwr, upr, confint)
 
 }
 
 
-linest.geeglm <- function(object, L=NULL, level=0.95, type=c("link","response"), ...){
+linest.geeglm <- function(object, L=NULL, level=0.95, type=c("link","response"), confint=FALSE, ...){
     type <- match.arg(type)
     bhat <- coef(object)
     if (is.null(L))
@@ -136,7 +138,9 @@ linest.geeglm <- function(object, L=NULL, level=0.95, type=c("link","response"),
     res     <- .getLb( L, bhat, VV0, ddf.vec, is.est)
 
     p.value <- 2*pnorm(abs(res[,"t.stat"]), lower.tail=FALSE)
+
     qq <- qnorm(1-(1-level)/2)
+
     colnames(res)[4] <- "z.stat"
     res <- res[,-3, drop=FALSE] # NO df's
     ## print("00000000000000000")
@@ -155,10 +159,10 @@ linest.geeglm <- function(object, L=NULL, level=0.95, type=c("link","response"),
 
     ## res <- cbind(res, p.value, lwr, upr)
     res <- cbind( res, p.value )
-    .finalize_linest(res, L)
+    .finalize_linest(res, L, lwr, upr, confint)
 }
 
-linest.lmerMod <- function(object, L=NULL, level=0.95, adjust.df=TRUE, ...){
+linest.lmerMod <- function(object, L=NULL, level=0.95, adjust.df=TRUE, confint=FALSE, ...){
 
     bhat <- lme4::fixef(object)
 
@@ -190,13 +194,14 @@ linest.lmerMod <- function(object, L=NULL, level=0.95, adjust.df=TRUE, ...){
 
     res     <- .getLb( L, bhat, VV, ddf.vec, is.est)
     p.value <- 2*pt(abs(res[,"t.stat"]), df=res[,"df"], lower.tail=FALSE)
+
     qq  <- qt(1-(1-level)/2, df=res[,"df"])
+
     lwr <- res[,"estimate"] - qq * res[,"se"]
     upr <- res[,"estimate"] + qq * res[,"se"]
     ##res <- cbind(res, p.value, lwr, upr)
     res <- cbind( res, p.value )
-    .finalize_linest(res, L)
-
+    .finalize_linest(res, L, lwr, upr, confint)
 }
 
 linest.merMod <- function(object, L=NULL, level=0.95, ...){
@@ -251,13 +256,13 @@ linest.merMod <- function(object, L=NULL, level=0.95, ...){
 }
 
 
-
-
-
-.finalize_linest <- function(.coef, L){
+.finalize_linest <- function(.coef, L, lwr, upr, confint){
     if (!is.null(rownames(L)))
         rownames(.coef) <- rownames(L)
     .coef <- as.data.frame(.coef)
+    if (confint)
+        .coef <- cbind(.coef, lwr, upr)
+    
     res  <- list(coef=.coef, grid=attr(L, "grid"), L=L)
     class(res) <- "linest_class"
     res

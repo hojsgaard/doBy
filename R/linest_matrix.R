@@ -100,9 +100,28 @@ LE_matrix <- function(object, effect=NULL, at=NULL){
 LE_matrix.default <- function(object, effect=NULL, at=NULL){
     out <- get_linest_list(object, effect, at)
     out <- aggregate_linest_list (out)
-    class(out) <- c("LE_matrix_class", "matrix")
+    class(out) <- c("linest_matrix_class", "matrix")
     out
 }
+
+
+## #' @rdname linest-matrix
+## LP_matrix <- function(object, effect=NULL, at=NULL){
+##   UseMethod("LP_matrix")
+## }
+
+## ## FIXME: LE_matrix.default: Should be a check of what 'object' is
+## #' @rdname linest-matrix
+## LP_matrix.default <- function(object, effect=NULL, at=NULL){
+##     out <- get_linest_list(object, effect, at)
+##     out <- aggregate_linest_list (out)
+##     class(out) <- c("linest_matrix_class", "matrix")
+##     out
+## }
+
+
+
+
 
 #' @rdname linest-matrix
 aggregate_linest_list <- function (lel){
@@ -114,12 +133,12 @@ aggregate_linest_list <- function (lel){
     out
 }
 
-print.LE_matrix_class <- function(x, ...){
+print.linest_matrix_class <- function(x, ...){
   prmatrix(x)
   invisible(x)
 }
 
-summary.LE_matrix_class <- function(object, ...){
+summary.linest_matrix_class <- function(object, ...){
     print(object)
     cat("at: \n"); print(attr(object, "at"))
     cat("grid: \n"); print(attr(object, "grid"))
@@ -322,16 +341,16 @@ get_linest_list <- function(object, effect=NULL, at=NULL){
 
 ## --------------------------------------------------------------------
 
-setOldClass("LE_matrix_class")
+setOldClass("linest_matrix_class")
 
-setAs("LE_matrix_class", "matrix",
+setAs("linest_matrix_class", "matrix",
       function(from){
           attr(from, "at") <- attr(from, "grid") <- NULL
           class(from) <- "matrix"
           from
       })
 
-setAs("LE_matrix_class","Matrix",
+setAs("linest_matrix_class", "Matrix",
       function(from){
           attr(from, "at") <- attr(from, "grid") <- NULL
           class(from) <- "matrix"

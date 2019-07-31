@@ -16,7 +16,7 @@
 \usage{
 \method{summary}{esticon_class}(object, ...)
 
-linest(object, L = NULL, level = 0.95, ...)
+linest(object, L = NULL, level = 0.95, confint = FALSE, ...)
 
 \method{coef}{linest_class}(object, ...)
 
@@ -35,6 +35,8 @@ model. If \code{NULL} then \code{L} is taken to be the p times
 p identity matrix}
 
 \item{level}{The level of the (asymptotic) confidence interval.}
+
+\item{confint}{Should confidence interval appear in output.}
 
 \item{parm}{Specification of the parameters estimates for which
 confidence inctervals are to be calculated.}
