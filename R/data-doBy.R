@@ -180,4 +180,35 @@
 "fatacid"
 
 
+#' @title Forced expiratory volume in children
+#'
+#' @description Dataset to examine if respiratory function in children
+#'   was influenced by smoking.
+#'
+#' @name fev
+#' @docType data
+#'
+#' @format A data frame with 654 observations on the following 5 variables.
+#' \describe{
+#'   \item{\code{Age}}{Age in years.}
+#'   \item{\code{FEV}}{Forced expiratory volume in liters per second.}
+#'   \item{\code{Ht}}{Height in inches}
+#'   \item{\code{Gender}}{Gender}
+#'   \item{\code{Smoke}}{Smoking}
+#' }
+#'
+#'
+#' @references I. Tager and S. Weiss and B. Rosner and F. Speizer (1979). Effect
+#' of Parental Cigarette Smoking on the Pulmonary Function of
+#' Children.  American Journal of Epidemiology. 110:15-26
+#'
+#' @examples
+#'
+#' data(fev)
+#' summary(fev)
+#' 
+"fev"
+
+
+
 

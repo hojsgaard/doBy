@@ -1,6 +1,10 @@
 2019-08-01 Søren Højsgaard <sorenh@math.aau.dk>
 
 	* taylor function added
+
+	* fev data from isdals added
+
+	* lmBy reintroduced due to popular demand.
 	
 	
 2018-08-30 Søren Højsgaard <sorenh@math.aau.dk>
