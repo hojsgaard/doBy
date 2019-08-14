@@ -359,7 +359,7 @@ coef.esticon_class <- function (object, ...) {
 }
 
 
-#' @rdname linest
+#' @rdname esticon
 summary.esticon_class <- function (object, ...) 
 {
     cat("Coefficients:\n")

@@ -23,7 +23,9 @@ Imports:
     dplyr,
     plyr,
     magrittr,
-    Deriv
+    Deriv,
+    tibble,
+    broom
 Suggests:
     pbkrtest (>= 0.4-6),
     ggplot2,
@@ -31,5 +33,6 @@ Suggests:
     geepack,
     lme4,
     survival,
+    tidyverse,
     knitr
 RoxygenNote: 6.1.1

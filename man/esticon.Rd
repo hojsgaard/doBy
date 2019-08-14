@@ -11,6 +11,7 @@
 \alias{esticon.merMod}
 \alias{esticon.coxph}
 \alias{coef.esticon_class}
+\alias{summary.esticon_class}
 \title{Contrasts for lm, glm, lme, and geeglm objects}
 \usage{
 esticon(obj, L, beta0, conf.int = TRUE, level = 0.95,
@@ -38,6 +39,8 @@ esticon(obj, L, beta0, conf.int = TRUE, level = 0.95,
   joint.test = FALSE, ...)
 
 \method{coef}{esticon_class}(object, ...)
+
+\method{summary}{esticon_class}(object, ...)
 }
 \arguments{
 \item{obj}{Regression object (of type lm, glm, lme, geeglm)}
