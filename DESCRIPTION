@@ -13,6 +13,7 @@ Encoding: UTF-8
 VignetteBuilder: knitr
 URL: http://people.math.aau.dk/~sorenh/software/doBy/
 ZipData: no
+LazyData: true
 License: GPL (>= 2)
 Depends:
     R (>= 3.2.0),
