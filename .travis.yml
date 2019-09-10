@@ -6,7 +6,7 @@ os:
 - osx
 before_install:
 - if [ "$TRAVIS_OS_NAME" == "linux" ]; then tlmgr install boxedminipage; fi
-- if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo tlmgr install a4wide boxedminipage; fi
+- if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo tlmgr install a4wide boxedminipage framed; fi
 deploy:
   provider: releases
   api_key:
