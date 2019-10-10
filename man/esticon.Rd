@@ -12,6 +12,8 @@
 \alias{esticon.coxph}
 \alias{coef.esticon_class}
 \alias{summary.esticon_class}
+\alias{tidy.esticon_class}
+\alias{confint.esticon_class}
 \title{Contrasts for lm, glm, lme, and geeglm objects}
 \usage{
 esticon(obj, L, beta0, conf.int = TRUE, level = 0.95,
@@ -41,11 +43,17 @@ esticon(obj, L, beta0, conf.int = TRUE, level = 0.95,
 \method{coef}{esticon_class}(object, ...)
 
 \method{summary}{esticon_class}(object, ...)
+
+\method{tidy}{esticon_class}(x, conf.int = FALSE, conf.level = 0.95,
+  ...)
+
+\method{confint}{esticon_class}(object, parm, level = 0.95, ...)
 }
 \arguments{
-\item{obj}{Regression object (of type lm, glm, lme, geeglm)}
+\item{obj}{Regression object (of type lm, glm, lme, geeglm).}
 
-\item{L}{Matrix (or vector) specifying linear functions of the regresson parameters (one
+\item{L}{Matrix (or vector) specifying linear functions of the regresson
+parameters (one
 linear function per row).  The number of columns must match the number of
 fitted regression parameters in the model. See 'details' below.}
 
@@ -63,6 +71,14 @@ inteval etc. is calculated.}
 \item{...}{Additional arguments; currently not used.}
 
 \item{object}{An \code{esticon_class} object.}
+
+\item{x}{A linear contrast object (as returned by \code{esticon()}.}
+
+\item{conf.level}{The desired confidence level.}
+
+\item{parm}{a specification of which parameters are to be given
+ confidence intervals, either a vector of numbers or a vector
+of names.  If missing, all parameters are considered.}
 }
 \value{
 Returns a matrix with one row per linear function.  Columns contain

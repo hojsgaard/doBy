@@ -19,6 +19,7 @@ Depends:
     R (>= 3.2.0),
     methods
 Imports:
+    pbkrtest (>= 0.4-6),
     MASS,
     Matrix,
     dplyr,
@@ -28,8 +29,6 @@ Imports:
     tibble,
     broom
 Suggests:
-    pbkrtest (>= 0.4-6),
-    ggplot2,
     multcomp,
     geepack,
     lme4,
