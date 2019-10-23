@@ -14,6 +14,7 @@
 \alias{summary.esticon_class}
 \alias{tidy.esticon_class}
 \alias{confint.esticon_class}
+\alias{vcov.esticon_class}
 \title{Contrasts for lm, glm, lme, and geeglm objects}
 \usage{
 esticon(obj, L, beta0, conf.int = TRUE, level = 0.95,
@@ -48,6 +49,8 @@ esticon(obj, L, beta0, conf.int = TRUE, level = 0.95,
   ...)
 
 \method{confint}{esticon_class}(object, parm, level = 0.95, ...)
+
+\method{vcov}{esticon_class}(object, ...)
 }
 \arguments{
 \item{obj}{Regression object (of type lm, glm, lme, geeglm).}

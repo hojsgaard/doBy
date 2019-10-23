@@ -33,6 +33,7 @@ Suggests:
     geepack,
     lme4,
     survival,
+    ggplot2,
     tidyverse,
     knitr
 RoxygenNote: 6.1.1

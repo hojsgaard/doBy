@@ -42,3 +42,5 @@ vignettes/figures/
 *.knit.md
 
 revdep/*
+doc
+Meta

@@ -310,7 +310,10 @@ esticon.lme <- function (obj, L, beta0, conf.int = NULL, level=0.95, joint.test=
     ct      <- L %*% coef.mat[, 1]
     ct.diff <- L %*% coef.mat[, 1] - beta0
     vcv.L   <- L %*% vcv %*% t(L)
-    rownames(vcv.L)  <- colnames(vcv.L) <- rownames(L)
+
+    if (is.null(vn <- rownames(L)))
+        vn <- 1:nrow(L)
+    rownames(vcv.L)  <- colnames(vcv.L) <- vn
 
     vc      <- sqrt(diag(vcv.L))
 
@@ -400,7 +403,7 @@ tidy.esticon_class <- function(x, conf.int = FALSE, conf.level = 0.95, ...){
     rownames(co) <- NULL
 
     if (conf.int){
-        ci <- .ci_fun(co, level=conf.level)
+        ci <- confint(x, level=conf.level)
         colnames(ci) <- c("conf.low", "conf.high")    
         co <- cbind(co, ci)
     }
@@ -434,11 +437,14 @@ confint.esticon_class <- function (object, parm, level = 0.95, ...)
     ci <- array(NA, dim = c(length(parm), 2L), dimnames = list(parm, 
                                                                pct))
     ses <- sqrt(diag(vcov(object)))[parm]
-    #str(list(cf=cf, parm=parm, fac=fac, ses=ses))
+    ##str(list(cf=cf, parm=parm, fac=fac, ses=ses))
     ci[] <- cf[parm] + ses %o% fac
     ci
 }
 
 
-
+#' @rdname esticon
+vcov.esticon_class <- function (object, ...){
+    attr(object, "vcv")
+}
 

@@ -11,7 +11,7 @@ importFrom("stats", "as.formula", "coef", "delete.response", "family",
            "fitted", "formula", "lm", "logLik", "median",
            "model.frame", "model.matrix", "pchisq", "pnorm", "pt",
            "qnorm", "qt", "residuals", "sd", "summary.lm", "terms",
-           "vcov", "aggregate", "printCoefmat")
+           "vcov", "aggregate", "printCoefmat", confint)
 
 importFrom(plyr, dlply)
 importFrom(dplyr, arrange_)
@@ -43,6 +43,8 @@ S3method( coef,             esticon_class   )
 S3method( summary,          esticon_class   )
 S3method( print,            esticon_class   )
 S3method( confint,          esticon_class   )
+S3method( tidy,             esticon_class   )
+S3method( vcov,             esticon_class   )
 
 S3method( coef,             lmBy            )
 S3method( coef,             summary_lmBy    )
