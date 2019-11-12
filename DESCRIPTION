@@ -16,7 +16,7 @@ ZipData: no
 LazyData: true
 License: GPL (>= 2)
 Depends:
-    R (>= 3.2.0),
+    R (>= 3.5.0),
     methods
 Imports:
     pbkrtest (>= 0.4-6),

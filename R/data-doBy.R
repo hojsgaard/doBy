@@ -501,6 +501,27 @@
 "haldCement"
 
 
+#' Yield from Danish agricultural production of grain and root crop. 
+#'
+#' @name data-cropyield
+#' @docType data
+#' @format A dataframe with 97 rows and 7 columns. 
+#'   \describe{
+#'     \item{\code{year}}{From 1901 to 1997.}
+#'     \item{\code{precip}}{Milimeter precipitation.}
+#'     \item{\code{yield}}{Million feed units (se details).}
+#'     \item{\code{area}}{Area in 1000 ha for grains and root crop.}
+#'     \item{\code{fertil}}{1000 tons fertilizer.}
+#'     \item{\code{avgtmp1}}{Average temperature April-June (3 months).}
+#'     \item{\code{avgtmp2}}{Average temperature July-Octobre (4 months). }
+#'   }
+#'
+#' @details A feed unit is the amount of energy in a kg of barley.
+#' @references Danmarks statistik (Statistics Denmark).
+#' @keywords datasets
+"cropyield"
+
+
 
 #' Milk yield data for manually milked cows.
 #' 
