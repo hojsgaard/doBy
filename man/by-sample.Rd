@@ -5,8 +5,13 @@
 \alias{sampleBy}
 \title{Sampling from a data frame}
 \usage{
-sampleBy(formula, frac = 0.1, replace = FALSE, data = parent.frame(),
-  systematic = FALSE)
+sampleBy(
+  formula,
+  frac = 0.1,
+  replace = FALSE,
+  data = parent.frame(),
+  systematic = FALSE
+)
 }
 \arguments{
 \item{formula}{A formula defining the grouping of the data frame.}
