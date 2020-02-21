@@ -28,8 +28,8 @@ sampleBy(
 A dataframe.
 }
 \description{
-A data frame is split according to some variables in a formula, and a
- sample of a certain fraction of each is drawn.
+A data frame is split according to some variables in a
+    formula, and a sample of a certain fraction of each is drawn.
 }
 \details{
 If systematic=FALSE (default) then frac gives the fraction
@@ -39,7 +39,6 @@ If systematic=FALSE (default) then frac gives the fraction
 \examples{
 data(dietox)
 sampleBy(formula = ~Evit+Cu, frac=.1, data = dietox)
-
 }
 \seealso{
 \code{\link{summaryBy}}, \code{\link{orderBy}},

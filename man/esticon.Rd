@@ -81,9 +81,9 @@ Returns a matrix with one row per linear function.  Columns contain
     confidence intervals.
 }
 \description{
-Computes linear functions (i.e. weighted sums) of the estimated
-    regression parameters. Can also test the hypothesis, that such a function
-    is equal to a specific value.
+Computes linear functions (i.e. weighted sums) of the
+    estimated regression parameters. Can also test the hypothesis,
+    that such a function is equal to a specific value.
 }
 \details{
 Let the estimated parameters of the model be

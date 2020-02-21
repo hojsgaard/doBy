@@ -393,7 +393,8 @@
 #' data(dietox)
 #' head(dietox)
 #' if (require(ggplot2)){
-#'   qplot(Time, Weight, data=dietox, col=Pig) + geom_line() + theme(legend.position = "none") + facet_grid(Evit~Cu)
+#'   qplot(Time, Weight, data=dietox, col=Pig) + geom_line() +
+#'            theme(legend.position = "none") + facet_grid(Evit~Cu)
 #' } else {
 #'   coplot(Weight ~ Time | Evit * Cu, data=dietox)
 #' }
@@ -411,12 +412,12 @@
 
 #' @title Fish oil in pig food
 #'
-#' @description ...
+#' @description Fish oil in pig food
 #'
 #' @name fatacid
 #' @docType data
 #'
-#' @format ...
+#' @format A dataframe.
 #'
 #' @details A fish oil fatty acid \code{X14} has been added in
 #'     different concentrations to the food for pigs in a
@@ -502,7 +503,7 @@
 #' 
 #' # Notice: The model explains practically all variation in data;
 #' # yet none of the explanatory variables appear to be statistically
-#' # significant...
+#' # significant.
 #'
 "haldCement"
 

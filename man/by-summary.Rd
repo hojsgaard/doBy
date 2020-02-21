@@ -54,8 +54,8 @@ variables on the left hand side.}
 A dataframe.
 }
 \description{
-Function to calculate groupwise summary statistics, much like
-    the summary procedure of SAS
+Function to calculate groupwise summary statistics,
+    much like the summary procedure of SAS
 }
 \details{
 Extra arguments ('...') are passed onto the functions in
