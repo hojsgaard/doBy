@@ -7,6 +7,9 @@
 #' @name esticon
 ##
 ###############################################################################
+#'
+#' @aliases esticon.lm esticon.gls
+#' 
 #' @details Let the estimated parameters of the model be
 #' \deqn{\beta_1, \beta_2, \dots, \beta_p}
 #'
