@@ -112,11 +112,11 @@
 #' }
 
 
-#' @export esticon
+#' @export 
 esticon <- function(obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...)
   UseMethod("esticon")
 
-#' @export esticon
+#' @export 
 esticon.gls <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
     if (joint.test) .wald(obj, L, beta0)
     else {
@@ -129,7 +129,7 @@ esticon.gls <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=
     }
 }
 
-#' @export esticon
+#' @export 
 esticon.geeglm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
     if (joint.test) .wald(obj, L, beta0)
     else {
@@ -141,7 +141,7 @@ esticon.geeglm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.te
     }
 }
 
-#' @export esticon
+#' @export 
 esticon.lm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
     if (joint.test) .wald(obj, L, beta0)
     else {
@@ -154,7 +154,7 @@ esticon.lm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=F
   }
 }
 
-#' @export esticon
+#' @export 
 esticon.glm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
     if (joint.test) .wald(obj, L, beta0)
     else {
@@ -171,7 +171,7 @@ esticon.glm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=
     }
 }
 
-#' @export esticon
+#' @export 
 esticon.merMod <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE, ...){ 
     if (joint.test) .wald(obj, L, beta0)
     else {
@@ -186,7 +186,7 @@ esticon.merMod <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.te
     }
 }
 
-#' @export esticon
+#' @export 
 esticon.coxph <-
     function (obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE, ...){
         if (joint.test == TRUE) .wald(obj, L, beta0)
@@ -207,7 +207,7 @@ esticon.coxph <-
 ###
 ### ######################################################
 
-#' @export esticon
+#' @export 
 esticon.lme <- function (obj, L, beta0, conf.int = NULL, level=0.95, joint.test=FALSE,...){
   warning("The esticon function has not been thoroughly teste on 'lme' objects")
   if (joint.test) .wald(obj, L, beta0)
