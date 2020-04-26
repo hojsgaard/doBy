@@ -116,6 +116,7 @@
 esticon <- function(obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...)
   UseMethod("esticon")
 
+#' @export esticon
 #' @rdname esticon
 esticon.gls <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
     if (joint.test) .wald(obj, L, beta0)
