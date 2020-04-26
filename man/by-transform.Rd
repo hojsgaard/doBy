@@ -12,7 +12,7 @@ transformBy(formula, data, ...)
 
 \item{data}{A data frame}
 
-\item{\dots}{Further arguments of the form tag=value}
+\item{...}{Further arguments of the form tag=value}
 }
 \value{
 The modified value of the dataframe data.

@@ -16,7 +16,7 @@ lmBy(formula, data, id = NULL, ...)
 \arguments{
 \item{formula}{A linear model formula object of the form y ~ x1 +
 ... + xn | g1 + ... + gm.  In the formula object, y represents
-the response, x1,...,xn the covariates, and the grouping
+the response, x1, ... ,xn the covariates, and the grouping
 factors specifying the partitioning of the data according to
 which different lm fits should be performed.}
 
@@ -25,7 +25,7 @@ which different lm fits should be performed.}
 \item{id}{A formula describing variables from data which are to be
 available also in the output.}
 
-\item{\dots}{Additional arguments passed on to \code{lm()}.}
+\item{...}{Additional arguments passed on to \code{lm()}.}
 }
 \value{
 A list of lm fits.

@@ -33,9 +33,6 @@
 #' For computing contrasts among levels of a single factor, 'contrast.lm' may
 #' be more convenient.
 #' 
-#' @aliases esticon esticon.geeglm esticon.glm esticon.gls esticon.lm
-#'     esticon.lme esticon.mer esticon.merMod esticon.coxph
-#' 
 #' @param obj Regression object (of type lm, glm, lme, geeglm).
 #' @param x A linear contrast object (as returned by \code{esticon()}. 
 #' @param L Matrix (or vector) specifying linear functions of the regresson
@@ -110,14 +107,12 @@
 #' est
 #' ##exp(est[, c(2, 7, 8)])
 #' }
-#' 
-#' 
+
+
 #' @export esticon
 esticon <- function(obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...)
   UseMethod("esticon")
 
-#' @export esticon
-#' @rdname esticon
 esticon.gls <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
     if (joint.test) .wald(obj, L, beta0)
     else {
@@ -130,9 +125,6 @@ esticon.gls <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=
     }
 }
 
-
-#' @export
-#' @rdname esticon
 esticon.geeglm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
     if (joint.test) .wald(obj, L, beta0)
     else {
@@ -144,8 +136,6 @@ esticon.geeglm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.te
     }
 }
 
-#' @export
-#' @rdname esticon
 esticon.lm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
     if (joint.test) .wald(obj, L, beta0)
     else {
@@ -158,8 +148,6 @@ esticon.lm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=F
   }
 }
 
-#' @export
-#' @rdname esticon
 esticon.glm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
     if (joint.test) .wald(obj, L, beta0)
     else {
@@ -176,9 +164,7 @@ esticon.glm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=
     }
 }
 
-#' @export
-#' @rdname esticon
-esticon.mer <- esticon.merMod <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE, ...){
+esticon.merMod <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE, ...){ 
     if (joint.test) .wald(obj, L, beta0)
     else {
         stat.name <- "X2.stat"
@@ -192,8 +178,6 @@ esticon.mer <- esticon.merMod <- function (obj, L, beta0, conf.int = TRUE, level
     }
 }
 
-#' @export
-#' @rdname esticon
 esticon.coxph <-
     function (obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE, ...){
         if (joint.test == TRUE) .wald(obj, L, beta0)
@@ -214,8 +198,6 @@ esticon.coxph <-
 ###
 ### ######################################################
 
-#' @export
-#' @rdname esticon
 esticon.lme <- function (obj, L, beta0, conf.int = NULL, level=0.95, joint.test=FALSE,...){
   warning("The esticon function has not been thoroughly teste on 'lme' objects")
   if (joint.test) .wald(obj, L, beta0)

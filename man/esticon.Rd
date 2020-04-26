@@ -2,14 +2,6 @@
 % Please edit documentation in R/esticon.R
 \name{esticon}
 \alias{esticon}
-\alias{esticon.geeglm}
-\alias{esticon.glm}
-\alias{esticon.gls}
-\alias{esticon.lm}
-\alias{esticon.lme}
-\alias{esticon.mer}
-\alias{esticon.merMod}
-\alias{esticon.coxph}
 \alias{coef.esticon_class}
 \alias{summary.esticon_class}
 \alias{tidy.esticon_class}
@@ -18,20 +10,6 @@
 \title{Contrasts for lm, glm, lme, and geeglm objects}
 \usage{
 esticon(obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE, ...)
-
-\method{esticon}{gls}(obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE, ...)
-
-\method{esticon}{geeglm}(obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE, ...)
-
-\method{esticon}{lm}(obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE, ...)
-
-\method{esticon}{glm}(obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE, ...)
-
-\method{esticon}{mer}(obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE, ...)
-
-\method{esticon}{coxph}(obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE, ...)
-
-\method{esticon}{lme}(obj, L, beta0, conf.int = NULL, level = 0.95, joint.test = FALSE, ...)
 
 \method{coef}{esticon_class}(object, ...)
 
@@ -162,8 +140,6 @@ est <- esticon(coxmod, L=rbind(AvB, CvB))
 est
 ##exp(est[, c(2, 7, 8)])
 }
-
-
 }
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}

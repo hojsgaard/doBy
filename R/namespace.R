@@ -5,11 +5,10 @@
 #' @importFrom Matrix Matrix sparseMatrix
 #' @importMethodsFrom Matrix t isSymmetric "%*%" solve diag
 
-#' @importFrom stats as.formula coef delete.response family
-#' fitted formula lm logLik median
-#' model.frame model.matrix pchisq pnorm pt
-#' qnorm qt residuals sd summary.lm terms
-#' vcov aggregate printCoefmat confint
+#' @importFrom stats as.formula coef delete.response family fitted
+#'     formula lm logLik median model.frame model.matrix pchisq pnorm
+#'     pt qnorm qt residuals sd summary.lm terms vcov aggregate
+#'     printCoefmat confint
 
 #' @importFrom plyr dlply
 #' @importFrom dplyr arrange_

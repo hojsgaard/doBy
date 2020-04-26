@@ -35,4 +35,4 @@ Suggests:
     survival,
     ggplot2,
     knitr
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
