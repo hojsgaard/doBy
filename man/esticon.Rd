@@ -2,8 +2,6 @@
 % Please edit documentation in R/esticon.R
 \name{esticon}
 \alias{esticon}
-\alias{esticon.lm}
-\alias{esticon.gls}
 \alias{coef.esticon_class}
 \alias{summary.esticon_class}
 \alias{tidy.esticon_class}

@@ -8,7 +8,7 @@
 ##
 ###############################################################################
 #'
-#' @aliases esticon.lm esticon.gls
+## #' @aliases esticon.lm esticon.gls
 #' 
 #' @details Let the estimated parameters of the model be
 #' \deqn{\beta_1, \beta_2, \dots, \beta_p}
@@ -116,6 +116,7 @@
 esticon <- function(obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...)
   UseMethod("esticon")
 
+#' @export esticon
 esticon.gls <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
     if (joint.test) .wald(obj, L, beta0)
     else {
@@ -128,6 +129,7 @@ esticon.gls <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=
     }
 }
 
+#' @export esticon
 esticon.geeglm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
     if (joint.test) .wald(obj, L, beta0)
     else {
@@ -139,6 +141,7 @@ esticon.geeglm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.te
     }
 }
 
+#' @export esticon
 esticon.lm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
     if (joint.test) .wald(obj, L, beta0)
     else {
@@ -151,6 +154,7 @@ esticon.lm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=F
   }
 }
 
+#' @export esticon
 esticon.glm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE,...){
     if (joint.test) .wald(obj, L, beta0)
     else {
@@ -167,6 +171,7 @@ esticon.glm <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=
     }
 }
 
+#' @export esticon
 esticon.merMod <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.test=FALSE, ...){ 
     if (joint.test) .wald(obj, L, beta0)
     else {
@@ -181,6 +186,7 @@ esticon.merMod <- function (obj, L, beta0, conf.int = TRUE, level=0.95, joint.te
     }
 }
 
+#' @export esticon
 esticon.coxph <-
     function (obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE, ...){
         if (joint.test == TRUE) .wald(obj, L, beta0)
@@ -201,6 +207,7 @@ esticon.coxph <-
 ###
 ### ######################################################
 
+#' @export esticon
 esticon.lme <- function (obj, L, beta0, conf.int = NULL, level=0.95, joint.test=FALSE,...){
   warning("The esticon function has not been thoroughly teste on 'lme' objects")
   if (joint.test) .wald(obj, L, beta0)
