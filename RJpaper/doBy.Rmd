@@ -1,21 +1,34 @@
 ---
-title: The `doBy` package
+title: The `doBy` package -- yet another utility package
 author:
   - name: Søren Højsgaard
     affiliation: Department of Mathematical Sciences, Aalborg University, Denmark
     address:
-    - line 1
-    - line 2
-    email:  sorenh@math.aau.dk
-abstract: >
-  The `doBy` is one of several general utility packages on CRAN. 
-  An abstract of less than 150 words.
+    - Skjernvej 4A
+    - 9220 Aalborg Ø, Denmark
+    email: sorenh@math.aau.dk
+abstract: > 
+  The `doBy` is one of several general utility packages on CRAN. We illustrate two main
+  features of the package. The ability to making groupwise computations and the ability
+  to compute linear estimates, contrasts and least-squares means.
 preamble: |
   % Any extra LaTeX you need in the preamble
-output: rticles::rjournal_article
+output: |
+  rticles::rjournal_article
 ---
 
+  <!-- pdf_document: -->
+  <!--   fig_caption: yes -->
+  <!--   keep_tex: true -->
+  <!--   toc: true -->
+  <!--   toc_depth: 3 -->
+  <!--   number_sections: true -->
+
+<!-- %%% output: rticles::rjournal_article -->
+
+
 ```{r, echo=FALSE}
+library(ggplot2)
 library(doBy)
 library(magrittr)
 options("digits"=4)
@@ -24,17 +37,17 @@ options("digits"=4)
 
 ## Introduction
 
-The `doBy` package [@doby] appeared on CRAN [@CRAN] in 2006 and, much
+The `doBy` package [@doby] appeared on CRAN in 2006 and, much
 to our surprise, the package is still being used.  The package
 originally grew out of a need to calculate groupwise summary
 statistics (much in the spirit of `PROC SUMMARY` of the `SAS` system,
-[@procsummary]). The name comes from `doing` som computations when
-data is stratified `by` the value of some variables.  Today the
-package contains many different utilities. In this paper we focus 1)
-on these "doing by" functions, 2) on functions related to linears
-estimates and contrasts and 3) on some of the miscellaneous functions
-in the package.
-
+[@procsummary]). The name comes from the need to __do__ some computations on data which is 
+stratified __By__ the value of some variables.  Today the
+package contains many different utilities.
+When it comes to data handling, `doBy` is nowhere nearly as powerful as more contemporary packages, e.g. those in the `tidyverse` eco system, [@tidyverse]. On the other hand, it can be hypothesized that the data handling functions in `doBy` remain appealing group of users because of their simplicity in use.
+In this paper we focus 1)
+on the "doing by" functions and 2) on functions related to linear
+estimates and contrasts. 
 
 
 ## Functions related to groupwise computations
@@ -52,44 +65,62 @@ data(CO2)
 CO2 <- within(CO2, {
     Treat <- Treatment
     Treatment <- NULL
-    levels(Treat) <- c("nchil","chil")
-    levels(Type)  <- c("Que","Mis")
+    levels(Treat) <- c("nchil", "chil")
+    levels(Type)  <- c("Que", "Mis")
 })
 CO2 <- subset(CO2, Plant %in% c("Qn1", "Qc1", "Mn1", "Mc1"))
-CO2
+dim(CO2)
+head(CO2, 4)
 ```
 
 ### The `summaryBy` function
 
-The `summaryBy` function is used for calculating quantities like __the
+The `summaryBy` function is used for calculating quantities like _the
 mean and variance of numerical variables `x` and `y` for each
-combination of two factors `A` and `B$`__.  Notice: A functionality
-similar to `summaryBy` is provided by `aggregate` from base R. [SH:
-DUMT at variabel skal navngives; det skal den ikke i aggregate].
+combination of two factors `A` and `B$`_.  Notice: A functionality
+similar to `summaryBy` is provided by `aggregate` from base R, but `summaryBy` offers additional features. 
+
 
 ```{r}
 myfun1 <- function(x){c(m=mean(x), s=sd(x))}
-summaryBy(cbind(conc, uptake, lu=log(uptake)) ~ Plant, 
-          data=CO2, FUN=myfun1)
+summaryBy(cbind(conc, uptake, lu=log(uptake)) ~ Plant, data=CO2, FUN=myfun1)
+## same as
+## aggregate(cbind(conc, uptake, log(uptake)) ~ Plant, data=CO2, FUN=myfun1)
 ```
 
-Instead of formula we may specify a list containing the left hand side
-and the right hand side of a formula (This is a feature of
-`summaryBy` and it does not work with `aggregate`.). 
-
-```{r}
-## FIXME: Will fail because of log(uptake) 
-summaryBy(list(c("conc", "uptake", "lu=log(uptake)"), "Plant"), data=CO2, FUN=myfun1)
-```
-
+The convention is that variables that do not appear in the dataframe (e.g. `log(uptake)`) must be named (here as `lu`). 
 Various convenient abbreviations are available, e.g. the following, where 
 left hand side dot refers to "all numeric variables" while the
-right hand side dot refers to "all factor variables".
+right hand side dot refers to "all factor variables". Writing `1` on the right hand side leads to computing over the entire dataset:
 
 ```{r}
-summaryBy(.~., data=CO2, FUN=myfun1)
-## same as summaryBy(list(c("."), c(".")), data=CO2, FUN=myfun1)
+summaryBy(. ~ ., data=CO2, FUN=myfun1)
+summaryBy(. ~ 1, data=CO2, FUN=myfun1)
 ```
+
+
+### Formulas and lists
+
+It is generally the case for the "By"-functions that a two sided formula like can be written in two ways:
+```{r, eval=FALSE}
+cbind(x, y) ~ A + B
+list(c("x", "y"), c("A", "B"))
+```
+
+Some "By"-functions only take a right hand sided formula as input. Such a formula can also be written in two ways:
+```{r, eval=FALSE}
+~ A + B
+c("A", "B")
+```
+
+The list-form / vector-form is especially useful if a function is invoked programatically. Hence the calls to `summaryBy` above can also be made as
+
+```{r, eval=FALSE}
+summaryBy(list(c("conc", "uptake", "lu=log(uptake)"), "Plant"), data=CO2, FUN=myfun1)
+summaryBy(list(c("."), c(".")), data=CO2, FUN=myfun1)
+summaryBy(list(c("."), c("1")), data=CO2, FUN=myfun1)
+```
+
 
 ### The `orderBy` function
 
@@ -98,12 +129,12 @@ function.  Suppose we want to order the rows of the the `CO2` data by
 increasing values of `conc` and decreasing value of `uptake` (within `code`):
 ```{r}
 x1 <- orderBy(~ conc - uptake, data=CO2)
-head(x1)
+head(x1, 4)
 ```
 
-An equivalent  form is:
-```{r}
-orderBy(c("conc", "-uptake"), data=CO2) %>% head
+Following the remarks on specification in "By"-functions, an equivalent form is:
+```{r, eval=F}
+orderBy(c("conc", "-uptake"), data=CO2) 
 ```
 
 ### The `splitBy` function
@@ -115,7 +146,7 @@ x1 <- splitBy(~ Plant + Type, data=CO2)
 x1
 ```
 
-The result is a list:
+The result is a list (with a few additional attributes):
 ```{r}
 lapply(x1, head, 2)
 ```
@@ -124,12 +155,12 @@ lapply(x1, head, 2)
 
 
 Suppose we want to select those rows within each treatment for which  the
-uptake is larger than 75% quantial of uptake (within the treatment). This
+uptake is larger than 75% quantile of uptake (within the treatment). This
 is achieved by:
 
 ```{r}
-x2 <- subsetBy(~Treat, subset=uptake > quantile(uptake, prob=0.75), data=CO2)
-x2
+x2 <- subsetBy(~ Treat, subset=uptake > quantile(uptake, prob=0.75), data=CO2)
+head(x2, 4)
 ```
 
 ### The `transformBy` function
@@ -138,19 +169,24 @@ The `transformBy` function is analogous to the `transform`
 function except that it works within groups. For example:
 
 ```{r}
-x <- transformBy(~Treat, data=CO2, 
+x3 <- transformBy(~ Treat, data=CO2, 
                  minU=min(uptake), maxU=max(uptake),
-                 range = diff(range(uptake)))
-head(x)
+                 range=diff(range(uptake)))
+head(x3, 4)
 ```
 
-## The `lmBy` function
+### The `lmBy` function
 
+The `lmBy` function allows for fitting linear models to different strata of data:
 ```{r}
 m <- lmBy(uptake ~ conc | Treat, data=CO2)
-lapply(m, function(z) coef(summary(z)))
+coef(m)
 ```
 
+The result is a list with a few additional attributes and the list can be processed further as e.g.
+```{r}
+lapply(m, function(z) coef(summary(z)))
+```
 
 
 ## Functions related linear estimates and contrasts
@@ -179,21 +215,30 @@ ToothGrowth$dose <- factor(ToothGrowth$dose)
 head(ToothGrowth, 4)
 ```
 
-```{r}
-with(ToothGrowth, interaction.plot(dose, supp, len))
+
+<!-- An **interaction plot** is a graphical visualization of the group -->
+<!-- averages, see where also variability -->
+<!-- in each group is displayed: -->
+
+```{r linear:interaction2, echo=F, fig.height=2, fig.cap="Interaction plot for the ToothGrowth data. The average `len` for each group is a dot. Boxplot outliers are crosses."}
+toothInt <- summaryBy(len ~ dose + supp, data=ToothGrowth)
+ggplot(ToothGrowth, aes(x = factor(dose), y = len, colour = supp)) +
+    geom_boxplot(outlier.shape = 4) +
+    geom_point(data = toothInt, aes(y = len.mean)) +
+    geom_line(data = toothInt, aes(y = len.mean, group = supp))
 ```
 
-
-### Computing linear estimates
-
-Focus on additive model:
+The interaction plot indicates some interaction between `dose` and `supp`.
+This is also supported by a formal test:
 ```{r}
 tooth1 <- lm(len ~ dose + supp, data=ToothGrowth)
 tooth2 <- lm(len ~ dose * supp, data=ToothGrowth)
 anova(tooth1, tooth2)
 ```
 
+### Computing linear estimates
 
+For now, we focus on the additive model. 
 Consider computing the estimated length for each dose of orange juice (OJ):
 One option: Construct the LE--matrix $L$ directly and then invoke `linest`:
 
@@ -227,8 +272,7 @@ c1 <- esticon(tooth1, L)
 c1
 ```
 
-Notice: `esticon` has been in the `doBy` package for many years;
-`linest` is a newer addition.  Yet another
+Yet another
 alternative in this case is to generate a new data frame and then
 invoke predict (but this approach is not generally applicable, see later):
 
@@ -251,8 +295,6 @@ L0 <- LE_matrix(tooth0, effect="dose")
 L0
 linest(tooth0, L=L0)
 ```
-<< >>= 
-@
 
 An alternative would be to stick to the original model but compute the
 estimate for an ``average vitamin C source''. That would correspond to
@@ -285,19 +327,6 @@ Notice: One may obtain the LSmean directly as:
 LSmeans(tooth1, effect="dose")
 ```
 
-%% \subsection{Additive model}
-%% \label{sec:additive-model}
-
-%% Returning to the \verb|ToothGrowth| data, orange juice and ascorbic
-%% acid are just two of many ways of supplying vitamin C (citrus and lime
-%% juice would be two alternatives). Here one can therefore argue, that
-%% it would make sense to estimate the the effect for each dose for an
-%% ``average vitamin C source'':
-
-%% << >>= 
-%% LSmeans(tooth1, effect="dose")
-%% @
-
 which is the same as
 
 ```{r}
@@ -306,9 +335,7 @@ le <- linest(tooth1, L=L)
 coef(le)
 ```
 
-%% \subsection{Interaction model}
-%% \label{sec:interaction-model}
-
+### Interaction model
 
 For a model with interactions, the LSmeans are
 ```{r}
@@ -322,69 +349,9 @@ t(L)
 
 ```
 
-### Using the `at=` argument
 
 
-Consider random regression model:
-```{r}
-library(lme4)
-chick <- lmer(weight ~ Time * Diet + (0 + Time | Chick), 
-           data=ChickWeight)
-coef(summary(chick))
-```
-
-
-<!-- The LE--matrix for \cc{Diet} becomes: -->
-<!-- <<>>= -->
-<!-- L <- LE_matrix(chick, effect="Diet") -->
-<!-- t(L) -->
-<!-- @ %def -->
-
-<!-- The value of \cc{Time} is by default taken to be the average of that -->
-<!-- variable. Hence the \lsmeans\ is the predicted weight for each diet at -->
-<!-- that specific point of time. We can consider other points of time with -->
-<!-- <<>>= -->
-<!-- K1 <- LE_matrix(chick, effect="Diet", at=list(Time=1)) -->
-<!-- t(K1) -->
-<!-- @ %def -->
-
-<!-- The \lsmeans\ for the intercepts is the predictions at -->
-<!-- \cc{Time=0}. The \lsmeans\ for the slopes becomes -->
-<!-- <<>>= -->
-<!-- K0 <- LE_matrix(chick, effect="Diet", at=list(Time=0)) -->
-<!-- t(K1 - K0) -->
-<!-- linest(chick, L=K1-K0) -->
-<!-- @ %def -->
-
-<!-- We can cook up our own function for comparing trends: -->
-
-<!-- <<>>= -->
-<!-- LSmeans_trend <- function(object, effect, trend){ -->
-<!--     L <- LE_matrix(object, effect=effect, at=as.list(setNames(1, trend))) - -->
-<!--         LE_matrix(object, effect=effect, at=as.list(setNames(0, trend))) -->
-<!--     linest(object, L=L) -->
-<!-- } -->
-<!-- LSmeans_trend(chick, effect="Diet", trend="Time") -->
-<!-- @ %def -->
-
-
-\section{Using (transformed) covariates}
-\label{sec:using-covariates}
-
-Consider the following subset of the `CO2` dataset:
-
-```{r}
-data(CO2)
-CO2 <- transform(CO2, Treat=Treatment, Treatment=NULL)
-levels(CO2$Treat) <- c("nchil","chil")
-levels(CO2$Type) <- c("Que","Mis")
-ftable(xtabs( ~ Plant + Type + Treat, data=CO2), col.vars=2:3)
-```
-
-<!-- <<co2-fig, fig.cap="CO2 data">>= -->
-<!-- qplot(x=log(conc), y=uptake, data=CO2, color=Treat, facets=~Type) -->
-<!-- @ %def -->
-
+### Using (transformed) covariates
 
 Below, the covariate `conc` is fixed at the average value:
 ```{r}
@@ -393,13 +360,8 @@ LSmeans(co2.lm1, effect="Treat")
 ```
 
 If we use `log(conc)` instead we will get an error when
-calculating LS--means:
-```{r, eval=FALSE}
-co2.lm <- lm(uptake ~ log(conc) + Type + Treat, data=CO2)
-LSmeans(co2.lm, effect="Treat")
-```
-	
-In this case one can do
+calculating LS--means because `log(conc)` is not a variable in the dataframe. 
+Instead one can do:
 ```{r}
 co2.lm2 <- lm(uptake ~ log.conc + Type + Treat,
              data=transform(CO2, log.conc=log(conc)))
@@ -431,12 +393,67 @@ LSmeans(co2.lm4, effect="Treat", at=list(conc=10, conc2=100))
 ```
 
 
+## Alternative models
+
+### Generalized linear models
+
+We can calculate LS--means for e.g.\ a Poisson or a gamma model. Default is that
+the calculation is calculated on the scale of the linear
+predictor. However, if
+we think of LS--means as a prediction on the linear scale one may
+argue that it can also make sense to transform this prediction to
+the response scale:
+
+```{r}
+tooth.gam <- glm(len ~ dose + supp, family=Gamma, data=ToothGrowth)
+LSmeans(tooth.gam, effect="dose", type="link")
+LSmeans(tooth.gam, effect="dose", type="response")
+```
 
 
+### Linear mixed effects model
 
+For the sake of illustration we treat \verb|supp| as a random effect:
+```{r}
+library(lme4)
+tooth.mix <- lmer( len ~ dose  + (1|supp), data=ToothGrowth)
+LSmeans(tooth1, effect="dose")
+LSmeans(tooth.mix, effect="dose")
+```
 
+Notice here that the estimates themselves identical to those of a
+linear model (that is not generally the case, but it is so here
+because data is balanced). In general the estimates are will be 
+very similar but the standard errors are much larger under the mixed model.
+This comes from that
+there that `supp` is treated as a random effect.
+```{r}
+VarCorr(tooth.mix)
+```
 
+Notice that the degrees of freedom by default are adjusted using a
+Kenward--Roger approximation (provided that `pbkrtest` is
+installed). Unadjusted degrees of freedom are obtained by setting \verb|adjust.df=FALSE|. 
+```{r}
+LSmeans(tooth.mix, effect="dose", adjust.df=FALSE)
+```
 
+<!-- % Notice that the degrees of freedom by default are adjusted using a -->
+<!-- % Kenward--Roger approximation (provided that `pbkrtest` is -->
+<!-- % installed). Unadjusted degrees of freedom are obtained with -->
+<!-- % <<>>= -->
+<!-- % LSmeans(warp.mm, effect="tension", adjust.df=FALSE) -->
+<!-- % @ %def -->
+
+### Generalized estimating equations
+
+Lastly, for gee-type ``models'' we get
+```{r}
+library(geepack)
+tooth.gee <- geeglm(len ~ dose, id=supp, family=Gamma, data=ToothGrowth)
+LSmeans(tooth.gee, effect="dose")
+LSmeans(tooth.gee, effect="dose", type="response")
+```
 
 
 
@@ -448,13 +465,13 @@ making various suggestions to the functionality in the `doBy`
 package.
 
 
-## Summary
-
-This file is only a basic article template. For full details of _The R Journal_ style and information on how to prepare your article for submission, see the [Instructions for Authors](https://journal.r-project.org/share/author-guide.pdf).
 
 \bibliography{RJreferences}
 
 
+<!-- ## Summary -->
+
+<!-- This file is only a basic article template. For full details of _The R Journal_ style and information on how to prepare your article for submission, see the [Instructions for Authors](https://journal.r-project.org/share/author-guide.pdf). -->
 
 
 
