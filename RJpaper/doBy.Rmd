@@ -27,28 +27,46 @@ output: |
 <!-- %%% output: rticles::rjournal_article -->
 
 
-```{r, echo=FALSE}
+
+
+```{r echo=FALSE, results="hide", messages=FALSE}
+knitr::opts_chunk$set(fig.path="fig/doby-", tidy=FALSE,
+                      cache=!TRUE,
+                      fig.width=5, fig.height=2.5, size="small", out.extra='keepaspectratio')
+options("show.signif.stars"=FALSE)
+options("digits"=4)
+suppressPackageStartupMessages({
 library(ggplot2)
 library(doBy)
+library(Matrix)
+library(lme4)
 library(magrittr)
-options("digits"=4)
+library(tidyverse);
+library(broom)
+})
 ```
+
+
+
 
 
 ## Introduction
 
-The `doBy` package [@doby] appeared on CRAN in 2006 and, much
-to our surprise, the package is still being used.  The package
+The package
 originally grew out of a need to calculate groupwise summary
 statistics (much in the spirit of `PROC SUMMARY` of the `SAS` system,
 [@procsummary]). The name `doBy` comes from the need to __do__ some computations on data which is 
-stratified __By__ the value of some variables.  Today the
-package contains many additional utilities.
-When it comes to data handling, `doBy` is nowhere nearly as powerful as more contemporary packages, e.g. those in the `tidyverse` eco system, [@tidyverse]. On the other hand, it can be hypothesized that the data handling functions in `doBy` remain appealing to a group of users because of their simplicity in use. In additon, `doBy` is based on classical data structures that are unlikely to undergo sudden changes. API....
+stratified __By__ the value of some variables.  The `doBy` package [@doby] appeared on CRAN in 2006.
+Today the
+package contains many additional utilities. 
+
+When it comes to data handling, `doBy` is nowhere nearly as powerful as more contemporary packages, such as those in the `tidyverse` eco system, [@tidyverse]. On the other hand, `doBy` is based on classical data structures that are unlikely to undergo sudden changes. Moreover, 
+it can be hypothesized that the data handling functions in `doBy` remain appealing to a group of users because of their simplicity in use. 
 
 In this paper we focus 1)
 on the "doing by" functions and 2) on functions related to linear
 estimates and contrasts. 
+
 
 
 ## Functions related to groupwise computations
@@ -374,86 +392,36 @@ LSmeans(co2.lm4, effect="Treat", at=list(conc=10, conc2=100))
 
 ## Alternative models
 
-### Generalized linear models
-
-We can calculate LS--means for e.g.\ a Poisson or a gamma model. Default is that
-the calculation is calculated on the scale of the linear
-predictor. However, if
-we think of LS--means as a prediction on the linear scale one may
-argue that it can also make sense to transform this prediction to
-the response scale:
-
-```{r}
-tooth.gam <- glm(len ~ dose + supp, family=Gamma, data=ToothGrowth)
-### FIXME: Why are they the same???
-
-L <- LE_matrix(tooth.gam, effect="dose")
-linest(tooth.gam, L)
-
-LSmeans(tooth.gam, effect="dose", type="link")
-LSmeans(tooth.gam, effect="dose", type="response")
-
-
-z<-coef(LSmeans(tooth.gam, effect="dose", type="link"))
-
-mu <- g$linkinv(z$estimate)
-
-se.mu <- sqrt(abs(g$mu.eta(z$estimate))) * z$std.error
-
-stat.mu <- mu / se.mu
-
-stat.mu
-
-```
-
 
 ### Linear mixed effects model
 
 For the sake of illustration we treat \verb|supp| as a random effect:
 ```{r}
-### FIXME: Verbose
 library(lme4)
-tooth.mix <- lmer( len ~ dose  + (1|supp), data=ToothGrowth)
+tooth.mix <- lmer(len ~ dose + (1|supp), data=ToothGrowth)
 LSmeans(tooth.mix, effect="dose")
 ```
 
-Notice here that the estimates themselves identical to those of a
-linear model (that is not generally the case, but it is so here
-because data is balanced). 
-__FIXME: PAS PÅ HER.__
-In general the estimates are will be 
-very similar but the standard errors are much larger under the mixed model.
-This comes from that
-there that `supp` is treated as a random effect.
-
+Notice here that the parameter estimates themselves are similar to those of a linear model (had data been completely balanced, the estimates would have been identical). However, the standard errors of the the estimates are much larger under the mixed model.
+This comes from that `supp` is treated as a random effect.
 Notice that the degrees of freedom by default are adjusted using a
-Kenward--Roger approximation (provided that `pbkrtest` is
-installed). __FIXME: ref til pbkrtest...__
-Unadjusted degrees of freedom are obtained by setting \verb|adjust.df=FALSE|. 
+Kenward--Roger approximation (provided that `pbkrtest` package [@pbkrtest] is
+installed). Adustment of degrees of freedom is controlled with the `adjust.df` argument.
+
+### Generalized linear models and generalized estimating equations
+
+We can calculate LS--means for e.g.\ a Poisson or a gamma model. Notice that the LS--means are on the scale of the linear predictor - not on the scale of the response.
+
 ```{r}
-LSmeans(tooth.mix, effect="dose", adjust.df=FALSE)
-## FIXME: adjust.df skal være NULL istedet
+tooth.gam <- glm(len ~ dose + supp, family=Gamma, data=ToothGrowth)
+LSmeans(tooth.gam, effect="dose")
 ```
 
-
-
-
-<!-- % Notice that the degrees of freedom by default are adjusted using a -->
-<!-- % Kenward--Roger approximation (provided that `pbkrtest` is -->
-<!-- % installed). Unadjusted degrees of freedom are obtained with -->
-<!-- % <<>>= -->
-<!-- % LSmeans(warp.mm, effect="tension", adjust.df=FALSE) -->
-<!-- % @ %def -->
-
-### Generalized estimating equations
-
-Lastly, for gee-type ``models'' we get
+Similarly, for gee-type models we get:
 ```{r}
 library(geepack)
 tooth.gee <- geeglm(len ~ dose, id=supp, family=Gamma, data=ToothGrowth)
 LSmeans(tooth.gee, effect="dose")
-LSmeans(tooth.gee, effect="dose", type="response")
-## FIXME: type= argumentet virker ikke...
 ```
 
 

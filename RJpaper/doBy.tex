@@ -14,20 +14,21 @@ contrasts and least-squares means.
 \hypertarget{introduction}{%
 \subsection{Introduction}\label{introduction}}
 
-The \texttt{doBy} package \citep{doby} appeared on CRAN in 2006 and,
-much to our surprise, the package is still being used. The package
-originally grew out of a need to calculate groupwise summary statistics
-(much in the spirit of \texttt{PROC\ SUMMARY} of the \texttt{SAS}
-system, \citep{procsummary}). The name \texttt{doBy} comes from the need
-to \textbf{do} some computations on data which is stratified \textbf{By}
-the value of some variables. Today the package contains many additional
-utilities. When it comes to data handling, \texttt{doBy} is nowhere
-nearly as powerful as more contemporary packages, e.g.~those in the
-\texttt{tidyverse} eco system, \citep{tidyverse}. On the other hand, it
-can be hypothesized that the data handling functions in \texttt{doBy}
-remain appealing to a group of users because of their simplicity in use.
-In additon, \texttt{doBy} is based on classical data structures that are
-unlikely to undergo sudden changes. API\ldots.
+The package originally grew out of a need to calculate groupwise summary
+statistics (much in the spirit of \texttt{PROC\ SUMMARY} of the
+\texttt{SAS} system, \citep{procsummary}). The name \texttt{doBy} comes
+from the need to \textbf{do} some computations on data which is
+stratified \textbf{By} the value of some variables. The \texttt{doBy}
+package \citep{doby} appeared on CRAN in 2006. Today the package
+contains many additional utilities.
+
+When it comes to data handling, \texttt{doBy} is nowhere nearly as
+powerful as more contemporary packages, such as those in the
+\texttt{tidyverse} eco system, \citep{tidyverse}. On the other hand,
+\texttt{doBy} is based on classical data structures that are unlikely to
+undergo sudden changes. Moreover, it can be hypothesized that the data
+handling functions in \texttt{doBy} remain appealing to a group of users
+because of their simplicity in use.
 
 In this paper we focus 1) on the ``doing by'' functions and 2) on
 functions related to linear estimates and contrasts.
@@ -375,7 +376,7 @@ head(ToothGrowth, 4)
 
 \begin{Schunk}
 \begin{figure}
-\includegraphics{doBy_files/figure-latex/linear:interaction2-1} \caption[Interaction plot for the ToothGrowth data]{Interaction plot for the ToothGrowth data. The average `len` for each group is a dot. Boxplot outliers are crosses.}\label{fig:linear:interaction2}
+\includegraphics[keepaspectratio]{fig/doby-linear:interaction2-1} \caption[Interaction plot for the ToothGrowth data]{Interaction plot for the ToothGrowth data. The average `len` for each group is a dot. Boxplot outliers are crosses.}\label{fig:linear:interaction2}
 \end{figure}
 \end{Schunk}
 
@@ -393,11 +394,9 @@ anova(tooth1, tooth2)
 #> 
 #> Model 1: len ~ dose + supp
 #> Model 2: len ~ dose * supp
-#>   Res.Df RSS Df Sum of Sq    F Pr(>F)  
-#> 1     53 789                           
-#> 2     51 685  2       104 3.88  0.027 *
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#>   Res.Df RSS Df Sum of Sq    F Pr(>F)
+#> 1     53 789                         
+#> 2     51 685  2       104 3.88  0.027
 \end{Soutput}
 \end{Schunk}
 
@@ -693,41 +692,6 @@ LSmeans(co2.lm4, effect="Treat", at=list(conc=10, conc2=100))
 \hypertarget{alternative-models}{%
 \subsection{Alternative models}\label{alternative-models}}
 
-\hypertarget{generalized-linear-models}{%
-\subsubsection{Generalized linear
-models}\label{generalized-linear-models}}
-
-We can calculate LS--means for e.g.~a Poisson or a gamma model. Default
-is that the calculation is calculated on the scale of the linear
-predictor. However, if we think of LS--means as a prediction on the
-linear scale one may argue that it can also make sense to transform this
-prediction to the response scale:
-
-\begin{Schunk}
-\begin{Sinput}
-tooth.gam <- glm(len ~ dose + supp, family=Gamma, data=ToothGrowth)
-### FIXME: Why are they the same???
-LSmeans(tooth.gam, effect="dose", type="link")
-\end{Sinput}
-\begin{Soutput}
-#> Coefficients:
-#>      estimate std.error statistic p.value
-#> [1,]  0.09086   0.00567  16.02215       0
-#> [2,]  0.05104   0.00294  17.33506       0
-#> [3,]  0.03880   0.00224  17.30448       0
-\end{Soutput}
-\begin{Sinput}
-LSmeans(tooth.gam, effect="dose", type="response")
-\end{Sinput}
-\begin{Soutput}
-#> Coefficients:
-#>      estimate std.error statistic p.value
-#> [1,]  0.09086   0.00567  16.02215       0
-#> [2,]  0.05104   0.00294  17.33506       0
-#> [3,]  0.03880   0.00224  17.30448       0
-\end{Soutput}
-\end{Schunk}
-
 \hypertarget{linear-mixed-effects-model}{%
 \subsubsection{Linear mixed effects
 model}\label{linear-mixed-effects-model}}
@@ -736,14 +700,8 @@ For the sake of illustration we treat \verb|supp| as a random effect:
 
 \begin{Schunk}
 \begin{Sinput}
-### FIXME: Verbose
 library(lme4)
-\end{Sinput}
-\begin{Soutput}
-#> Loading required package: Matrix
-\end{Soutput}
-\begin{Sinput}
-tooth.mix <- lmer( len ~ dose  + (1|supp), data=ToothGrowth)
+tooth.mix <- lmer(len ~ dose + (1|supp), data=ToothGrowth)
 LSmeans(tooth.mix, effect="dose")
 \end{Sinput}
 \begin{Soutput}
@@ -755,39 +713,39 @@ LSmeans(tooth.mix, effect="dose")
 \end{Soutput}
 \end{Schunk}
 
-Notice here that the estimates themselves identical to those of a linear
-model (that is not generally the case, but it is so here because data is
-balanced). \textbf{FIXME: PAS PÅ HER.} In general the estimates are will
-be very similar but the standard errors are much larger under the mixed
-model. This comes from that there that \texttt{supp} is treated as a
-random effect.
+Notice here that the parameter estimates themselves are similar to those
+of a linear model (had data been completely balanced, the estimates
+would have been identical). However, the standard errors of the the
+estimates are much larger under the mixed model. This comes from that
+\texttt{supp} is treated as a random effect. Notice that the degrees of
+freedom by default are adjusted using a Kenward--Roger approximation
+(provided that \texttt{pbkrtest} package \citep{pbkrtest} is installed).
+Adustment of degrees of freedom is controlled with the
+\texttt{adjust.df} argument.
 
-Notice that the degrees of freedom by default are adjusted using a
-Kenward--Roger approximation (provided that \texttt{pbkrtest} is
-installed). \textbf{FIXME: ref til pbkrtest\ldots{}} Unadjusted degrees
-of freedom are obtained by setting \verb|adjust.df=FALSE|.
+\hypertarget{generalized-linear-models-and-generalized-estimating-equations}{%
+\subsubsection{Generalized linear models and generalized estimating
+equations}\label{generalized-linear-models-and-generalized-estimating-equations}}
+
+We can calculate LS--means for e.g.~a Poisson or a gamma model. Notice
+that the LS--means are on the scale of the linear predictor - not on the
+scale of the response.
 
 \begin{Schunk}
 \begin{Sinput}
-LSmeans(tooth.mix, effect="dose", adjust.df=FALSE)
+tooth.gam <- glm(len ~ dose + supp, family=Gamma, data=ToothGrowth)
+LSmeans(tooth.gam, effect="dose")
 \end{Sinput}
 \begin{Soutput}
 #> Coefficients:
-#>      estimate std.error statistic    df p.value
-#> [1,]    10.84      1.95      5.56 52.00       0
-#> [2,]    19.73      1.91     10.32 52.00       0
-#> [3,]    26.10      1.91     13.65 52.00       0
+#>      estimate std.error statistic p.value
+#> [1,]  0.09086   0.00567  16.02215       0
+#> [2,]  0.05104   0.00294  17.33506       0
+#> [3,]  0.03880   0.00224  17.30448       0
 \end{Soutput}
-\begin{Sinput}
-## FIXME: adjust.df skal være NULL istedet
-\end{Sinput}
 \end{Schunk}
 
-\hypertarget{generalized-estimating-equations}{%
-\subsubsection{Generalized estimating
-equations}\label{generalized-estimating-equations}}
-
-Lastly, for gee-type ``models'' we get
+Similarly, for gee-type models we get:
 
 \begin{Schunk}
 \begin{Sinput}
@@ -802,19 +760,6 @@ LSmeans(tooth.gee, effect="dose")
 #> [2,] 5.07e-02  5.38e-03  9.41e+00       0
 #> [3,] 3.83e-02  4.15e-05  9.23e+02       0
 \end{Soutput}
-\begin{Sinput}
-LSmeans(tooth.gee, effect="dose", type="response")
-\end{Sinput}
-\begin{Soutput}
-#> Coefficients:
-#>      estimate std.error statistic p.value
-#> [1,] 8.99e-02  1.42e-02  6.35e+00       0
-#> [2,] 5.07e-02  5.38e-03  9.41e+00       0
-#> [3,] 3.83e-02  4.15e-05  9.23e+02       0
-\end{Soutput}
-\begin{Sinput}
-## FIXME: type= argumentet virker ikke...
-\end{Sinput}
 \end{Schunk}
 
 \hypertarget{acknowledgements}{%
