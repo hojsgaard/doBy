@@ -24,7 +24,6 @@
 #' @examples
 #' 
 #' bb <- lmBy(1 / uptake ~ log(conc) | Treatment, data=CO2)
-#' 
 #' coef(bb)
 #' 
 #' fitted(bb)
@@ -33,14 +32,6 @@
 #' summary(bb)
 #' coef(summary(bb))
 #' coef(summary(bb), simplify=TRUE)
-#'
-#' ## A more modern alternative based on tidyverse end broom
-#'
-#' ## if (require(tidyverse) && require(broom)){
-#' ##  gg <- CO2 %>% group_by(Treatment)
-#' ##  gg %>% do(broom::tidy(lm(1 / uptake ~ log(conc), data=.)))
-#' ##}
-#' 
 
 #' @export
 #' @rdname by-lmby
@@ -88,7 +79,7 @@ summary.lmBy <- function(object, ...){
 #' @export
 print.summary_lmBy <- function(x, ...){
   lapply(x, print)
-  return(invisible(x))
+  invisible(x)
 }
 
 #' @export
@@ -99,7 +90,6 @@ coef.summary_lmBy <- function(object, simplify=FALSE, ...){
     cn <- colnames(cc)
     rn <- rownames(cc)
 
-    
     nn <- names(ans)
     rn <- rownames(ans[[1]])
     ff <- factor(rep(nn, each=length(rn)))
@@ -110,7 +100,6 @@ coef.summary_lmBy <- function(object, simplify=FALSE, ...){
   }
   ans
 }
-
 
 #' @export
 getBy <- function(object, name=c()){

@@ -152,6 +152,7 @@ The result is a list (with a few additional attributes):
 lapply(x1, head, 2)
 ```
 
+
 ### The `subsetBy` function
 
 
@@ -385,8 +386,24 @@ the response scale:
 ```{r}
 tooth.gam <- glm(len ~ dose + supp, family=Gamma, data=ToothGrowth)
 ### FIXME: Why are they the same???
+
+L <- LE_matrix(tooth.gam, effect="dose")
+linest(tooth.gam, L)
+
 LSmeans(tooth.gam, effect="dose", type="link")
 LSmeans(tooth.gam, effect="dose", type="response")
+
+
+z<-coef(LSmeans(tooth.gam, effect="dose", type="link"))
+
+mu <- g$linkinv(z$estimate)
+
+se.mu <- sqrt(abs(g$mu.eta(z$estimate))) * z$std.error
+
+stat.mu <- mu / se.mu
+
+stat.mu
+
 ```
 
 

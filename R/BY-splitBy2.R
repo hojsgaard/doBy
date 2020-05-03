@@ -1,5 +1,3 @@
-### FIXME splitBy: Change names
-
 ###########################################################################
 #' @title Split a data frame
 #' @description Split a dataframe according to the levels of variables
@@ -7,6 +5,7 @@
 #'     formula or as a character vector.
 #' @name by-split
 ###########################################################################
+#'
 #' @param formula Variables to split data frame by, as ‘as.quoted’ variables,
 #'     a formula or character vector.
 #' @param data A data frame
@@ -28,8 +27,6 @@
 #' splitBy(~Month, data=airquality)
 #' splitBy("Month", data=airquality)
 
-
-
 #'@export splitBy
 #' @rdname by-split
 splitBy <-function (formula, data = parent.frame(), drop=TRUE) {
@@ -50,7 +47,6 @@ splitBy <-function (formula, data = parent.frame(), drop=TRUE) {
     factor.columns <- which(unlist(lapply(cls, function(x) any( x %in% "factor"))))
                                         #print(factor.columns)
 
-    
     cls       <- lapply(data, class)
     num.idx   <- cls %in% c("numeric","integer")
     fac.var   <- data.var[ !num.idx ]
@@ -66,9 +62,9 @@ splitBy <-function (formula, data = parent.frame(), drop=TRUE) {
     ## FIXME rhs.fac, rhs.var -- clean up!!!
     ## Use: data, rhs.fac, rh.trivial
     if ( rh.trivial ){
-    grps <- rep.int(1, nrow(data))
-    unique.grps <- 1
-    rh.idx    <- 1
+        grps <- rep.int(1, nrow(data))
+        unique.grps <- 1
+        rh.idx    <- 1
     } else {
         grps <- .get_rhs_string( data, rhs.fac, sep.string="|")
         unique.grps <- unique(grps)
@@ -117,7 +113,6 @@ print.splitByData <- function(x, ...){
 
 ## #' @rdname by-split
 ## split_by <- function(data, formula){
-##     plyr::dlply(data, formula, base::identity)
 ## }
 
 ## splitBy <- function(formula, data, drop=TRUE){

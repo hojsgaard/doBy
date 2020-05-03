@@ -10,11 +10,7 @@
 #'     pt qnorm qt residuals sd summary.lm terms vcov aggregate
 #'     printCoefmat confint
 
-#' @importFrom plyr dlply
-#' @importFrom dplyr arrange_
 #' @importFrom Deriv Deriv
-#' @importFrom tibble as_tibble
-#' @importFrom broom tidy
 #' @importFrom magrittr "%>%"
 #' @export  "%>%"
 #' @importFrom utils str

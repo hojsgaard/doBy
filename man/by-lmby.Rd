@@ -38,7 +38,6 @@ The data is split into strata according to the levels
 \examples{
 
 bb <- lmBy(1 / uptake ~ log(conc) | Treatment, data=CO2)
-
 coef(bb)
 
 fitted(bb)
@@ -47,14 +46,6 @@ residuals(bb)
 summary(bb)
 coef(summary(bb))
 coef(summary(bb), simplify=TRUE)
-
-## A more modern alternative based on tidyverse end broom
-
-## if (require(tidyverse) && require(broom)){
-##  gg <- CO2 \%>\% group_by(Treatment)
-##  gg \%>\% do(broom::tidy(lm(1 / uptake ~ log(conc), data=.)))
-##}
-
 }
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}

@@ -22,8 +22,6 @@ Imports:
     pbkrtest (>= 0.4-8.1),
     MASS,
     Matrix,
-    dplyr,
-    plyr,
     magrittr,
     Deriv,
     tibble,

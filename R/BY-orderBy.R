@@ -85,34 +85,10 @@ orderBy <- function (formula, data){
 
 ## #' @rdname by-order
 ## order_by <- function(data, formula){
-
-##     if (!(is.data.frame(data) | is.matrix(data)))
-##         stop("'data' must be dataframe or matrix")
-    
-##     formula <- unlist(.rhsf2list(formula))    
-##     cls <- class(data)
-    
-##     if (cls == "matrix")
-##         data <- as.data.frame(data)
-##     out <- dplyr::arrange_(data, .dots=formula)
-##     if (cls == "matrix") as.matrix(out) else out
 ## }
 
 
 
-## orderBy <- function(formula, data){
-
-##     if (!(is.data.frame(data) | is.matrix(data)))
-##         stop("'data' must be dataframe or matrix")
-    
-##     formula <- unlist(.rhsf2list(formula))    
-##     cls <- class(data)
-    
-##     if (cls == "matrix")
-##         data <- as.data.frame(data)
-##     out <- dplyr::arrange_(data, .dots=formula)
-##     if (cls == "matrix") as.matrix(out) else out
-## }
 
 
 

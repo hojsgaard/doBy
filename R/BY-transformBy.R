@@ -1,9 +1,12 @@
 ###############################################################################
+#'
 #' @title Function to make groupwise transformations
 #' @description Function to make groupwise transformations of data by applying
 #'     the transform function to subsets of data.
 #' @name by-transform
+#' 
 ###############################################################################
+#'
 #' @details The ... arguments are tagged vector expressions, which are evaluated
 #'     in the data frame data. The tags are matched against names(data), and for
 #'     those that match, the value replace the corresponding variable in data,
@@ -45,11 +48,15 @@ transformBy <- function (formula, data, ...) {
       return(data)
     }
 
-  ddd <- splitBy(formula, data=data, drop=TRUE)
-  ee <- lapply(ddd, function(d){
-    transform2(d, ...)
-  })
-  do.call("rbind",ee)
+    ddd <- splitBy(formula, data=data, drop=TRUE)
+    ee <- lapply(ddd, function(d){
+        transform2(d, ...)
+    })
+
+    
+    out  <- do.call("rbind", ee)
+    rownames(out) <- NULL
+    out
 }
 
 ## #' @rdname by-transform

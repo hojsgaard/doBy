@@ -402,19 +402,6 @@ print.esticon_class <- function(x, ...){
 }
 
 
-#' @export
-#' @rdname esticon
-tidy.esticon_class <- function(x, conf.int = FALSE, conf.level = 0.95, ...){
-    co <- x[,1:6]
-    rownames(co) <- NULL
-
-    if (conf.int){
-        ci <- confint(x, level=conf.level)
-        colnames(ci) <- c("conf.low", "conf.high")    
-        co <- cbind(co, ci)
-    }
-    as_tibble(co)
-}
 
 
 #' @export
