@@ -3,11 +3,26 @@
 \name{by-summary}
 \alias{by-summary}
 \alias{summaryBy}
+\alias{summary_by}
 \title{Function to calculate groupwise summary statistics}
 \usage{
 summaryBy(
   formula,
   data = parent.frame(),
+  id = NULL,
+  FUN = mean,
+  keep.names = FALSE,
+  p2d = FALSE,
+  order = TRUE,
+  full.dimension = FALSE,
+  var.names = NULL,
+  fun.names = NULL,
+  ...
+)
+
+summary_by(
+  data,
+  formula,
   id = NULL,
   FUN = mean,
   keep.names = FALSE,

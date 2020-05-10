@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: RJwrapper.aux
+The style file: abbrvnat.bst
+Database file #1: doby-hojsgaard.bib
+You've used 6 entries,
+            2773 wiz_defined-function locations,
+            632 strings with 5859 characters,
+and the built_in function-call counts, 3647 in all, are:
+= -- 298
+> -- 340
+< -- 3
++ -- 114
+- -- 108
+* -- 347
+:= -- 603
+add.period$ -- 21
+call.type$ -- 6
+change.case$ -- 52
+chr.to.int$ -- 6
+cite$ -- 12
+duplicate$ -- 117
+empty$ -- 201
+format.name$ -- 118
+if$ -- 714
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 4
+newline$ -- 41
+num.names$ -- 24
+pop$ -- 94
+preamble$ -- 1
+purify$ -- 48
+quote$ -- 0
+skip$ -- 112
+stack$ -- 0
+substring$ -- 72
+swap$ -- 9
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 66
+warning$ -- 0
+while$ -- 25
+width$ -- 0
+write$ -- 89

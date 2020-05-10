@@ -3,9 +3,12 @@
 \name{by-order}
 \alias{by-order}
 \alias{orderBy}
+\alias{order_by}
 \title{Ordering (sorting) rows of a data frame}
 \usage{
 orderBy(formula, data)
+
+order_by(data, formula, FUN = mean)
 }
 \arguments{
 \item{formula}{The right hand side of a formula}

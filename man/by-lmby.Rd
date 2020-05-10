@@ -2,6 +2,7 @@
 % Please edit documentation in R/BY-lmBy.R
 \name{by-lmby}
 \alias{by-lmby}
+\alias{lm_by}
 \alias{lmBy}
 \alias{coef.lmBy}
 \alias{coef.summary_lmBy}
@@ -11,16 +12,18 @@
 \alias{getBy}
 \title{List of lm objects with a common model}
 \usage{
+lm_by(data, formula, id = NULL, ...)
+
 lmBy(formula, data, id = NULL, ...)
 }
 \arguments{
+\item{data}{A dataframe}
+
 \item{formula}{A linear model formula object of the form y ~ x1 +
 ... + xn | g1 + ... + gm.  In the formula object, y represents
 the response, x1, ... ,xn the covariates, and the grouping
 factors specifying the partitioning of the data according to
 which different lm fits should be performed.}
-
-\item{data}{A dataframe}
 
 \item{id}{A formula describing variables from data which are to be
 available also in the output.}

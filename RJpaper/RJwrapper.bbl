@@ -1,0 +1,51 @@
+\begin{thebibliography}{6}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bates et~al.(2015)Bates, M{\"a}chler, Bolker, and Walker]{lme4}
+D.~Bates, M.~M{\"a}chler, B.~Bolker, and S.~Walker.
+\newblock Fitting linear mixed-effects models using {lme4}.
+\newblock \emph{Journal of Statistical Software}, 67\penalty0 (1):\penalty0
+  1--48, 2015.
+\newblock \doi{10.18637/jss.v067.i01}.
+
+\bibitem[Dowle and Srinivasan(2019)]{data.table}
+M.~Dowle and A.~Srinivasan.
+\newblock \emph{data.table: Extension of `data.frame`}, 2019.
+\newblock URL \url{https://CRAN.R-project.org/package=data.table}.
+\newblock R package version 1.12.8.
+
+\bibitem[Halekoh and H{\o}jsgaard(2014)]{pbkrtest}
+U.~Halekoh and S.~H{\o}jsgaard.
+\newblock A kenward-roger approximation and parametric bootstrap methods for
+  tests in linear mixed models -- the {R} package {pbkrtest}.
+\newblock \emph{Journal of Statistical Software}, 59\penalty0 (9):\penalty0
+  1--30, 2014.
+\newblock URL \url{http://www.jstatsoft.org/v59/i09/}.
+
+\bibitem[Halekoh et~al.(2006)Halekoh, Højsgaard, and Yan]{geepack}
+U.~Halekoh, S.~Højsgaard, and J.~Yan.
+\newblock The r package geepack for generalized estimating equations.
+\newblock \emph{Journal of Statistical Software}, 15/2:\penalty0 1--11, 2006.
+
+\bibitem[{SAS Institute Inc.}(2020)]{procsummary}
+{SAS Institute Inc.}
+\newblock \emph{Base SAS 9.4 Procedures Guide, Seventh Edition}, April 2020.
+
+\bibitem[Wickham et~al.(2019)Wickham, Averick, Bryan, Chang, McGowan,
+  François, Grolemund, Hayes, Henry, Hester, Kuhn, Pedersen, Miller, Bache,
+  Müller, Ooms, Robinson, Seidel, Spinu, Takahashi, Vaughan, Wilke, Woo, and
+  Yutani]{tidyverse}
+H.~Wickham, M.~Averick, J.~Bryan, W.~Chang, L.~D. McGowan, R.~François,
+  G.~Grolemund, A.~Hayes, L.~Henry, J.~Hester, M.~Kuhn, T.~L. Pedersen,
+  E.~Miller, S.~M. Bache, K.~Müller, J.~Ooms, D.~Robinson, D.~P. Seidel,
+  V.~Spinu, K.~Takahashi, D.~Vaughan, C.~Wilke, K.~Woo, and H.~Yutani.
+\newblock Welcome to the {tidyverse}.
+\newblock \emph{Journal of Open Source Software}, 4\penalty0 (43):\penalty0
+  1686, 2019.
+\newblock \doi{10.21105/joss.01686}.
+
+\end{thebibliography}

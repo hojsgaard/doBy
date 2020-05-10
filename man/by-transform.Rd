@@ -2,15 +2,18 @@
 % Please edit documentation in R/BY-transformBy.R
 \name{by-transform}
 \alias{by-transform}
+\alias{transform_by}
 \alias{transformBy}
 \title{Function to make groupwise transformations}
 \usage{
+transform_by(data, formula, ...)
+
 transformBy(formula, data, ...)
 }
 \arguments{
-\item{formula}{A formula with only a right hand side, see examples below}
-
 \item{data}{A data frame}
+
+\item{formula}{A formula with only a right hand side, see examples below}
 
 \item{...}{Further arguments of the form tag=value}
 }

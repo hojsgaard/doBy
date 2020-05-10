@@ -3,9 +3,12 @@
 \name{by-lapply}
 \alias{by-lapply}
 \alias{lapplyBy}
+\alias{lapply_by}
 \title{Formula based version of lapply.}
 \usage{
 lapplyBy(formula, data = parent.frame(), FUN)
+
+lapply_by(data, formula, FUN = mean)
 }
 \arguments{
 \item{formula}{A formula describing how data should be split.}

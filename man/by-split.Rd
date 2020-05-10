@@ -3,9 +3,12 @@
 \name{by-split}
 \alias{by-split}
 \alias{splitBy}
+\alias{split_by}
 \title{Split a data frame}
 \usage{
 splitBy(formula, data = parent.frame(), drop = TRUE)
+
+split_by(data, formula, drop = TRUE)
 }
 \arguments{
 \item{formula}{Variables to split data frame by, as ‘as.quoted’ variables,

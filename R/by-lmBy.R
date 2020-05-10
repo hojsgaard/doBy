@@ -1,10 +1,13 @@
 ##########################################################################
+#'
 #' @title List of lm objects with a common model
 #' @description The data is split into strata according to the levels
 #'     of the grouping factors and individual lm fits are obtained for
 #'     each stratum.
 #' @name by-lmby
+#' 
 ##########################################################################
+#'
 #' @aliases lmBy coef.lmBy coef.summary_lmBy summary.lmBy fitted.lmBy
 #'     residuals.lmBy getBy
 #' @param formula A linear model formula object of the form y ~ x1 +
@@ -33,6 +36,21 @@
 #' coef(summary(bb))
 #' coef(summary(bb), simplify=TRUE)
 
+
+
+#' @export
+#' @rdname by-lmby
+lm_by <- function (data, formula, id=NULL, ...) {
+    cl <- match.call(expand.dots = TRUE)
+    cl[[2]] <- formula
+    cl[[3]] <- data
+    names(cl)[2:3] <- c("formula", "data")
+    cl[[1]] <- as.name("lmBy")
+    eval(cl)
+}
+
+
+
 #' @export
 #' @rdname by-lmby
 lmBy <- function(formula, data, id=NULL, ...){
@@ -52,7 +70,7 @@ lmBy <- function(formula, data, id=NULL, ...){
   } else {
     id.vars <- all.vars(mff$groupFormula)
   }
-  id.data <- do.call(rbind, lapply(groupData, function(wd) {wd[1,id.vars,drop=FALSE]}))
+  id.data <- do.call(rbind, lapply(groupData, function(wd) {wd[1, id.vars, drop=FALSE]}))
 
   attr(mm,  "call")     <- cl
   attr(mm,  "dataList") <- groupData
@@ -61,6 +79,9 @@ lmBy <- function(formula, data, id=NULL, ...){
   class(mm) <- "lmBy"
   mm
 }
+
+
+
 
 #' @export
 print.lmBy <- function(x, ...){

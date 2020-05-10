@@ -14,24 +14,30 @@ contrasts and least-squares means.
 \hypertarget{introduction}{%
 \subsection{Introduction}\label{introduction}}
 
-The package originally grew out of a need to calculate groupwise summary
-statistics (much in the spirit of \texttt{PROC\ SUMMARY} of the
-\texttt{SAS} system, \citep{procsummary}). The name \texttt{doBy} comes
-from the need to \textbf{do} some computations on data which is
-stratified \textbf{By} the value of some variables. The \texttt{doBy}
-package \citep{doby} appeared on CRAN in 2006. Today the package
-contains many additional utilities.
-
-When it comes to data handling, \texttt{doBy} is nowhere nearly as
-powerful as more contemporary packages, such as those in the
-\texttt{tidyverse} eco system, \citep{tidyverse}. On the other hand,
-\texttt{doBy} is based on classical data structures that are unlikely to
-undergo sudden changes. Moreover, it can be hypothesized that the data
-handling functions in \texttt{doBy} remain appealing to a group of users
-because of their simplicity in use.
+The \texttt{doBy} package (which first appeared on CRAN in 2006) grew
+out of a need to calculate groupwise summary statistics (much in the
+spirit of \texttt{PROC\ SUMMARY} of the \texttt{SAS} system,
+\citep{procsummary}). The name \texttt{doBy} comes from the need to
+\textbf{do} some computations on data which is stratified \textbf{By}
+the value of some variables. Today the package contains many additional
+utilities.
 
 In this paper we focus 1) on the ``doing by'' functions and 2) on
 functions related to linear estimates and contrasts.
+
+\hypertarget{related-functionaly}{%
+\subsubsection{Related functionaly}\label{related-functionaly}}
+
+When it comes to data handling, \texttt{doBy} is nowhere nearly as
+powerful as more contemporary packages, such as those in the
+\texttt{tidyverse} eco system, \citep{tidyverse}. The \texttt{aggregate}
+function in base \texttt{R} provides functionality similar to
+\texttt{doBy}s \texttt{summaryBy} function. Another package to be
+mentioned in this connection is \texttt{data.table}, \citet{data.table}.
+On the other hand, \texttt{doBy} is based on classical data structures
+that are unlikely to undergo sudden changes. Moreover, it can be
+hypothesized that the data handling functions in \texttt{doBy} remain
+appealing to a group of users because of their simplicity.
 
 \hypertarget{functions-related-to-groupwise-computations}{%
 \subsection{Functions related to groupwise
@@ -49,10 +55,8 @@ the amount of output we modify names and levels of variables as follows
 \begin{Sinput}
 data(CO2)
 CO2 <- within(CO2, {
-    Treat <- Treatment
-    Treatment <- NULL
-    levels(Treat) <- c("nchil", "chil")
-    levels(Type)  <- c("Que", "Mis")
+    Treat = Treatment; Treatment = NULL
+    levels(Treat) = c("nchil", "chil"); levels(Type) = c("Que", "Mis")
 })
 CO2 <- subset(CO2, Plant %in% c("Qn1", "Qc1", "Mn1", "Mc1"))
 dim(CO2)
@@ -95,10 +99,6 @@ summaryBy(cbind(conc, uptake, lu=log(uptake)) ~ Plant, data=CO2, FUN=myfun1)
 #> 3   Mn1    435  317.7    26.40    8.694 3.209 0.4234
 #> 4   Mc1    435  317.7    18.00    4.119 2.864 0.2622
 \end{Soutput}
-\begin{Sinput}
-## same as
-## aggregate(cbind(conc, uptake, log(uptake)) ~ Plant, data=CO2, FUN=myfun1)
-\end{Sinput}
 \end{Schunk}
 
 The convention is that variables that do not appear in the dataframe
@@ -128,8 +128,9 @@ summaryBy(. ~ 1, data=CO2, FUN=myfun1)
 \end{Soutput}
 \end{Schunk}
 
-\hypertarget{formulas-and-lists}{%
-\subsubsection{Formulas and lists}\label{formulas-and-lists}}
+\hypertarget{spcifications-as-formulas-and-lists}{%
+\subsubsection{Spcifications as formulas and
+lists}\label{spcifications-as-formulas-and-lists}}
 
 The convention for the ``By''-functions is that a two sided formula like
 can be written in two ways:
@@ -607,12 +608,15 @@ L
 \subsubsection{Using (transformed)
 covariates}\label{using-transformed-covariates}}
 
-Below, the covariate \texttt{conc} is fixed at the average value:
+Covariates are fixed at their average value unles the
+\texttt{at=...}-argument is used. For example, \texttt{conc} is fixed at
+the average value:
 
 \begin{Schunk}
 \begin{Sinput}
 co2.lm1 <- lm(uptake ~ conc + Type + Treat, data=CO2)
-LSmeans(co2.lm1, effect="Treat")
+lsm1 <- LSmeans(co2.lm1, effect="Treat")
+lsm1
 \end{Sinput}
 \begin{Soutput}
 #> Coefficients:
@@ -620,83 +624,118 @@ LSmeans(co2.lm1, effect="Treat")
 #> [1,]    29.81      1.35     22.16 24.00       0
 #> [2,]    23.99      1.35     17.83 24.00       0
 \end{Soutput}
+\begin{Sinput}
+lsm1$L
+\end{Sinput}
+\begin{Soutput}
+#>      (Intercept) conc TypeMis Treatchil
+#> [1,]           1  435     0.5         0
+#> [2,]           1  435     0.5         1
+\end{Soutput}
 \end{Schunk}
 
-If we use \texttt{log(conc)} instead we will get an error when
-calculating LS--means because \texttt{log(conc)} is not a variable in
-the dataframe. Instead one can do:
+A special issue arises in connection with transformed covariates.
+Consider:
 
 \begin{Schunk}
 \begin{Sinput}
-co2.lm2 <- lm(uptake ~ log.conc + Type + Treat,
-             data=transform(CO2, log.conc=log(conc)))
-LSmeans(co2.lm2, effect="Treat")
+co2.lm2 <- lm(uptake ~ conc + I(conc^2) + log(conc) + Type + Treat, data=CO2)
+lsm2 <- LSmeans(co2.lm2, effect="Treat")
+lsm2
 \end{Sinput}
 \begin{Soutput}
 #> Coefficients:
 #>      estimate std.error statistic     df p.value
-#> [1,]   29.814     0.934    31.938 24.000       0
-#> [2,]   23.986     0.934    25.694 24.000       0
+#> [1,]   33.416     0.932    35.858 22.000       0
+#> [2,]   27.587     0.932    29.603 22.000       0
+\end{Soutput}
+\begin{Sinput}
+lsm2$L
+\end{Sinput}
+\begin{Soutput}
+#>      (Intercept) conc I(conc^2) log(conc) TypeMis Treatchil
+#> [1,]           1  435    189225     6.075     0.5         0
+#> [2,]           1  435    189225     6.075     0.5         1
 \end{Soutput}
 \end{Schunk}
 
-This also highlights what is computed: The average of the log of
-\texttt{conc}; not the log of the average of \texttt{conc}. In a similar
-spirit consider
+Above \verb'I(conc^2)' is the the square of the average of \texttt{conc}
+- not the average of the squared values of \texttt{conc}. Likewise
+\texttt{log(conc)} is the log of the average of \texttt{conc} - not the
+average of the log of \texttt{conc}, cfr. this:
 
 \begin{Schunk}
 \begin{Sinput}
-co2.lm3 <- lm(uptake ~ conc + I(conc^2) + Type + Treat, data=CO2)
-LSmeans(co2.lm3, effect="Treat")
+c(mean(CO2$conc)^2, mean(CO2$conc^2))
+\end{Sinput}
+\begin{Soutput}
+#> [1] 189225 275754
+\end{Soutput}
+\begin{Sinput}
+c(log(mean(CO2$conc)), mean(log(CO2$conc)))
+\end{Sinput}
+\begin{Soutput}
+#> [1] 6.075 5.819
+\end{Soutput}
+\end{Schunk}
+
+To make computations based on the average value of the square of
+\texttt{conc} and the average of the log of \texttt{conc} do
+
+\begin{Schunk}
+\begin{Sinput}
+co2.lm3 <- lm(uptake ~ conc + conc2 + log.conc + Type + Treat, 
+              data=transform(CO2, conc2=conc^2, log.conc=log(conc)))
+lsm3 <- LSmeans(co2.lm3, effect="Treat")
+lsm3
+\end{Sinput}
+\begin{Soutput}
+#> Coefficients:
+#>      estimate std.error statistic     df p.value
+#> [1,]   29.814     0.737    40.479 22.000       0
+#> [2,]   23.986     0.737    32.566 22.000       0
+\end{Soutput}
+\begin{Sinput}
+lsm3$L
+\end{Sinput}
+\begin{Soutput}
+#>      (Intercept) conc  conc2 log.conc TypeMis Treatchil
+#> [1,]           1  435 275754    5.819     0.5         0
+#> [2,]           1  435 275754    5.819     0.5         1
+\end{Soutput}
+\end{Schunk}
+
+If we want to evaluate the LS--means at \texttt{conc=700} then we can
+do:
+
+\begin{Schunk}
+\begin{Sinput}
+lsm4 <- LSmeans(co2.lm3, effect="Treat", at=list(conc=700, conc2=700^2, log.conc=log(700)))
+lsm4
 \end{Sinput}
 \begin{Soutput}
 #> Coefficients:
 #>      estimate std.error statistic    df p.value
-#> [1,]    33.24      1.29     25.81 23.00       0
-#> [2,]    27.41      1.29     21.29 23.00       0
+#> [1,]    34.54      1.19     29.02 22.00       0
+#> [2,]    28.71      1.19     24.12 22.00       0
 \end{Soutput}
-\end{Schunk}
-
-Above \verb'I(conc^2)' is the average of the squared values of
-\texttt{conc}; not the square of the average of \texttt{conc}, cfr.~the
-following.
-
-\begin{Schunk}
 \begin{Sinput}
-co2.lm4 <- lm(uptake ~ conc + conc2 + Type + Treat, data=
-              transform(CO2, conc2=conc^2))
-LSmeans(co2.lm4, effect="Treat")
+lsm4$L
 \end{Sinput}
 \begin{Soutput}
-#> Coefficients:
-#>      estimate std.error statistic    df p.value
-#> [1,]    29.81      1.02     29.27 23.00       0
-#> [2,]    23.99      1.02     23.55 23.00       0
-\end{Soutput}
-\end{Schunk}
-
-If we want to evaluate the LS--means at \texttt{conc=10} then we can do:
-
-\begin{Schunk}
-\begin{Sinput}
-LSmeans(co2.lm4, effect="Treat", at=list(conc=10, conc2=100))
-\end{Sinput}
-\begin{Soutput}
-#> Coefficients:
-#>      estimate std.error statistic    df p.value
-#> [1,]    14.67      2.23      6.58 23.00       0
-#> [2,]     8.84      2.23      3.96 23.00       0
+#>      (Intercept) conc  conc2 log.conc TypeMis Treatchil
+#> [1,]           1  700 490000    6.551     0.5         0
+#> [2,]           1  700 490000    6.551     0.5         1
 \end{Soutput}
 \end{Schunk}
 
 \hypertarget{alternative-models}{%
 \subsection{Alternative models}\label{alternative-models}}
 
-\hypertarget{linear-mixed-effects-model}{%
-\subsubsection{Linear mixed effects
-model}\label{linear-mixed-effects-model}}
-
-For the sake of illustration we treat \verb|supp| as a random effect:
+The functions èsticon\texttt{,}linest\texttt{,}LSmeans` etc. are
+available for a range of model classes. We illustrate a few below: We
+may decide to treat \verb|supp| as a random effect. This leads to a
+\emph{linear mixed effects model} as implemented in \citet{lme4}:
 
 \begin{Schunk}
 \begin{Sinput}
@@ -716,51 +755,51 @@ LSmeans(tooth.mix, effect="dose")
 Notice here that the parameter estimates themselves are similar to those
 of a linear model (had data been completely balanced, the estimates
 would have been identical). However, the standard errors of the the
-estimates are much larger under the mixed model. This comes from that
-\texttt{supp} is treated as a random effect. Notice that the degrees of
-freedom by default are adjusted using a Kenward--Roger approximation
+estimates are much larger under the mixed model. This is due to
+\texttt{supp} being treated as a random effect. Notice that the degrees
+of freedom by default are adjusted using a Kenward--Roger approximation
 (provided that \texttt{pbkrtest} package \citep{pbkrtest} is installed).
 Adustment of degrees of freedom is controlled with the
 \texttt{adjust.df} argument.
 
-\hypertarget{generalized-linear-models-and-generalized-estimating-equations}{%
-\subsubsection{Generalized linear models and generalized estimating
-equations}\label{generalized-linear-models-and-generalized-estimating-equations}}
-
-We can calculate LS--means for e.g.~a Poisson or a gamma model. Notice
-that the LS--means are on the scale of the linear predictor - not on the
-scale of the response.
+We can also calculate LS--means for e.g.~a Poisson or a gamma model in a
+\emph{generalized linear model} setting. Notice that the LS--means are
+on the scale of the linear predictor - not on the scale of the response.
 
 \begin{Schunk}
 \begin{Sinput}
-tooth.gam <- glm(len ~ dose + supp, family=Gamma, data=ToothGrowth)
+tooth.gam <- glm(len ~ dose + supp, family=Gamma("identity"), data=ToothGrowth)
 LSmeans(tooth.gam, effect="dose")
 \end{Sinput}
 \begin{Soutput}
 #> Coefficients:
 #>      estimate std.error statistic p.value
-#> [1,]  0.09086   0.00567  16.02215       0
-#> [2,]  0.05104   0.00294  17.33506       0
-#> [3,]  0.03880   0.00224  17.30448       0
+#> [1,]   10.613     0.581    18.281       0
+#> [2,]   19.586     0.984    19.903       0
+#> [3,]   26.513     1.339    19.802       0
 \end{Soutput}
 \end{Schunk}
 
-Similarly, for gee-type models we get:
+Likewise, for \emph{generalized estimating equations} as implemented in
+the \texttt{geepack} package, \citep{geepack}, we get:
 
 \begin{Schunk}
 \begin{Sinput}
 library(geepack)
-tooth.gee <- geeglm(len ~ dose, id=supp, family=Gamma, data=ToothGrowth)
+tooth.gee <- geeglm(len ~ dose, id=supp, family=Gamma("identity"), data=ToothGrowth)
 LSmeans(tooth.gee, effect="dose")
 \end{Sinput}
 \begin{Soutput}
 #> Coefficients:
 #>      estimate std.error statistic p.value
-#> [1,] 8.99e-02  1.42e-02  6.35e+00       0
-#> [2,] 5.07e-02  5.38e-03  9.41e+00       0
-#> [3,] 3.83e-02  4.15e-05  9.23e+02       0
+#> [1,]  11.1235    1.7524    6.3478       0
+#> [2,]  19.7350    2.0966    9.4130       0
+#> [3,]  26.1000    0.0283  922.7743       0
 \end{Soutput}
 \end{Schunk}
+
+\hypertarget{section}{%
+\subsubsection{}\label{section}}
 
 \hypertarget{acknowledgements}{%
 \subsection{Acknowledgements}\label{acknowledgements}}
@@ -769,7 +808,7 @@ Credit is due to Dennis Chabot, Gabor Grothendieck, Paul Murrell, Jim
 Robison-Cox and Erik Jørgensen for reporting various bugs and making
 various suggestions to the functionality in the \texttt{doBy} package.
 
-\bibliography{RJreferences}
+\bibliography{doby-hojsgaard}
 
 
 \address{%

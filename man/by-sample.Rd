@@ -3,6 +3,7 @@
 \name{by-sample}
 \alias{by-sample}
 \alias{sampleBy}
+\alias{sample_by}
 \title{Sampling from a data frame}
 \usage{
 sampleBy(
@@ -12,6 +13,8 @@ sampleBy(
   data = parent.frame(),
   systematic = FALSE
 )
+
+sample_by(data, formula, frac = 0.1, replace = FALSE, systematic = FALSE)
 }
 \arguments{
 \item{formula}{A formula defining the grouping of the data frame.}
@@ -38,7 +41,7 @@ If systematic=FALSE (default) then frac gives the fraction
 }
 \examples{
 data(dietox)
-sampleBy(formula = ~Evit+Cu, frac=.1, data = dietox)
+sampleBy(formula = ~ Evit + Cu, frac=.1, data = dietox)
 }
 \seealso{
 \code{\link{summaryBy}}, \code{\link{orderBy}},

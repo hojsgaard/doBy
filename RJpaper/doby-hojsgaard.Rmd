@@ -26,9 +26,6 @@ output: |
 
 <!-- %%% output: rticles::rjournal_article -->
 
-
-
-
 ```{r echo=FALSE, results="hide", messages=FALSE}
 knitr::opts_chunk$set(fig.path="fig/doby-", tidy=FALSE,
                       cache=!TRUE,
@@ -46,27 +43,23 @@ library(broom)
 })
 ```
 
-
-
-
-
 ## Introduction
 
-The package
-originally grew out of a need to calculate groupwise summary
+The `doBy` package (which first appeared on CRAN in 2006)
+grew out of a need to calculate groupwise summary
 statistics (much in the spirit of `PROC SUMMARY` of the `SAS` system,
 [@procsummary]). The name `doBy` comes from the need to __do__ some computations on data which is 
-stratified __By__ the value of some variables.  The `doBy` package [@doby] appeared on CRAN in 2006.
-Today the
+stratified __By__ the value of some variables.  Today the
 package contains many additional utilities. 
 
-When it comes to data handling, `doBy` is nowhere nearly as powerful as more contemporary packages, such as those in the `tidyverse` eco system, [@tidyverse]. On the other hand, `doBy` is based on classical data structures that are unlikely to undergo sudden changes. Moreover, 
-it can be hypothesized that the data handling functions in `doBy` remain appealing to a group of users because of their simplicity in use. 
 
 In this paper we focus 1)
 on the "doing by" functions and 2) on functions related to linear
 estimates and contrasts. 
 
+### Related functionaly
+
+When it comes to data handling, `doBy` is nowhere nearly as powerful as more contemporary packages, such as those in the `tidyverse` eco system, [@tidyverse].  The `aggregate` function in base `R` provides functionality similar to `doBy`s `summaryBy` function. Another package to be mentioned in this connection is  `data.table`, @data.table. On the other hand, `doBy` is based on classical data structures that are unlikely to undergo sudden changes. Moreover, it can be hypothesized that the data handling functions in `doBy` remain appealing to a group of users because of their simplicity.
 
 
 ## Functions related to groupwise computations
@@ -82,10 +75,8 @@ as follows
 ```{r}
 data(CO2)
 CO2 <- within(CO2, {
-    Treat <- Treatment
-    Treatment <- NULL
-    levels(Treat) <- c("nchil", "chil")
-    levels(Type)  <- c("Que", "Mis")
+    Treat = Treatment; Treatment = NULL
+    levels(Treat) = c("nchil", "chil"); levels(Type) = c("Que", "Mis")
 })
 CO2 <- subset(CO2, Plant %in% c("Qn1", "Qc1", "Mn1", "Mc1"))
 dim(CO2)
@@ -103,8 +94,6 @@ similar to `summaryBy` is provided by `aggregate` from base R, but `summaryBy` o
 ```{r}
 myfun1 <- function(x){c(m=mean(x), s=sd(x))}
 summaryBy(cbind(conc, uptake, lu=log(uptake)) ~ Plant, data=CO2, FUN=myfun1)
-## same as
-## aggregate(cbind(conc, uptake, log(uptake)) ~ Plant, data=CO2, FUN=myfun1)
 ```
 
 The convention is that variables that do not appear in the dataframe (e.g. `log(uptake)`) must be named (here as `lu`). 
@@ -117,8 +106,7 @@ summaryBy(. ~ ., data=CO2, FUN=myfun1)
 summaryBy(. ~ 1, data=CO2, FUN=myfun1)
 ```
 
-
-### Formulas and lists
+### Spcifications as formulas and lists
 
 The convention for the "By"-functions is that a two sided formula like can be written in two ways:
 ```{r, eval=FALSE}
@@ -170,9 +158,7 @@ The result is a list (with a few additional attributes):
 lapply(x1, head, 2)
 ```
 
-
 ### The `subsetBy` function
-
 
 Suppose we want to select those rows within each treatment for which  the
 uptake is larger than 75% quantile of uptake (within the treatment). This
@@ -350,81 +336,80 @@ L
 
 ### Using (transformed) covariates
 
-Below, the covariate `conc` is fixed at the average value:
+Covariates are fixed at their average value unles the `at=...`-argument is used. For example, 
+`conc` is fixed at the average value:
 ```{r}
 co2.lm1 <- lm(uptake ~ conc + Type + Treat, data=CO2)
-LSmeans(co2.lm1, effect="Treat")
+lsm1 <- LSmeans(co2.lm1, effect="Treat")
+lsm1
+lsm1$L
 ```
 
-If we use `log(conc)` instead we will get an error when
-calculating LS--means because `log(conc)` is not a variable in the dataframe. 
-Instead one can do:
+A special issue arises in connection with transformed covariates. Consider:
+
 ```{r}
-co2.lm2 <- lm(uptake ~ log.conc + Type + Treat,
-             data=transform(CO2, log.conc=log(conc)))
-LSmeans(co2.lm2, effect="Treat")
+co2.lm2 <- lm(uptake ~ conc + I(conc^2) + log(conc) + Type + Treat, data=CO2)
+lsm2 <- LSmeans(co2.lm2, effect="Treat")
+lsm2
+lsm2$L
 ```
 
-This also highlights what is computed: The average of the log of
-`conc`; not the log of the average of `conc`.
-In a similar spirit consider
-
+Above \verb'I(conc^2)' is the the  square of the average of
+`conc` - not the average of the squared values of
+`conc`. Likewise `log(conc)` is the log of the average of `conc` - not the average of the log of `conc`, cfr. this:
 ```{r}
-co2.lm3 <- lm(uptake ~ conc + I(conc^2) + Type + Treat, data=CO2)
-LSmeans(co2.lm3, effect="Treat")
+c(mean(CO2$conc)^2, mean(CO2$conc^2))
+c(log(mean(CO2$conc)), mean(log(CO2$conc)))
 ```
 
-Above \verb'I(conc^2)' is the average of the squared values of
-`conc`; not the  square of the average of
-`conc`, cfr.\ the following.
+To make computations based on the average value of the square of `conc` and the average of the log of `conc` do
 
 ```{r}
-co2.lm4 <- lm(uptake ~ conc + conc2 + Type + Treat, data=
-              transform(CO2, conc2=conc^2))
-LSmeans(co2.lm4, effect="Treat")
+co2.lm3 <- lm(uptake ~ conc + conc2 + log.conc + Type + Treat, 
+              data=transform(CO2, conc2=conc^2, log.conc=log(conc)))
+lsm3 <- LSmeans(co2.lm3, effect="Treat")
+lsm3
+lsm3$L
 ```
 
-If we want to evaluate the LS--means at `conc=10` then we can do:
+If we want to evaluate the LS--means at `conc=700` then we can do:
 ```{r}
-LSmeans(co2.lm4, effect="Treat", at=list(conc=10, conc2=100))
+lsm4 <- LSmeans(co2.lm3, effect="Treat", at=list(conc=700, conc2=700^2, log.conc=log(700)))
+lsm4
+lsm4$L
 ```
 
 
 ## Alternative models
 
-
-### Linear mixed effects model
-
-For the sake of illustration we treat \verb|supp| as a random effect:
+The functions èsticon`, `linest`, `LSmeans` etc. are available for a range of model classes. We illustrate a few below:
+We may decide to treat \verb|supp| as a random effect. This leads to a _linear mixed effects model_ as implemented in @lme4:
 ```{r}
 library(lme4)
 tooth.mix <- lmer(len ~ dose + (1|supp), data=ToothGrowth)
 LSmeans(tooth.mix, effect="dose")
 ```
 
-Notice here that the parameter estimates themselves are similar to those of a linear model (had data been completely balanced, the estimates would have been identical). However, the standard errors of the the estimates are much larger under the mixed model.
-This comes from that `supp` is treated as a random effect.
+Notice here that the parameter estimates themselves are similar to those of a linear model (had data been completely balanced, the estimates would have been identical). However, the standard errors of the the estimates are much larger under the mixed model. This is due to `supp` being treated as a random effect.
 Notice that the degrees of freedom by default are adjusted using a
 Kenward--Roger approximation (provided that `pbkrtest` package [@pbkrtest] is
 installed). Adustment of degrees of freedom is controlled with the `adjust.df` argument.
 
-### Generalized linear models and generalized estimating equations
-
-We can calculate LS--means for e.g.\ a Poisson or a gamma model. Notice that the LS--means are on the scale of the linear predictor - not on the scale of the response.
+We can also calculate LS--means for e.g.\ a Poisson or a gamma model in a _generalized linear model_ setting. Notice that the LS--means are on the scale of the linear predictor - not on the scale of the response.
 
 ```{r}
-tooth.gam <- glm(len ~ dose + supp, family=Gamma, data=ToothGrowth)
+tooth.gam <- glm(len ~ dose + supp, family=Gamma("identity"), data=ToothGrowth)
 LSmeans(tooth.gam, effect="dose")
 ```
 
-Similarly, for gee-type models we get:
+Likewise, for _generalized estimating equations_ as implemented in the `geepack` package, [@geepack], we get:
 ```{r}
 library(geepack)
-tooth.gee <- geeglm(len ~ dose, id=supp, family=Gamma, data=ToothGrowth)
+tooth.gee <- geeglm(len ~ dose, id=supp, family=Gamma("identity"), data=ToothGrowth)
 LSmeans(tooth.gee, effect="dose")
 ```
 
-
+### 
 
 ## Acknowledgements
 
@@ -434,62 +419,5 @@ making various suggestions to the functionality in the `doBy`
 package.
 
 
+\bibliography{doby-hojsgaard}
 
-\bibliography{RJreferences}
-
-
-<!-- ## Summary -->
-
-<!-- This file is only a basic article template. For full details of _The R Journal_ style and information on how to prepare your article for submission, see the [Instructions for Authors](https://journal.r-project.org/share/author-guide.pdf). -->
-
-
-
-
-<!-- ```{r} -->
-
-<!-- mtcars <- within(mtcars, { -->
-<!--    vs <- factor(vs, labels = c("V", "S")) -->
-<!--    am <- factor(am, labels = c("auto", "man")) -->
-<!-- }) -->
-<!-- mtcars$drat <- mtcars$disp <- mtcars$wt <- mtcars$carb <- mtcars$gear <- NULL -->
-<!-- mtcars <- subset(mtcars, cyl < 8) -->
-<!-- mtcars %>% head -->
-<!-- ``` -->
-
-
-
-
-
-<!-- ```{r} -->
-<!-- library(doBy) -->
-<!-- summaryBy(cbind(mpg, qsec) ~ cyl + vs, data=mtcars) -->
-
-<!-- summaryBy(list(c("mpg", "qsec"), c("cyl", "vs")), data=mtcars) -->
-
-<!-- summaryBy(. ~ cyl + vs, data=mtcars) -->
-
-<!-- summaryBy(. ~ ., data=mtcars) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- ss <- splitBy(~ vs, data=mtcars) -->
-<!-- ss -->
-<!-- ss$V -->
-<!-- ``` -->
-
-
-<!-- Introductory section which may include references in parentheses -->
-<!-- [@R], or cite a reference such as @R in the text. -->
-
-<!-- This section may contain a figure such as Figure \ref{fig:Rlogo}. -->
-
-<!-- ```{r, Rlogo, echo=FALSE, fig.cap='The logo of R.', out.width='2in', fig.align='center', fig.pos='htbp'} -->
-<!-- knitr::include_graphics('Rlogo.pdf') -->
-<!-- ``` -->
-
-<!-- There will likely be several sections, perhaps including code snippets, such as: -->
-
-<!-- ```{r} -->
-<!-- x <- 1:10 -->
-<!-- x -->
-<!-- ``` -->
