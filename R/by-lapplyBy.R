@@ -35,7 +35,20 @@
 #' dietox$FE <- unlist(v)
 #' 
 
+
 #' @export
+#' @rdname by-lapply
+lapply_by <- function(data, formula, FUN=mean){
+    cl   <- match.call(expand.dots = TRUE)
+    cl[[2]] <- formula
+    cl[[3]] <- data
+    names(cl)[2:3] <- c("formula", "data")
+    cl[[1]] <- as.name("lapplyBy")
+    eval(cl)
+}
+
+#' @export
+#' @rdname by-lapply
 lapplyBy <- function (formula, data = parent.frame(), FUN) 
 {
     out <- splitBy(formula, data = data)
@@ -47,12 +60,3 @@ lapplyBy <- function (formula, data = parent.frame(), FUN)
 }
 
 
-#' @rdname by-lapply
-lapply_by <- function(data, formula, FUN=mean){
-    cl   <- match.call(expand.dots = TRUE)
-    cl[[2]] <- formula
-    cl[[3]] <- data
-    names(cl)[2:3] <- c("formula", "data")
-    cl[[1]] <- as.name("lapplyBy")
-    eval(cl)
-}

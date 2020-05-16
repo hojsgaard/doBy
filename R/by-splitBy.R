@@ -30,7 +30,14 @@
 #' splitBy("Month", data=airquality)
 
 
-#'@export splitBy
+#' @export 
+#' @rdname by-split
+split_by <- function(data, formula, drop=TRUE){
+    arg <- list(formula=formula, data=data, drop=drop)
+    do.call(splitBy, arg)
+}
+
+#' @export 
 #' @rdname by-split
 splitBy <-function (formula, data = parent.frame(), drop=TRUE) {
                                         #, return.matrix=FALSE){
@@ -109,11 +116,6 @@ splitBy <-function (formula, data = parent.frame(), drop=TRUE) {
     out_list
 }
 
-#' @rdname by-split
-split_by <- function(data, formula, drop=TRUE){
-    arg <- list(formula=formula, data=data, drop=drop)
-    do.call(splitBy, arg)
-}
 
 
 #' @export

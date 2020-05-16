@@ -44,10 +44,6 @@ inteval etc. is calculated.}
 \item{parm}{a specification of which parameters are to be given
  confidence intervals, either a vector of numbers or a vector
 of names.  If missing, all parameters are considered.}
-
-\item{x}{A linear contrast object (as returned by \code{esticon()}.}
-
-\item{conf.level}{The desired confidence level.}
 }
 \value{
 Returns a matrix with one row per linear function.  Columns contain

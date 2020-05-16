@@ -1,9 +1,15 @@
-\begin{thebibliography}{6}
+\begin{thebibliography}{11}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bache and Wickham(2014)]{magrittr}
+S.~M. Bache and H.~Wickham.
+\newblock \emph{magrittr: A Forward-Pipe Operator for R}, 2014.
+\newblock URL \url{https://CRAN.R-project.org/package=magrittr}.
+\newblock R package version 1.5.
 
 \bibitem[Bates et~al.(2015)Bates, M{\"a}chler, Bolker, and Walker]{lme4}
 D.~Bates, M.~M{\"a}chler, B.~Bolker, and S.~Walker.
@@ -30,6 +36,31 @@ U.~Halekoh and S.~H{\o}jsgaard.
 U.~Halekoh, S.~Højsgaard, and J.~Yan.
 \newblock The r package geepack for generalized estimating equations.
 \newblock \emph{Journal of Statistical Software}, 15/2:\penalty0 1--11, 2006.
+
+\bibitem[Hothorn et~al.(2008)Hothorn, Bretz, and Westfall]{multcomp}
+T.~Hothorn, F.~Bretz, and P.~Westfall.
+\newblock Simultaneous inference in general parametric models.
+\newblock \emph{Biometrical Journal}, 50\penalty0 (3):\penalty0 346--363, 2008.
+
+\bibitem[Højsgaard and Halekoh(2020)]{doby}
+S.~Højsgaard and U.~Halekoh.
+\newblock \emph{doBy: Groupwise Statistics, LSmeans, Linear Contrasts,
+  Utilities}, 2020.
+\newblock URL \url{http://people.math.aau.dk/~sorenh/software/doBy/}.
+\newblock R package version 4.6.6.
+
+\bibitem[Lenth(2016)]{lsmeans}
+R.~V. Lenth.
+\newblock Least-squares means: The {R} package {lsmeans}.
+\newblock \emph{Journal of Statistical Software}, 69\penalty0 (1):\penalty0
+  1--33, 2016.
+\newblock \doi{10.18637/jss.v069.i01}.
+
+\bibitem[Müller and Wickham(2020)]{tibble}
+K.~Müller and H.~Wickham.
+\newblock \emph{tibble: Simple Data Frames}, 2020.
+\newblock URL \url{https://CRAN.R-project.org/package=tibble}.
+\newblock R package version 3.0.1.
 
 \bibitem[{SAS Institute Inc.}(2020)]{procsummary}
 {SAS Institute Inc.}

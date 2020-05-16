@@ -84,6 +84,21 @@
 #' summaryBy(. ~ wool + tension, warpbreaks, FUN=mean)
 #' 
 
+#' @export
+#' @rdname by-summary
+summary_by <- function(data, formula, id=NULL, FUN=mean,
+                       keep.names=FALSE,
+                       p2d=FALSE, order=TRUE, full.dimension=FALSE,
+                       var.names=NULL, fun.names=NULL,
+                       ...){
+    cl   <- match.call(expand.dots = TRUE)
+    cl[[2]] <- formula
+    cl[[3]] <- data
+    names(cl)[2:3] <- c("formula", "data")
+    cl[[1]] <- as.name("summaryBy")
+    eval(cl)
+}
+
 
 #' @export
 #' @rdname by-summary
@@ -420,17 +435,4 @@ summaryBy <- function (formula, data=parent.frame(), id=NULL, FUN=mean,
 }
 
 
-#' @rdname by-summary
-summary_by <- function(data, formula, id=NULL, FUN=mean,
-                       keep.names=FALSE,
-                       p2d=FALSE, order=TRUE, full.dimension=FALSE,
-                       var.names=NULL, fun.names=NULL,
-                       ...){
-    cl   <- match.call(expand.dots = TRUE)
-    cl[[2]] <- formula
-    cl[[3]] <- data
-    names(cl)[2:3] <- c("formula", "data")
-    cl[[1]] <- as.name("summaryBy")
-    eval(cl)
-}
 

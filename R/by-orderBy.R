@@ -30,6 +30,18 @@
 ## #' order_by(CO2, c("conc", "Treatment"))
 ## #' order_by(CO2, c("-conc", "Treatment"))
 
+
+#' @export
+#' @rdname by-order
+order_by <- function(data, formula){
+    cl   <- match.call(expand.dots = TRUE)
+    cl[[2]] <- formula
+    cl[[3]] <- data
+    names(cl)[2:3] <- c("formula", "data")
+    cl[[1]] <- as.name("orderBy")
+    eval(cl)
+}
+
 #' @export
 #' @rdname by-order
 orderBy <- function (formula, data){
@@ -93,16 +105,6 @@ orderBy <- function (formula, data){
 
 
 
-
-#' @rdname by-order
-order_by <- function(data, formula, FUN=mean){
-    cl   <- match.call(expand.dots = TRUE)
-    cl[[2]] <- formula
-    cl[[3]] <- data
-    names(cl)[2:3] <- c("formula", "data")
-    cl[[1]] <- as.name("orderBy")
-    eval(cl)
-}
 
 
 

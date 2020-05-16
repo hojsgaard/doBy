@@ -39,9 +39,6 @@ transform_by <- function (data, formula, ...) {
     eval(cl)
 }
 
-
-
-
 #' @export
 #' @rdname by-transform 
 transformBy <- function (formula, data, ...) {

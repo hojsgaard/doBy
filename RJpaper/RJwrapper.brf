@@ -1,6 +1,11 @@
+\backcite {doby}{{1}{2.0.1}{subsection.2.0.1}}
 \backcite {procsummary}{{1}{2.0.1}{subsection.2.0.1}}
 \backcite {tidyverse}{{1}{2.0.1}{subsection.2.0.1}}
 \backcite {data.table}{{1}{2.0.1}{subsection.2.0.1}}
-\backcite {lme4}{{8}{2.0.4}{subsection.2.0.4}}
-\backcite {pbkrtest}{{8}{2.0.4}{subsection.2.0.4}}
-\backcite {geepack}{{9}{2.0.4}{subsection.2.0.4}}
+\backcite {tibble}{{1}{2.0.1}{subsection.2.0.1}}
+\backcite {multcomp}{{1}{2.0.1}{subsection.2.0.1}}
+\backcite {lsmeans}{{1}{2.0.1}{subsection.2.0.1}}
+\backcite {magrittr}{{3}{2.0.3}{subsection.2.0.3}}
+\backcite {lme4}{{8}{2.0.5}{subsection.2.0.5}}
+\backcite {pbkrtest}{{8}{2.0.5}{subsection.2.0.5}}
+\backcite {geepack}{{8}{2.0.5}{subsection.2.0.5}}

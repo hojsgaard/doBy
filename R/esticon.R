@@ -37,7 +37,7 @@
 #' be more convenient.
 #' 
 #' @param obj Regression object (of type lm, glm, lme, geeglm).
-#' @param x A linear contrast object (as returned by \code{esticon()}. 
+## #' @param x A linear contrast object (as returned by \code{esticon()}. 
 #' @param L Matrix (or vector) specifying linear functions of the regresson
 #'     parameters (one
 #'     linear function per row).  The number of columns must match the number of
@@ -47,7 +47,7 @@
 #'         of names.  If missing, all parameters are considered.
 #' @param beta0 A vector of numbers
 #' @param conf.int TRUE
-#' @param conf.level The desired confidence level.
+## #' @param conf.level The desired confidence level.
 #' @param level The confidence level
 #' @param joint.test Logical value. If TRUE a 'joint' Wald test for the
 #'     hypothesis L beta = beta0 is made. Default is that the 'row-wise' tests are

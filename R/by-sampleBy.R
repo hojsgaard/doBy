@@ -24,6 +24,17 @@
 #' data(dietox)
 #' sampleBy(formula = ~ Evit + Cu, frac=.1, data = dietox)
 
+
+#' @export
+#' @rdname by-sample
+sample_by <- function(data, formula,
+                      frac=0.1, replace=FALSE, systematic=FALSE){
+    arg <- list(formula=formula, frac=frac, replace=replace, data=data,
+                systematic=systematic) 
+    do.call(sampleBy, arg)
+}
+
+
 #' @export
 #' @rdname by-sample
 sampleBy <- function(formula, frac=0.1, replace=FALSE, data=parent.frame(),
@@ -45,11 +56,3 @@ sampleBy <- function(formula, frac=0.1, replace=FALSE, data=parent.frame(),
 }
 
 
-
-#' @rdname by-sample
-sample_by <- function(data, formula,
-                      frac=0.1, replace=FALSE, systematic=FALSE){
-    arg <- list(formula=formula, frac=frac, replace=replace, data=data,
-                systematic=systematic) 
-    do.call(sampleBy, arg)
-}
