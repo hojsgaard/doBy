@@ -35,11 +35,12 @@ options("digits"=4)
 suppressPackageStartupMessages({
 library(ggplot2)
 library(doBy)
-library(Matrix)
+##library(Matrix)
 library(lme4)
 library(magrittr)
-library(tidyverse);
+library(tibble)
 library(broom)
+library(multcomp)
 })
 ```
 
@@ -61,8 +62,6 @@ When it comes to data handling, \pkg{doBy} is nowhere nearly as powerful as more
 
 
 It can be hypothesized that the data handling functions in \pkg{doBy} remain appealing to a group of users because of their simplicity.
-
-## Functions related to groupwise computations
 
 ### A working dataset - the `CO2` data
 
@@ -94,7 +93,7 @@ ggplot(CO2, aes(x = Treat, y = uptake, colour = Type)) +
 ```
 
 
-
+## Functions related to groupwise computations
 
 
 
@@ -123,13 +122,14 @@ summaryBy(. ~ 1, data=CO2, FUN=myfun1)
 
 ### Specifications as formulas and lists
 
-The convention for the "By"-functions is that a two sided formula like can be written in two ways:
+We shall refer to all the functions for groupwise computations etc. as the _By-functions_.
+The convention for the By-functions is that a two sided formula like can be written in two ways:
 ```{r, eval=FALSE}
 cbind(x, y) ~ A + B
 list(c("x", "y"), c("A", "B"))
 ```
 
-Some "By"-functions only take a right hand sided formula as input. Such a formula can also be written in two ways:
+Some By-functions only take a right hand sided formula as input. Such a formula can also be written in two ways:
 ```{r, eval=FALSE}
 ~ A + B
 c("A", "B")
@@ -145,7 +145,7 @@ summaryBy(list(".", "1"), data=CO2, FUN=myfun1)
 
 ## Using the pipe operator
 
-The \code{summaryBy} function has a counterpart called \code{summary\_by}. The difference is that a formula is the first argument to the former function while a dataframe (or a tibble) is the first argument to the latter. The same applies to the other "By"-functions. This allows for elegant use of the pipe operator `%>%` from \CRANpkg{magrittr}, [@magrittr]:
+The \code{summaryBy} function has a counterpart called \code{summary\_by}. The difference is that a formula is the first argument to the former function while a dataframe (or a tibble) is the first argument to the latter. The same applies to the other By-functions. This allows for elegant use of the pipe operator `%>%` from \CRANpkg{magrittr}, [@magrittr]:
 
 ```{r}
 CO2 %>% summary_by(cbind(conc, uptake) ~ Plant + Type, FUN=myfun1) -> newdat
@@ -231,49 +231,56 @@ the form
 where $L$ is a $q\times p$ matrix which we call the _Linear Estimate Matrix_ or 
 simply _LE-matrix_.  The corresponding
 linear estimate is $\hat C = L \hat \beta$.  A linear hypothesis has
-the form $H_0: L\beta=m$ for some $q$ dimensional vector $m$. In the following we describe what is essentially simple ways of generating such $L$-matrices.
+the form $H_0: L\beta=m$ for some $q$ dimensional vector $m$. 
 
-XXX: TEXT HERE
+In the following we describe what is essentially simple ways of generating such $L$-matrices.
 
-```{r}
-co2.add <- lm(uptake ~ Treat + Type, data=CO2)
-co2.int <- lm(uptake ~ Treat * Type, data=CO2)
-```
+
 
 
 ### Computing linear estimates
 
-For now, we focus on the additive model. 
+
+First we focus on an additive model. 
+```{r}
+co2.add <- lm(uptake ~ Treat + Type, data=CO2)
+```
+
 Consider computing the estimated uptake for each treatment for plants originating from Mississippi:
-One option: Construct the LE--matrix $L$ directly and then compute $L\hat\beta$ as `L %*% coef(co2.add)`:
+One option: Construct the LE--matrix $L$ directly and then compute $L\hat\beta$:
 
 ```{r}
 L <- matrix(c(1, 0, 1, 
-              1, 1, 1), nrow=2, byrow=T)
-L
-L %*% coef(co2.add)
+              1, 1, 1), nrow=2, byrow=T); L
+beta <- coef(co2.add); beta
+L %*% beta
 ```
 
-In \pkg{doBy} there are facilities for computing $L$ automatically and for supplying $L\hat\beta$ with standard errors etc.
-
-```{r}
-L <- LE_matrix(co2.add, effect = "Treat", at=list(Type="Mis"))
-L
-```
-
+However, this approach does not produce standard errors, confidence intervals etc. 
+Once $L$ has been constructed, such quantities can be constructed using \code{linest} (short for _linear estimate_) and the older but very similar \code{esticon} function (short for _estimate contrast_)
 ```{r}
 c1 <- linest(co2.add, L)
 coef(c1)
 confint(c1)
-```
-
-
-
-The function \code{esticon} has been part of \pkg{doBy} for many years while \code{linest} is a newer addition. The functionality, however, is similar:
-```{r}
 c1 <- esticon(co2.add, L)
 c1
 ```
+
+Another option is to invoke \code{glht} (short for _general linear hypothesis_) from the \CRANpkg{multcomp} package:
+
+```{r}
+library(multcomp)
+mc <- glht(co2.add, linfct=L)
+summary(mc)
+```
+
+
+In \pkg{doBy} there are facilities for computing $L$ automatically and for supplying $L\hat\beta$ with standard errors etc.
+
+```{r}
+L <- LE_matrix(co2.add, effect = "Treat", at=list(Type="Mis")); L
+```
+
 
 
 ### Least-squares means (LS--means)
@@ -282,41 +289,40 @@ A related question is: What is the estimated uptake for each treatment if we ign
 
 ```{r}
 co2.0 <- update(co2.add, . ~ . - Type)
-L0 <- LE_matrix(co2.0, effect="Treat")
-L0
+L0 <- LE_matrix(co2.0, effect="Treat"); L0
 linest(co2.0, L=L0)
 ```
 
-
-An alternative would be to stick to the original model but compute the
+An alternative would be to keep the focus on the original model but compute the
 estimated uptake for each treatment for an _average location_. That would correspond to
 giving weight $1/2$ to each of the two locations. However, as one of the parameters is already set to zero
 to obtain identifiability, we obtain the LE--matrix $L$ as
 
 ```{r}
 L1 <- matrix(c(1, 0, 0.5, 
-               1, 1, 0.5), nrow=2, byrow=T)
-L1
+               1, 1, 0.5), nrow=2, byrow=T); L1
 linest(co2.add, L=L1)
 ```
 
 Such a particular linear estimate is sometimes called a _least-squares
-mean_, an _LSmean_, a _marginal mean_ or a _population mean_. 
-Notice: One may generate $L$ automatically with
+mean_, an _LS-mean_, a _marginal mean_ or a _population mean_. If data had been balanced, the LS-mean would be identical to the result obtained after fitting a model without `Type`. 
+
+The virtue of the \CRANpkg{doBy} package is in this connection that $L$ can be generated automatically with:
 ```{r}
-L1 <- LE_matrix(co2.add, effect="Treat")
-L1
+L1 <- LE_matrix(co2.add, effect="Treat"); L1
 ```
 
-Notice: One may obtain the LSmean directly as:
+Notice: One may obtain the LS-mean directly as:
 ```{r, results="hide"}
 LSmeans(co2.add, effect="Treat")
 ## same as
 linest(co2.add, L=LE_matrix(co2.add, effect="Treat"))
 ```
 
-For a model with interactions, the LSmeans are computed as above, but the $L$-matrix is:
+
+For a model with interactions, the LS-means are computed as above, but the $L$-matrix is different:
 ```{r}
+co2.int <- lm(uptake ~ Treat * Type, data=CO2)
 LE_matrix(co2.int, effect="Treat")
 ```
 
@@ -326,16 +332,14 @@ LE_matrix(co2.int, effect="Treat")
 
 ### Using (transformed) covariates
 
+From the examples above it should follows that the key aspect of computing LS-means is the (automatic) generation of the $L$ matrix. Therefore we shall in the following focus on form of the $L$ matrix rather than on the computed LS-means.
 Covariates are fixed at their average value (unless the `at=...`-argument is used, see below). For example, 
 `conc` is fixed at the average value:
 ```{r}
 co2.lm1 <- lm(uptake ~ conc + Type + Treat, data=CO2)
 lsm1 <- LSmeans(co2.lm1, effect="Treat")
-lsm1
 lsm1$L
-
 lsm1a <- LSmeans(co2.lm1, effect="Treat", at=list(conc=700))
-lsm1a
 lsm1a$L
 ```
 
@@ -345,7 +349,6 @@ A special issue arises in connection with transformed covariates. Consider:
 ```{r}
 co2.lm2 <- lm(uptake ~ conc + I(conc^2) + log(conc) + Type + Treat, data=CO2)
 lsm2 <- LSmeans(co2.lm2, effect="Treat")
-lsm2
 lsm2$L
 ```
 
@@ -359,14 +362,12 @@ To make computations based on the average value of the square of `conc` and the 
 co2.lm3 <- lm(uptake ~ conc + conc2 + log.conc + Type + Treat, 
               data=transform(CO2, conc2=conc^2, log.conc=log(conc)))
 lsm3 <- LSmeans(co2.lm3, effect="Treat")
-lsm3
 lsm3$L
 ```
 
-If we want to evaluate the LS--means at `conc=700` then we can do:
+Thus, if we want to evaluate the LS--means at `conc=700` then we can do:
 ```{r}
 lsm4 <- LSmeans(co2.lm3, effect="Treat", at=list(conc=700, conc2=700^2, log.conc=log(700)))
-lsm4
 lsm4$L
 ```
 
@@ -374,30 +375,34 @@ lsm4$L
 ## Alternative models
 
 The functions `esticon`, `linest`, `LSmeans` etc. are available for a range of model classes. We illustrate a few below:
-We may decide to treat \verb|supp| as a random effect. This leads to a _linear mixed effects model_ as implemented in \CRANpkg{lme4}, [@lme4]:
+We may decide to treat \verb|Type| as a random effect (here with only two levels). This leads to a _linear mixed effects model_ as implemented in \CRANpkg{lme4}, [@lme4]:
 ```{r}
 library(lme4)
-#tooth.mix <- lmer(len ~ dose + (1|supp), data=ToothGrowth)
-#LSmeans(tooth.mix, effect="dose")
 co2.mix <- lmer(uptake ~ Treat + (1|Type), data=CO2)
 LSmeans(co2.mix, effect="Treat")
 ```
 
-Notice here that the parameter estimates themselves are similar to those of a linear model (had data been completely balanced, the estimates would have been identical). However, the standard errors of the the estimates are much larger under the mixed model. This is due to `supp` being treated as a random effect.
+Notice here that the parameter estimates themselves are similar to those of a linear model (had data been completely balanced, the estimates would have been identical). However, the standard errors of the the estimates are much larger under the mixed model. This is due to `Type` being treated as a random effect.
 Notice that the degrees of freedom by default are adjusted using a
 Kenward--Roger approximation (provided that \CRANpkg{pbkrtest} package [@pbkrtest] is
 installed). Adjustment of degrees of freedom is controlled with the `adjust.df` argument.
+
 LS-means are also available in a  _generalized linear model_ setting as well as for 
- for _generalized estimating equations_ as implemented in the \CRANpkg{geepack} package, [@geepack]. In both cases the  LS--means are on the scale of the linear predictor - not on the scale of the response. For example:
+ for _generalized estimating equations_ as implemented in the \CRANpkg{geepack} package, [@geepack]. In both cases the  LS--means are on the scale of the linear predictor - not on the scale of the response.
 
-```{r, results="show"}
-co2.glm <- glm(uptake ~ Treat + Type, family=Gamma("identity"), data=CO2)
-LSmeans(co2.glm, effect="Treat")
 
-library(geepack)
-co2.gee <- geeglm(uptake ~ Treat, id=Type, family=Gamma("identity"), data=CO2)
-LSmeans(co2.gee, effect="Treat")
-```
+
+
+
+
+<!-- ```{r, results="show"} -->
+<!-- co2.glm <- glm(uptake ~ Treat + Type, family=Gamma("identity"), data=CO2) -->
+<!-- LSmeans(co2.glm, effect="Treat") -->
+
+<!-- library(geepack) -->
+<!-- co2.gee <- geeglm(uptake ~ Treat, id=Type, family=Gamma("identity"), data=CO2) -->
+<!-- LSmeans(co2.gee, effect="Treat") -->
+<!-- ``` -->
 
 
 ## Acknowledgements
