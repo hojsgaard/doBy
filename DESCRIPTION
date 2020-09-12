@@ -1,5 +1,5 @@
 Package: doBy
-Version: 4.6.7
+Version: 4.6.8
 Title: Groupwise Statistics, LSmeans, Linear Contrasts, Utilities 
 Author: Søren Højsgaard <sorenh@math.aau.dk> and Ulrich Halekoh
     <uhalekoh@health.sdu.dk>
@@ -11,7 +11,6 @@ Description: Contains:
     3) Miscellaneous other utilities.
 Encoding: UTF-8
 VignetteBuilder: knitr
-URL: http://people.math.aau.dk/~sorenh/software/doBy/
 ZipData: no
 LazyData: true
 License: GPL (>= 2)
