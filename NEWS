@@ -1,6 +1,8 @@
 doBy v4.6.8 (Release date: 2020-09-xx)
 ========================================
 
+* head / tail added for splitByData (a list resulting from calling splitBy)
+
 * sapplyBy / sapply_by added
 
 * subSeq works on factors now (coerces to character)
