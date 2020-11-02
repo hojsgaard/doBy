@@ -536,6 +536,8 @@
 #' 
 #' There are data for 222 cows. Some cows appear more than once in the dataset
 #' (in different lactations) and there are 288 different lactations.
+#'
+#' @aliases milkman_rdm1
 #' 
 #' @name milkman
 #' @docType data
@@ -575,6 +577,7 @@
 #' data(milkman)
 #' 
 "milkman"
+"milkman_rdm1"
 
 
 #' NIRmilk
