@@ -1,7 +1,19 @@
-doBy v4.6.8 (Release date: 2020-09-xx)
+doBy v4.6.10 (Release date: 2021-0x-xx)
 ========================================
 
-* head / tail added for splitByData (a list resulting from calling splitBy)
+* specialize documented. Benchmarking example added.
+
+
+doBy v4.6.9 (Release date: 2021-03-09)
+========================================
+
+* Improved documentation.
+
+doBy v4.6.8 (Release date: 2020-11-10)
+========================================
+
+* head / tail added for splitByData (a list resulting from calling
+  splitBy)
 
 * sapplyBy / sapply_by added
 
@@ -13,7 +25,7 @@ doBy v4.6.8 (Release date: 2020-09-xx)
 
 * is_grouped added
 
-* math / mathmark dataset added. 
+* math / mathmark dataset added.
 
 
 doBy v4.6.7 (Release date: 2020-07-07)

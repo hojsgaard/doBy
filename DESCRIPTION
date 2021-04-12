@@ -1,5 +1,5 @@
 Package: doBy
-Version: 4.6.8
+Version: 4.6.9.9001
 Title: Groupwise Statistics, LSmeans, Linear Contrasts, Utilities 
 Author: Søren Højsgaard <sorenh@math.aau.dk> and Ulrich Halekoh
     <uhalekoh@health.sdu.dk>
@@ -18,15 +18,17 @@ Depends:
     R (>= 3.6.0),
     methods
 Imports:
-    pbkrtest (>= 0.4-8.1),
+    broom,
+    curry,
+    Deriv,
+    dplyr,
+    ggplot2,
     MASS,
     Matrix,
     magrittr,
-    Deriv,
-    tibble,
-    broom,
-    ggplot2,    
-    dplyr
+    microbenchmark,
+    pbkrtest (>= 0.4-8.1),
+    tibble
 Suggests:
     multcomp,
     geepack,
