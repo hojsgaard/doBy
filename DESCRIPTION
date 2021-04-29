@@ -1,5 +1,5 @@
 Package: doBy
-Version: 4.6.9.9001
+Version: 4.6.10
 Title: Groupwise Statistics, LSmeans, Linear Contrasts, Utilities 
 Author: Søren Højsgaard <sorenh@math.aau.dk> and Ulrich Halekoh
     <uhalekoh@health.sdu.dk>
@@ -34,5 +34,6 @@ Suggests:
     geepack,
     lme4,
     survival,
+    testthat (>= 2.1.0),
     knitr
 RoxygenNote: 7.1.1

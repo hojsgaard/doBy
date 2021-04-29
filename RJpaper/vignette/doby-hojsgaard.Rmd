@@ -1,0 +1,559 @@
+---
+title: The \pkg{doBy} package for data handling, linear estimates and LS-means
+author:
+  - name: Søren Højsgaard
+    affiliation: Department of Mathematical Sciences, Aalborg University, Denmark
+    address:
+    - Skjernvej 4A
+    - 9220 Aalborg Ø, Denmark
+    email: sorenh@math.aau.dk
+abstract: > 
+  The \pkg{doBy} is one of several general utility packages on CRAN. We illustrate two main
+  features of the package: The ability to making groupwise computations and the ability
+  to compute linear estimates, contrasts and least-squares means.
+preamble: |
+  % Any extra LaTeX you need in the preamble
+output: |
+  pdf_document
+---
+
+  <!-- pdf_document: -->
+  <!--   fig_caption: yes -->
+  <!--   keep_tex: true -->
+  <!--   toc: true -->
+  <!--   toc_depth: 3 -->
+  <!--   number_sections: true -->
+
+<!-- %%% output: rticles::rjournal_article -->
+
+```{r echo=FALSE, results="hide", messages=FALSE}
+knitr::opts_chunk$set(fig.path="doby-hojsgaard-fig-", tidy=FALSE,
+                      cache=!TRUE,
+                      fig.width=5, fig.height=2.5, size="small", out.extra='keepaspectratio')
+options("show.signif.stars"=FALSE)
+options("digits"=4)
+suppressPackageStartupMessages({
+library(ggplot2)
+library(doBy)
+##library(Matrix)
+library(lme4)
+library(magrittr)
+library(tibble)
+library(broom)
+library(multcomp)
+})
+```
+
+## Introduction
+
+The \CRANpkg{doBy} package [@doby]
+grew out of a need to calculate groupwise summary
+statistics (much in the spirit of \code{PROC SUMMARY} of the SAS system,
+[@procsummary]). The package first appeared on CRAN, \url{https://cran-r-project.org}, in 2006.
+The name \pkg{doBy} comes from the need to __do__ some computations on data which is 
+stratified __By__ the value of some variables.  Today the
+package contains many additional utilities.  In this paper we focus 1)
+on the "doing by"-functions and 2) on functions related to linear
+estimates and contrasts (in particular LS-means).
+
+### Related functionality
+
+When it comes to data handling, \pkg{doBy} is nowhere nearly as powerful as more contemporary packages, such as those in the \CRANpkg{tidyverse} eco system, [@tidyverse].  The \code{aggregate} function in base R provides functionality similar to \pkg{doBy}s \code{summaryBy} function. Another package to be mentioned in this connection is  \CRANpkg{data.table}, @data.table. On the other hand, \pkg{doBy} is based on classical data structures that are unlikely to undergo sudden changes. There is one exception to this, though: The data handling functions work on tibble`s, from \CRANpkg{tibble} @tibble. In relation to linear estimates, the \CRANpkg{multcomp} package [@multcomp] deserves mention, and the \CRANpkg{lsmeans} package [@lsmeans] provides facilities for computing LS-means.
+
+
+It can be hypothesized that the data handling functions in \pkg{doBy} remain appealing to a group of users because of their simplicity.
+
+### A working dataset - the `CO2` data
+
+The `CO2` data frame comes  from an
+experiment on the cold tolerance of the grass species _Echinochloa
+crus-galli_. `Type` is a factor with levels `Quebec` or `Mississippi` giving the origin of the plant. `Treatment` is a factor levels `nonchilled` or `chilled`. Data is balanced with respect to these two factors. However, illustrated certain points we exclude a few rows of data to make data imbalanced. 
+To limit the amount of output we modify names and levels of variables
+as follows
+
+```{r}
+data(CO2)
+CO2 <- within(CO2, {
+    Treat = Treatment; Treatment = NULL
+    levels(Treat) = c("nchil", "chil"); levels(Type) = c("Que", "Mis")
+})
+CO2 <- subset(CO2, Plant %in% c("Qn1", "Qc1", "Mn1", "Mc1"))
+CO2 <- CO2[-(1:3),]
+xtabs(~Treat+Type, data=CO2)
+head(CO2, 4)
+```
+
+
+```{r interaction, echo=F, fig.height=2, fig.cap="Interaction plot for the CO2 data. Boxplot outliers are crosses. The plot suggests additivity between Treat and Type."}
+toothInt <- summaryBy(uptake ~ Treat + Type, data=CO2)
+ggplot(CO2, aes(x = Treat, y = uptake, colour = Type)) +
+    geom_boxplot(outlier.shape = 4) +
+    geom_point(data = toothInt, aes(y = uptake.mean)) +
+    geom_line(data = toothInt, aes(y = uptake.mean, group = Type))
+```
+
+
+## Functions related to groupwise computations
+
+
+
+### The \code{summaryBy} function
+
+The \code{summaryBy} function is used for calculating quantities like _the
+mean and variance of numerical variables x and y for each
+combination of two factors A and B_.  Notice: A functionality
+similar to \code{summaryBy} is provided by \code{aggregate} from base R, but \code{summaryBy} offers additional features. 
+
+
+```{r}
+myfun1 <- function(x){c(m=mean(x), s=sd(x))}
+summaryBy(cbind(conc, uptake, lu=log(uptake)) ~ Plant, data=CO2, FUN=myfun1)
+```
+
+The convention is that variables that do not appear in the dataframe (e.g. \code{log(uptake)}) must be named (here as \code{lu}). 
+Various shortcuts are available, e.g. the following, where 
+left hand side dot refers to _all numeric variables_ while the
+right hand side dot refers to _all factor variables_. Writing `1` on the right hand side leads to computing over the entire dataset:
+
+```{r}
+summaryBy(. ~ ., data=CO2, FUN=myfun1)
+summaryBy(. ~ 1, data=CO2, FUN=myfun1)
+```
+
+### Specifications as formulas and lists
+
+We shall refer to all the functions for groupwise computations etc. as the _By-functions_.
+The convention for the By-functions is that a two sided formula like can be written in two ways:
+```{r, eval=FALSE}
+cbind(x, y) ~ A + B
+list(c("x", "y"), c("A", "B"))
+```
+
+Some By-functions only take a right hand sided formula as input. Such a formula can also be written in two ways:
+```{r, eval=FALSE}
+~ A + B
+c("A", "B")
+```
+
+The list-form / vector-form is especially useful if a function is invoked programatically. Hence the calls to \code{summaryBy} above can also be made as
+
+```{r, eval=FALSE}
+summaryBy(list(c("conc", "uptake", "lu=log(uptake)"), "Plant"), data=CO2, FUN=myfun1)
+summaryBy(list(".", "."), data=CO2, FUN=myfun1)
+summaryBy(list(".", "1"), data=CO2, FUN=myfun1)
+```
+
+## Using the pipe operator
+
+The \code{summaryBy} function has a counterpart called \code{summary\_by}. The difference is that a formula is the first argument to the former function while a dataframe (or a tibble) is the first argument to the latter. The same applies to the other By-functions. This allows for elegant use of the pipe operator `%>%` from \CRANpkg{magrittr}, [@magrittr]:
+
+```{r}
+CO2 %>% summary_by(cbind(conc, uptake) ~ Plant + Type, FUN=myfun1) -> newdat
+newdat
+```
+
+
+
+### The \code{orderBy} function
+
+Ordering (or sorting) a data frame is possible with the `orderBy`
+function.  Suppose we want to order the rows of the the `CO2` data by
+increasing values of `conc` and decreasing value of `uptake` (within `conc`):
+```{r}
+x1 <- orderBy(~ conc - uptake, data=CO2)
+head(x1)
+```
+
+<!-- Following the remarks about specification in "By"-functions, an equivalent form is: -->
+<!-- ```{r, eval=F} -->
+<!-- orderBy(c("conc", "-uptake"), data=CO2)  -->
+<!-- ``` -->
+
+### The \code{splitBy} function
+
+Suppose we want to split `CO2` into a list of dataframes:
+
+```{r}
+x1 <- splitBy(~ Plant + Type, data=CO2)
+x1
+```
+
+The result is a list (with a few additional attributes):
+```{r}
+lapply(x1, head, 2)
+```
+
+### The \code{subsetBy} function
+
+Suppose we want to select those rows within each treatment for which  the
+uptake is larger than 75% quantile of uptake (within the treatment). This
+is achieved by:
+
+```{r}
+x2 <- subsetBy(~ Treat, subset=uptake > quantile(uptake, prob=0.75), data=CO2)
+head(x2, 4)
+```
+
+### The \code{transformBy} function
+
+The \code{transformBy} function is analogous to the \code{transform}
+function except that it works within groups. For example:
+
+```{r}
+x3 <- transformBy(~ Treat, data=CO2, 
+                 minU=min(uptake), maxU=max(uptake), range=diff(range(uptake)))
+head(x3, 4)
+```
+
+### The \code{lmBy} function
+
+The \code{lmBy} function allows for fitting linear models to different strata of data (the vertical bar is used for defining groupings of data):
+```{r}
+m <- lmBy(uptake ~ conc | Treat, data=CO2)
+coef(m)
+```
+
+The result is a list with a few additional attributes and the list can be processed further as e.g.
+```{r}
+lapply(m, function(z) coef(summary(z)))
+```
+
+
+
+
+## Functions related linear estimates and contrasts
+
+A linear function of a $p$--dimensional parameter vector $\beta$ has
+the form
+\begin{displaymath}
+  C=L\beta
+\end{displaymath}
+where $L$ is a $q\times p$ matrix which we call the _Linear Estimate Matrix_ or 
+simply _LE-matrix_.  The corresponding
+linear estimate is $\hat C = L \hat \beta$.  A linear hypothesis has
+the form $H_0: L\beta=m$ for some $q$ dimensional vector $m$. 
+
+In the following we describe what is essentially simple ways of generating such $L$-matrices.
+
+
+
+
+### Computing linear estimates
+
+
+First we focus on an additive model. 
+```{r}
+co2.add <- lm(uptake ~ Treat + Type, data=CO2)
+```
+
+Consider computing the estimated uptake for each treatment for plants originating from Mississippi:
+One option: Construct the LE--matrix $L$ directly and then compute $L\hat\beta$:
+
+```{r}
+L <- matrix(c(1, 0, 1, 
+              1, 1, 1), nrow=2, byrow=T); L
+beta <- coef(co2.add); beta
+L %*% beta
+```
+
+However, this approach does not produce standard errors, confidence intervals etc. 
+Once $L$ has been constructed, such quantities can be constructed using \code{linest} (short for _linear estimate_) and the older but very similar \code{esticon} function (short for _estimate contrast_)
+```{r}
+c1 <- linest(co2.add, L)
+coef(c1)
+confint(c1)
+c1 <- esticon(co2.add, L)
+c1
+```
+
+Another option is to invoke \code{glht} (short for _general linear hypothesis_) from the \CRANpkg{multcomp} package:
+
+```{r}
+library(multcomp)
+mc <- glht(co2.add, linfct=L)
+summary(mc)
+```
+
+
+In \pkg{doBy} there are facilities for computing $L$ automatically and for supplying $L\hat\beta$ with standard errors etc.
+
+```{r}
+L <- LE_matrix(co2.add, effect = "Treat", at=list(Type="Mis")); L
+```
+
+
+
+### Least-squares means (LS--means)
+
+A related question is: What is the estimated uptake for each treatment if we ignore the type (i.e. origin of the plants)? One option would to fit a linear model without `Type` as explanatory variable:
+
+```{r}
+co2.0 <- update(co2.add, . ~ . - Type)
+L0 <- LE_matrix(co2.0, effect="Treat"); L0
+linest(co2.0, L=L0)
+```
+
+An alternative would be to keep the focus on the original model but compute the
+estimated uptake for each treatment for an _average location_. That would correspond to
+giving weight $1/2$ to each of the two locations. However, as one of the parameters is already set to zero
+to obtain identifiability, we obtain the LE--matrix $L$ as
+
+```{r}
+L1 <- matrix(c(1, 0, 0.5, 
+               1, 1, 0.5), nrow=2, byrow=T); L1
+linest(co2.add, L=L1)
+```
+
+Such a particular linear estimate is sometimes called a _least-squares
+mean_, an _LS-mean_, a _marginal mean_ or a _population mean_. If data had been balanced, the LS-mean would be identical to the result obtained after fitting a model without `Type`. 
+
+The virtue of the \CRANpkg{doBy} package is in this connection that $L$ can be generated automatically with:
+```{r}
+L1 <- LE_matrix(co2.add, effect="Treat"); L1
+```
+
+Notice: One may obtain the LS-mean directly as:
+```{r, results="hide"}
+LSmeans(co2.add, effect="Treat")
+## same as
+linest(co2.add, L=LE_matrix(co2.add, effect="Treat"))
+```
+
+
+For a model with interactions, the LS-means are computed as above, but the $L$-matrix is different:
+```{r}
+co2.int <- lm(uptake ~ Treat * Type, data=CO2)
+LE_matrix(co2.int, effect="Treat")
+```
+
+
+
+
+
+### Using (transformed) covariates
+
+From the examples above it should follows that the key aspect of computing LS-means is the (automatic) generation of the $L$ matrix. Therefore we shall in the following focus on form of the $L$ matrix rather than on the computed LS-means.
+Covariates are fixed at their average value (unless the `at=...`-argument is used, see below). For example, 
+`conc` is fixed at the average value:
+```{r}
+co2.lm1 <- lm(uptake ~ conc + Type + Treat, data=CO2)
+lsm1 <- LSmeans(co2.lm1, effect="Treat")
+lsm1$L
+lsm1a <- LSmeans(co2.lm1, effect="Treat", at=list(conc=700))
+lsm1a$L
+```
+
+
+A special issue arises in connection with transformed covariates. Consider:
+
+```{r}
+co2.lm2 <- lm(uptake ~ conc + I(conc^2) + log(conc) + Type + Treat, data=CO2)
+lsm2 <- LSmeans(co2.lm2, effect="Treat")
+lsm2$L
+```
+
+Above \verb'I(conc^2)' is the the  square of the average of
+`conc` (which is `r mean(CO2$conc)^2`) - not the average of the squared values of
+`conc` (which is `r mean(CO2$conc^2)`). Likewise `log(conc)` is the log of the average of `conc` 
+(which is `r log(mean(CO2$conc))`) - not the average of the log of `conc` (which is `r mean(log(CO2$conc))`).
+To make computations based on the average value of the square of `conc` and the average of the log of `conc` do
+
+```{r}
+co2.lm3 <- lm(uptake ~ conc + conc2 + log.conc + Type + Treat, 
+              data=transform(CO2, conc2=conc^2, log.conc=log(conc)))
+lsm3 <- LSmeans(co2.lm3, effect="Treat")
+lsm3$L
+```
+
+Thus, if we want to evaluate the LS--means at `conc=700` then we can do:
+```{r}
+lsm4 <- LSmeans(co2.lm3, effect="Treat", at=list(conc=700, conc2=700^2, log.conc=log(700)))
+lsm4$L
+```
+
+
+## Alternative models
+
+The functions `esticon`, `linest`, `LSmeans` etc. are available for a range of model classes. We illustrate a few below:
+We may decide to treat \verb|Type| as a random effect (here with only two levels). This leads to a _linear mixed effects model_ as implemented in \CRANpkg{lme4}, [@lme4]:
+```{r}
+library(lme4)
+co2.mix <- lmer(uptake ~ Treat + (1|Type), data=CO2)
+LSmeans(co2.mix, effect="Treat")
+```
+
+Notice here that the parameter estimates themselves are similar to those of a linear model (had data been completely balanced, the estimates would have been identical). However, the standard errors of the the estimates are much larger under the mixed model. This is due to `Type` being treated as a random effect.
+Notice that the degrees of freedom by default are adjusted using a
+Kenward--Roger approximation (provided that \CRANpkg{pbkrtest} package [@pbkrtest] is
+installed). Adjustment of degrees of freedom is controlled with the `adjust.df` argument.
+
+LS-means are also available in a  _generalized linear model_ setting as well as for 
+ for _generalized estimating equations_ as implemented in the \CRANpkg{geepack} package, [@geepack]. In both cases the  LS--means are on the scale of the linear predictor - not on the scale of the response.
+
+
+
+
+
+
+<!-- ```{r, results="show"} -->
+<!-- co2.glm <- glm(uptake ~ Treat + Type, family=Gamma("identity"), data=CO2) -->
+<!-- LSmeans(co2.glm, effect="Treat") -->
+
+<!-- library(geepack) -->
+<!-- co2.gee <- geeglm(uptake ~ Treat, id=Type, family=Gamma("identity"), data=CO2) -->
+<!-- LSmeans(co2.gee, effect="Treat") -->
+<!-- ``` -->
+
+
+## Acknowledgements
+
+Credit is due to Dennis Chabot, Gabor Grothendieck, Paul Murrell, Jim
+Robison-Cox and Erik Jørgensen for reporting various bugs and
+making various suggestions to the functionality in the \pkg{doBy}
+package.
+
+\bibliography{doby-hojsgaard}
+
+
+
+
+<!-- #tooth.glm <- glm(len ~ dose + supp, family=Gamma("identity"), data=ToothGrowth) -->
+<!-- #LSmeans(tooth.glm, effect="dose") -->
+
+<!-- library(geepack) -->
+<!-- tooth.gee <- geeglm(len ~ dose, id=supp, family=Gamma("identity"), data=ToothGrowth) -->
+<!-- LSmeans(tooth.gee, effect="dose") -->
+
+<!-- ```{r} -->
+<!-- summary(tooth.glm) -->
+<!-- summary(tooth.gee) -->
+<!-- ``` -->
+
+
+<!-- For now, we focus on the additive model.  -->
+<!-- Consider computing the estimated length for each dose of orange juice (OJ): -->
+<!-- One option: Construct the LE--matrix $L$ directly and then invoke `linest`: -->
+
+<!-- ```{r} -->
+<!-- L <- matrix(c(1, 0, 0, 0,  -->
+<!--               1, 1, 0, 0, -->
+<!--               1, 0, 1, 0), nrow=3, byrow=T) -->
+<!-- ``` -->
+
+<!-- The matrix $L$ can be generated as follows: -->
+<!-- ```{r, eval=FALSE} -->
+<!-- L <- LE_matrix(tooth1, effect="dose", at=list(supp="OJ")) -->
+<!-- ``` -->
+
+
+
+
+<!-- The estimates can be computed directly as `L %*% coef(tooth1)`  -->
+<!-- but we do not obtain standard errors etc. this way. Instead we can invoke `linest` -->
+<!-- ```{r} -->
+<!-- c1 <- linest(tooth1, L) -->
+<!-- coef(c1) -->
+<!-- confint(c1) -->
+<!-- ``` -->
+
+<!-- The function `esticon` has been part of \pkg{doBy} for many years while `linest` is a newer addition. The functionality, however, is similar: -->
+<!-- ```{r} -->
+<!-- c1 <- esticon(tooth1, L) -->
+<!-- c1 -->
+<!-- ``` -->
+
+
+
+<!-- ```{r} -->
+<!-- tooth0 <- update(tooth1, . ~ . - supp) -->
+<!-- L0 <- LE_matrix(tooth0, effect="dose") -->
+<!-- L0 -->
+<!-- linest(tooth0, L=L0) -->
+<!-- ``` -->
+
+
+
+<!-- An alternative would be to stick to the original model but compute the -->
+<!-- estimate for an ``average vitamin C source''. That would correspond to -->
+<!-- giving weight $1/2$ to each of the two vitamin C source -->
+<!-- parameters. However, as one of the parameters is already set to zero -->
+<!-- to obtain identifiability, we obtain the LE--matrix $L$ as -->
+
+<!-- ```{r} -->
+<!-- L1 <- matrix(c(1, 0, 0, 0.5,  -->
+<!--                1, 1, 0, 0.5, -->
+<!--                1, 0, 1, 0.5), nrow=3, byrow=T) -->
+<!-- linest(tooth1, L=L1) -->
+<!-- ``` -->
+
+<!-- Such a particular linear estimate is sometimes called a _least-squares -->
+<!-- mean_, an _LSmean_, a _marginal mean_ or a _population mean_.  -->
+<!-- Notice: One may generate $L$ automatically with -->
+<!-- ```{r} -->
+<!-- L1 <- LE_matrix(tooth1, effect="dose") -->
+<!-- L1 -->
+<!-- ``` -->
+
+<!-- Notice: One may obtain the LSmean directly as: -->
+<!-- ```{r, results="hide"} -->
+<!-- LSmeans(tooth1, effect="dose") -->
+<!-- ## same as -->
+<!-- linest(tooth1, L=LE_matrix(tooth1, effect="dose")) -->
+<!-- ``` -->
+
+<!-- For a model with interactions, the LSmeans are computed as above, but the $L$-matrix is: -->
+<!-- ```{r} -->
+<!-- LE_matrix(tooth2, effect="dose") -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- LSmeans(tooth2, effect="dose") -->
+<!-- ``` -->
+
+<!-- In this case, the LE--matrix is -->
+<!-- ```{r} -->
+<!-- LE_matrix(tooth2, effect="dose") -->
+<!-- ``` -->
+
+
+
+<!-- , cfr. this: -->
+<!-- ```{r} -->
+<!-- c(mean(CO2$conc)^2, mean(CO2$conc^2)) -->
+<!-- c(log(mean(CO2$conc)), mean(log(CO2$conc))) -->
+<!-- ``` -->
+
+
+<!-- ### A working dataset - the `ToothGrowth` data -->
+
+<!-- The response is the length of odontoblasts cells (cells responsible for -->
+<!-- tooth growth) in 60 guinea pigs.  Each animal received one of -->
+<!-- three dose levels of vitamin C (0.5, 1, and 2 mg/day) by one of -->
+<!-- two delivery methods, (orange juice (coded as OJ) or ascorbic acid  -->
+<!-- (a form of vitamin C and (coded as VC)). The dataset is balanced with 10 measurements for each combination of `dose` and `supp`. To illustrated certain points in what follows we make data unbalance by removing the some rows of the dataframe: -->
+
+<!-- ```{r} -->
+<!-- data("ToothGrowth") -->
+<!-- ToothGrowth <- transform(ToothGrowth, dose = factor(dose)) -->
+<!-- ToothGrowth <- ToothGrowth[-(1:3), ] -->
+<!-- head(ToothGrowth, 4) -->
+<!-- ``` -->
+
+
+
+<!-- ```{r linear:interaction2, echo=F, fig.height=2, fig.cap="Interaction plot for the ToothGrowth data. The average `len` for each group is a dot. Boxplot outliers are crosses."} -->
+<!-- toothInt <- summaryBy(len ~ dose + supp, data=ToothGrowth) -->
+<!-- ggplot(ToothGrowth, aes(x = factor(dose), y = len, colour = supp)) + -->
+<!--     geom_boxplot(outlier.shape = 4) + -->
+<!--     geom_point(data = toothInt, aes(y = len.mean)) + -->
+<!--     geom_line(data = toothInt, aes(y = len.mean, group = supp)) -->
+<!-- ``` -->
+
+<!-- The interaction plot indicates some interaction between `dose` and `supp`. -->
+<!-- This is also supported by a formal test, details are omitted. We shall later consider these two models: -->
+<!-- ```{r} -->
+<!-- tooth1 <- lm(len ~ dose + supp, data=ToothGrowth) -->
+<!-- tooth2 <- lm(len ~ dose * supp, data=ToothGrowth) -->
+<!-- ``` -->
+
