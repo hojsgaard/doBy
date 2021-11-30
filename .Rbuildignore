@@ -6,3 +6,5 @@ revdep
 ^Meta$
 old_NAMESPACE
 RJpaper
+zandbox
+vignette/figures

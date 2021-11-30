@@ -1,0 +1,46 @@
+% \def\shd#1{\footnote{SHD: #1}}
+%\special{html:
+%  <link title="main" media="all" rel="stylesheet" href="../../../shdcss.css"
+% type="text/css" />
+%}
+
+% \renewenvironment{Schunk}{\begin{center}
+%     \scriptsize
+%     \begin{boxedminipage}{1.0\textwidth}}{
+%     \end{boxedminipage}\end{center}}
+
+%\SweaveInput{Rmarkup.STY}
+
+
+% \DefineVerbatimEnvironment{Sinput}{Verbatim}{
+%   fontfamily=tt,
+%   %%fontseries=b,
+%   %% xleftmargin=2em,
+%   formatcom={\color{midnightblue}}
+% }
+% \DefineVerbatimEnvironment{Soutput}{Verbatim}{
+%   fontfamily=tt,
+%   %%fontseries=b,
+%   %% xleftmargin=2em,
+%   formatcom={\color{darkred}}
+% }
+% \DefineVerbatimEnvironment{Scode}{Verbatim}{
+%   fontfamily=tt,
+%   %%fontseries=b,
+%   %% xleftmargin=2em,
+%   formatcom={\color{blue}}
+% }
+
+% \fvset{listparameters={\setlength{\topsep}{-2pt}}}
+% \renewenvironment{Schunk}{\linespread{.90}}{}
+%  \RecustomVerbatimEnvironment{Sinput}{Verbatim}{fontsize=\scriptsize,xleftmargin=5mm,formatcom=\color{blue},frame=single,framerule=0.1pt}
+%  \RecustomVerbatimEnvironment{Soutput}{Verbatim}{fontsize=\scriptsize,xleftmargin=5mm,formatcom=\color{violet},frame=single,framerule=0.1pt}
+
+
+
+% The \doby\ package (and this document as a .pdf file) is available
+% from
+
+% \url{http://cran.r-project.org/web/packages/doBy/index.html}
+
+%The package is loaded with:
