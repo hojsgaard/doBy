@@ -101,6 +101,9 @@ LE_matrix <- function(object, effect=NULL, at=NULL){
 #' @export
 #' @rdname linest-matrix
 LE_matrix.default <- function(object, effect=NULL, at=NULL){
+
+    effect <- .parse.effect(effect)
+    
     if (!is.null(at))
         if (!inherits(at, c("list", "data.frame"))) stop("'at' must be list or data.frame\n")
 
@@ -154,13 +157,38 @@ summary.linest_matrix_class <- function(object, ...){
     invisible(object)      
 }
 
+
+.parse.effect <- function(effect=NULL){
+    ## All returns c("A", "B")
+    ## parse.effect(~A+B)
+    ## parse.effect(y~A+B)
+    ## parse.effect(c("A", "B"))
+
+    if (is.null(effect)) return(NULL)
+    if (!inherits(effect, c("character", "formula")))
+        stop("'effect' must be a character vector or a formula")
+    
+    if (inherits(effect, "character")){
+        if (identical(effect, character(0)) | identical(effect, ""))
+            NULL
+        else
+            effect
+    } else {
+        all.vars(effect[[length(effect)]])
+    }
+}
+
 ## This is the workhorse for generating the "contrast matrix"
 #' @export
 #' @rdname linest-matrix
 get_linest_list <- function(object, effect=NULL, at=NULL){
 
+
     pr <- FALSE
     ##cat(".get_linest_list\n")
+
+    effect <- .parse.effect(effect)
+    
     trms     <- delete.response( terms(object) )
     fact.lev <- get_xlevels( object )            ## factor levels
     ##cat("fact.lev:\n"); print(fact.lev)

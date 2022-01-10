@@ -1,0 +1,35 @@
+\documentclass{article}
+
+\usepackage{Sweave,fancyvrb}
+\begin{document}
+
+\begin{enumerate}
+\item 
+\end{enumerate}
+
+<<>>=
+xxx <- 1000
+yyy <- 1000
+@ 
+
+\begin{enumerate}
+\item 
+\end{enumerate}
+
+\verb|kkkkkk| and \verb|llllll| og 
+
+<<>>=
+library(patchwork)
+library(ggplot2)
+p1 <- ggplot(CO2, aes(x=conc, y=uptake, color=Treatment, group=Plant)) + geom_line() + geom_point() + facet_grid(~Type)
+@ 
+
+\begin{itemize}
+\item 
+\end{itemize}
+
+\begin{itemize}
+\item 
+\end{itemize}
+
+\end{document}
