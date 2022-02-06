@@ -8,3 +8,5 @@ old_NAMESPACE
 RJpaper
 zandbox
 vignette/figure
+^CRAN-SUBMISSION$
+^cran-comments\.md$
