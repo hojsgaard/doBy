@@ -1,14 +1,15 @@
 Package: doBy
-Version: 4.6.11.9001
-Title: Groupwise Statistics, LSmeans, Linear Contrasts, Utilities 
+Version: 4.6.12
+Title: Groupwise Statistics, LSmeans, Linear Estimates, Utilities 
 Author: Søren Højsgaard <sorenh@math.aau.dk> and Ulrich Halekoh
     <uhalekoh@health.sdu.dk>
 Maintainer: Søren Højsgaard <sorenh@math.aau.dk>
-Description: Contains:
+Description: Utility package containing:
     1) Facilities for working with grouped data: 'do' something to data
     stratified 'by' some variables.
-    2) LSmeans (least-squares means), general linear contrasts. 
-    3) Miscellaneous other utilities.
+    2) LSmeans (least-squares means), general linear estimates.
+    3) Restrict functions to a smaller domain.
+    4) Miscellaneous other utilities.
 Encoding: UTF-8
 VignetteBuilder: knitr
 ZipData: no
@@ -19,7 +20,6 @@ Depends:
     methods
 Imports:
     broom,
-    curry,
     Deriv,
     dplyr,
     ggplot2,
@@ -36,4 +36,4 @@ Suggests:
     survival,
     testthat (>= 2.1.0),
     knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

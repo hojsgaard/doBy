@@ -170,12 +170,19 @@ linest.merMod <- function(object, L=NULL, conf.int=FALSE, conf.level=0.95, ...){
     for (ii in 1:nrow(res)){
         kk <- L[ii,]
         ## print(kk)
+        ## kk <<- kk
+        ## bhat <<- bhat
         zz <- kk[is.na(bhat)] ## values in kk for which beta is NA
+        ## print(zz)
+        if (length(zz) == 0)
+            is.zero <- TRUE
+        else
+            is.zero <- max(abs(zz)) < 1e-3
+
         
-        is.zero <- max(abs(zz)) < 1e-3
         ## print(is.zero)
         if (is.est[ii] && is.zero){
-            kk <- kk[used]
+            kk   <- kk[used]
             est  <- sum(kk * bhat.used)
             se   <- sqrt(sum(kk * (VV %*% kk)))
             df2  <- ddf.vec[ii]
@@ -187,7 +194,7 @@ linest.merMod <- function(object, L=NULL, conf.int=FALSE, conf.level=0.95, ...){
         res[,1] <- res[,1] + off[[1]]
     
     colnames(res) <- c("estimate", "std.error", "df") 
-    statistic        <- res[,"estimate"] / res[,"std.error"]
+    statistic     <- res[,"estimate"] / res[,"std.error"]
     res <- cbind(res[,1:2, drop=FALSE], statistic, df=res[,3])
 
     rownames(res) <- NULL
@@ -308,7 +315,7 @@ coef.linest_class <- function (object, ...) {
 
 #' @export
 print.linest_class <- function (x, ...){
-    cat("Coefficients:\n")
+    ## cat("Coefficients:\n")
     printCoefmat(x$coef)
 }
 

@@ -2,15 +2,23 @@
 %\VignettePackage{doBy}
 %\VignetteIndexEntry{doby: Groupwise computations and miscellaneous utilities}
 
+
+
+
+
+
 \documentclass[11pt]{article}
 
-\usepackage{hyperref,color,boxedminipage,Sweave,a4wide}
+\usepackage{hyperref,url,color,Sweave,a4wide}
 \usepackage[utf8]{inputenc}
-\usepackage{url,hyperref}
-\usepackage{boxedminipage,color}
+
+
+\usepackage[authoryear,round]{natbib}
+\bibliographystyle{plainnat}
+
+\RequirePackage{color,fancyvrb,amsmath,amsfonts}
 
 \def\textasciigrave{'}
-
 \def\proglang#1{{#1}}
 \def\R{\proglang{R}}
 \def\pkg#1{{\bf #1}}
@@ -18,20 +26,6 @@
 \def\code#1{\texttt{#1}}
 \def\summaryby{\code{summaryBy}}
 
-
-<<echo=FALSE>>=
-#require( doBy )
-prettyVersion <- packageDescription("doBy")$Version
-prettyDate <- format(Sys.Date())
-@
-
-
-<<include=FALSE>>=
-library(knitr)
-opts_chunk$set(
-tidy=FALSE,fig.path='figures/doBy'
-)
-@
 
 % reduce whitespace between R code and R output
 \let\oldknitrout\knitrout
@@ -43,38 +37,49 @@ tidy=FALSE,fig.path='figures/doBy'
   \end{oldknitrout}
 }
 
-% show R> prompt before R commands
-<<r setup, echo=FALSE>>=
-options(prompt='R> ')
-knitr::opts_chunk$set(prompt=TRUE) 
+<<echo=FALSE>>=
+require( doBy )
+prettyVersion <- packageDescription("doBy")$Version
+prettyDate <- format(Sys.Date())
 @
-
-
-%\setkeys{Gin}{height=3in}
 
 \title{Groupwise computations and other utilities in the \texttt{doBy} package}
 \author{S{\o}ren H{\o}jsgaard}
 \date{\pkg{doBy} version \Sexpr{prettyVersion} as of \Sexpr{prettyDate}}
 
 
-\begin{document}
-% \SweaveOpts{concordance=TRUE}
-\maketitle
+<<include=FALSE>>=
+library(knitr)
+@
 
-\definecolor{darkred}{rgb}{.7,0,0}
-\definecolor{midnightblue}{rgb}{0.098,0.098,0.439}
-
-\tableofcontents
-
-<<echo=FALSE>>=
+% show R> prompt before R commands
+<<r setup, echo=FALSE>>=
+knitr::opts_chunk$set(prompt=TRUE) 
 library(doBy)
 if (!dir.exists("figures")) dir.create("figures")
+opts_chunk$set(
+               tidy=FALSE,fig.path='figures/doBy'
+           )
+
 oopt <- options()
 options("digits"=4, "width"=90, "prompt"="> ", "continue"="  ")
 options(useFancyQuotes="UTF-8")
 @ %def
 
-\parindent0pt\parskip5pt
+
+\definecolor{darkred}{rgb}{.7,0,0}
+\definecolor{midnightblue}{rgb}{0.098,0.098,0.439}
+
+
+
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\parindent0pt
+\parskip5pt
 
 \section{Introduction}
 \label{sec:introduction}
@@ -186,7 +191,6 @@ dataframe for each month. This can be achieved by:
 <<>>=
 x <- splitBy(~ Month, data=airquality)
 x <- splitBy(~ vs, data=mtcars)
-
 lapply(x, head, 4)
 attributes(x)
 @ %def
@@ -257,174 +261,6 @@ lapplyBy(~vs, data=mtcars,
 
 
 
-
-
-\section{Restrict a functions domain: \code{restrict\_fun()}}
-\label{sec:restrict}
-
-The \code{restrict\_fun} function can restrict the domain of a
-function. For example, if $f(x,y)=x+y$ then $g(x)=f(x, 10)$ is a
-restriction of $f$ to be a function of $x$ alone.
-
-There are two approaches: 1) Store the restricted arguments
-in an auxillary environment and 2) substitute the restricted arguments
-into the function.
-
-\subsection{Using an auxillary environment}
-\label{sec:using-an-auxillary}
-
-
-<<>>=
-f1  <- function(a, b, c=4, d=9){
-    a + b + c + d
-}
-f1_ <- restrict_fun(f1, list(b=7, d=10))
-class(f1_)
-@
-
-We see the new function is a function of $a$ and $c$ with $c$ being
-given a default value, but what the function does is not
-clear. However, it does evaluate correctly:
-
-<<>>=
-f1_
-f1_(100)
-@
-
-The restricted values are stored in an extra environment in the scaffold object and
-the original function is stored in the scaffold functions environment:
-
-<<>>=
-get_restrictions(f1_) 
-## attr(f1_, "arg_env")$args ## Same result
-get_fun(f1_) 
-## environment(f1_)$fun ## Same result
-@ 
-
-Similarly
-<<>>=
-rnorm5 <- restrict_fun(rnorm, list(n=5))
-rnorm5()
-@
-
-
-\subsection{Substitute restricted values into function}
-\label{sec:subst-restr-valu}
-
-With substitution, it is clear what is happening:
-<<>>=
-f1s_ <- restrict_fun_sub(f1, list(b=7, d=10))
-f1s_
-f1s_(100)
-@ 
-
-However, absurdities can arise:
-<<>>=
-f2  <- function(a) {
-    a <- a + 1
-    a
-}
-## Notice that the following is absurd
-f2s_ <- restrict_fun_sub(f2, list(a = 10))
-f2s_
-# do not run: f2s_()
-try(f2s_())
-
-## Using the environment approch, the result makes sense
-f2_ <- restrict_fun(f2, list(a = 10))
-f2_
-f2_()
-@ %def
-
-\subsection{Example: Benchmarking}
-\label{sec:exampl-benchm}
-
-Consider a simple task: Benchmark computing time for inverting an $n\times n$ matrix with $1,2,\dots, n$ on the diagonal for increasing values of $n$: A naive implementation (where time is also spent on creating matrices) is
-<<>>=
-sum2n <- function(n) {
-    solve(diag(1:n))
-}
-sum2n(3)
-@ 
-
-We can benchmark timing for different values of $n$ as
-<<>>=
-library(microbenchmark)
-microbenchmark(
-  sum2n(3), sum2n(10), sum2n(50), sum2n(100),
-  times=5
-)
-@ 
-
-It is tedious (and hence error prone) to write these function calls. Instead we can do:
-<<>>=
-n.vec  <- c(3, 10, 50, 100)
-fn.list <- lapply(n.vec,
-                  function(ni){
-                      restrict_fun(sum2n, list(n=ni))}
-                  )
-fn.list %>% length
-@ 
-
-Each element is a function (a scaffold object, to be precise) and we can evaluate each / all functions as:
-<<>>=
-fn.list[[1]]
-fn.list[[1]]()
-## sapply(fn.list,
-       ## function(f) do.call(f, list()))
-@ 
-
-% To use the list of functions in connection with microbenchmark, a naive approach is the following (which is equally tedious):
-% <<eval=FALSE>>=
-% microbenchmark(
-%   fn.list[[1]](), fn.list[[2]](), fn.list[[3]](), fn.list[[4]](),
-%   times=5
-% )
-% @ 
-
-To use the list of functions in connection with microbenchmark we can do the following:
-We bquote all functions evaluate each / all functions as:
-<<>>=
-dobq <- function(fnlist){
-   lapply(fnlist, function(g) bquote(.(g)()))
-}
-cl.list <- dobq(fn.list)
-cl.list[[1]]
-## sapply(cl.list, eval)
-@ 
-
-To use microbenchmark we must name the elements of the list:
-<<>>=
-names(cl.list) <- n.vec
-microbenchmark(
-  list=cl.list,
-  times=5
-)
-@ 
-
-To summarize: to experiment with many difference values of $n$ we can do
-<<>>=
-n.vec <- seq(50, 700, by=25)
-fn.list <- lapply(n.vec,
-                  function(ni){
-                      restrict_fun(sum2n, list(n=ni))}
-                  )
-cl.list <- dobq(fn.list)
-names(cl.list) <- n.vec
-mb <- microbenchmark(
-  list=cl.list,
-  times=5
-)
-head(mb)
-@ 
-
-<<fig.height=4>>=
-par(mfrow=c(1,2))
-y <- summary(mb)$mean
-plot(n.vec, y)
-plot(log(n.vec), log(y))
-lm(log(y)~log(n.vec))
-@ 
 
 
 \section{Miscellaneous utilities}

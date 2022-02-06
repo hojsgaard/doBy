@@ -248,6 +248,3 @@ clone_environment <- function(e1){
   structure(fun, class = 'scaffold', arg_env = arg_env)
 }
 
-
-
-
