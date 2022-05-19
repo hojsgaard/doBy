@@ -1,3 +1,9 @@
+doBy v4.6.14 (Release date: 2022-05-12)
+
+* scale2, scaleBy and scale_by functions added
+* recover_pca_data added
+
+
 doBy v4.6.13 (Release date: 2022-05-02)
 =======================================
 
