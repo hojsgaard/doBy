@@ -1,14 +1,22 @@
-doBy v4.6.14 (Release date: 2022-05-12)
+doBy v4.6.15 (Release date: 2022-09-26)
+=======================================
 
-* scale2, scaleBy and scale_by functions added
-* recover_pca_data added
+* Functions `split_byrow()` and `split_bycol()` added.
+
+doBy v4.6.14 (Release date: 2022-05-12)
+=======================================
+
+* Functions `scale2()`, `scaleBy()` and `scale_by()` functions added
+* Funcetion `recover_pca_data()` added
+* added data: `crime_rate` (crimeRate with State variable now being rownames)
+* added data: `prostate` and `personality`
 
 
 doBy v4.6.13 (Release date: 2022-05-02)
 =======================================
 
-* carcassall data: definition of factors corrected.
-* cad dataset included
+* data `carcassall`: definition of factors corrected.
+* added data `cad`
 
 
 doBy v4.6.11 (Release date: 2021-07-13)

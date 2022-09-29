@@ -23,6 +23,9 @@ Recover data from principal component analysis based on the first (typically few
 crime <- doBy::crimeRate
 rownames(crime) <- crime$State
 crime$State <- NULL
+crime <- doBy::crimeRate
+rownames(crime) <- crime$State
+crime$State <- NULL
 
 o <- order(apply(scale(crime), 1, sum))
 dat <- crime[o,]
