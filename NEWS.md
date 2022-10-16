@@ -1,11 +1,8 @@
-doBy v4.6.15 (Release date: 2022-09-26)
+doBy v4.6.14 (Release date: 2022-10-16)
 =======================================
 
 * Functions `split_byrow()` and `split_bycol()` added.
-
-doBy v4.6.14 (Release date: 2022-05-12)
-=======================================
-
+* Function `expr_to_fun` added. 
 * Functions `scale2()`, `scaleBy()` and `scale_by()` functions added
 * Funcetion `recover_pca_data()` added
 * added data: `crime_rate` (crimeRate with State variable now being rownames)
