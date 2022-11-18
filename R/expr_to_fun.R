@@ -6,8 +6,9 @@
 #'
 #' ee <- expression(b1 + (b0 - b1)*exp(-k*x) + b2*x)
 #' ff <- expr_to_fun(ee)
+#' @export
 expr_to_fun <- function(e){
-    vn <- all.vars(ee)
+    vn <- all.vars(e)
     fmls <- vector("list", length(vn))
     names(fmls) <- vn
     

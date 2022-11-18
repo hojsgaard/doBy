@@ -100,6 +100,7 @@
 #' bc[-train, "code"]
 #' table(pc, bc[-train, "code"])
 #' }
+#' 
 "breastcancer"
 
 
