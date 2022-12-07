@@ -7,13 +7,13 @@
 samples}
 \format{
 A data frame with 250 observations on 1001 variables. The
-    first 1000 columns are numerical variables; the last column
-    (named \code{code}) is a factor with levels \code{case} and
-    \code{control}.
+first 1000 columns are numerical variables; the last column
+(named \code{code}) is a factor with levels \code{case} and
+\code{control}.
 }
 \source{
 Dr. Chris Holmes, c.holmes at stats
-    dot. ox . ac .uk
+dot. ox . ac .uk
 }
 \usage{
 breastcancer
@@ -46,9 +46,10 @@ pc
 bc[-train, "code"]
 table(pc, bc[-train, "code"])
 }
+
 }
 \references{
 Miller et al (2005, PubMed
-    ID:16141321)
+ID:16141321)
 }
 \keyword{datasets}

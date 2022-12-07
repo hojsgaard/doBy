@@ -21,12 +21,12 @@ variables, a formula or character vector.}
 \item{scale}{Logical, should data be scaled.}
 }
 \value{
-A list of objects of same class as `x`
+A list of objects of same class as \code{x}
 }
 \description{
 Split a dataframe into a list according to the levels
-    of variables in the dataframe and scale the numeric variables
-    in each dataframe in the list.
+of variables in the dataframe and scale the numeric variables
+in each dataframe in the list.
 }
 \examples{
 
@@ -42,8 +42,8 @@ d <- do.call(rbind, a)
 }
 \seealso{
 \code{\link{orderBy}}, \code{\link{order_by}},
-    \code{\link{summaryBy}}, \code{\link{summary_by}},
-    \code{\link{transformBy}}, \code{\link{transform_by}}
+\code{\link{summaryBy}}, \code{\link{summary_by}},
+\code{\link{transformBy}}, \code{\link{transform_by}}
 }
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}

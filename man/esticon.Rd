@@ -42,19 +42,19 @@ inteval etc. is calculated.}
 \item{object}{An \code{esticon_class} object.}
 
 \item{parm}{a specification of which parameters are to be given
- confidence intervals, either a vector of numbers or a vector
+confidence intervals, either a vector of numbers or a vector
 of names.  If missing, all parameters are considered.}
 }
 \value{
 Returns a matrix with one row per linear function.  Columns contain
-    estimated coefficients, standard errors, t values, degrees of freedom,
-    two-sided p-values, and the lower and upper endpoints of the 1-alpha
-    confidence intervals.
+estimated coefficients, standard errors, t values, degrees of freedom,
+two-sided p-values, and the lower and upper endpoints of the 1-alpha
+confidence intervals.
 }
 \description{
 Computes linear functions (i.e. weighted sums) of the
-    estimated regression parameters. Can also test the hypothesis,
-    that such a function is equal to a specific value.
+estimated regression parameters. Can also test the hypothesis,
+that such a function is equal to a specific value.
 }
 \details{
 Let the estimated parameters of the model be
@@ -62,8 +62,8 @@ Let the estimated parameters of the model be
 
 A linear function of the estimates is of the form \deqn{l=\lambda_1
     \beta_1+\lambda_2 \beta_2+ \dots+\lambda_p \beta_p} where
-    \eqn{\lambda_1, \lambda_2, \dots,\lambda_p} is specified by the
-    user.
+\eqn{\lambda_1, \lambda_2, \dots,\lambda_p} is specified by the
+user.
 
 The esticon function calculates l, its standard error and by default also a
 95 pct confidence interval.  It is sometimes of interest to test the

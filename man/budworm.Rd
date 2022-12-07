@@ -8,7 +8,7 @@
 This data frame contains 12 rows and 4 columns:
 \describe{
 \item{sex:}{sex of the budworm}
-\item{dose:}{dose of the insecticide trans-cypermethrin in [\eqn{\mu}{mu}g]}
+\item{dose:}{dose of the insecticide trans-cypermethrin in \link{\eqn{\mu}{mu}g}}
 \item{ndead:}{budworms killed in a trial}
 \item{ntotal:}{total number of budworms exposed per trial }
 }

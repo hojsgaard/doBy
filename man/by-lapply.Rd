@@ -33,16 +33,16 @@ list, see 'Examples' below.}
 
 \item{...}{optional arguments to FUN.}
 
-\item{simplify}{Same as for `sapply`}
+\item{simplify}{Same as for \code{sapply}}
 
-\item{USE.NAMES}{Same as for `sapply`}
+\item{USE.NAMES}{Same as for \code{sapply}}
 }
 \value{
 A list.
 }
 \description{
 This function is a wrapper for calling lapply on the
-    list resulting from first calling splitBy.
+list resulting from first calling splitBy.
 }
 \examples{
 fun <- function(x) range(x$uptake)

@@ -42,8 +42,8 @@ confidence inctervals are to be calculated.}
 A dataframe with results from computing the contrasts.
 }
 \description{
-Compute linear estimates, i.e. `L %*% beta` for a range of models. One example of
-    linear estimates is population means (also known as LSMEANS).
+Compute linear estimates, i.e. \code{L \%*\% beta} for a range of models. One example of
+linear estimates is population means (also known as LSMEANS).
 }
 \examples{
 

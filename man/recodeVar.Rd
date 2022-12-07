@@ -28,7 +28,7 @@ Recodes a vector with values, say 1,2 to a variable with values, say 'a',
 }
 \section{Warning }{
  Care should be taken if x is a factor. A safe approach may
-    be to convert x to a character vector using as.character.
+be to convert x to a character vector using as.character.
 }
 
 \examples{
@@ -71,7 +71,7 @@ recodeVar(x, src = c("no", "yes"), tgt = c("0", "1"), default = NA)
 }
 \seealso{
 \code{\link[base]{cut}}, \code{\link[base]{factor}},
-    \code{\link[doBy]{recodeVar}}
+\code{\link[doBy]{recodeVar}}
 }
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}

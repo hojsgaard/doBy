@@ -35,8 +35,8 @@ A list of lm fits.
 }
 \description{
 The data is split into strata according to the levels
-    of the grouping factors and individual lm fits are obtained for
-    each stratum.
+of the grouping factors and individual lm fits are obtained for
+each stratum.
 }
 \examples{
 

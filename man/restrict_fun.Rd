@@ -33,16 +33,16 @@ function).}
 \item{object}{An object from restrict_fun (a scaffold object).}
 }
 \value{
-A new function: The input function `fun` but with certain
-    arguments fixed at specific values.
+A new function: The input function \code{fun} but with certain
+arguments fixed at specific values.
 }
 \description{
 Restrict a functions domain by fixing certain
-    arguments of a function call.
+arguments of a function call.
 }
 \details{
-`restrict_fun` is a wrapper for calling `restrict_fun_env`
-    (default) or `restrict_fun_sub`.
+\code{restrict_fun} is a wrapper for calling \code{restrict_fun_env}
+(default) or \code{restrict_fun_sub}.
 }
 \examples{
 
@@ -76,5 +76,5 @@ rnorm(10)
 }
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk} based on code
-  adapted from the curry package.
+adapted from the curry package.
 }
