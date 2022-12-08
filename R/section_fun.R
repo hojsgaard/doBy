@@ -27,7 +27,7 @@
 #'     E. Then for any x in X, the section of E defined by x (denoted
 #'     Ex) is the set of $y$s in Y such that (x, y) is in
 #'     E. Correspondingly, the section of f(x,y) defined by x is the
-#'     function fx defined on Ex given by fx(y)=f(x,y).
+#'     function $f_x$ defined on Ex given by $f_x(y)=f(x,y)$.
 #'
 #' `section_fun` is a wrapper for calling `section_fun_sub`
 #'     (default) or `section_fun_env`.

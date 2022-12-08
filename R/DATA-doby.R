@@ -230,7 +230,7 @@
 #' }
 #' @source Small subset from a larger dataset (more stomachs, more variables,
 #'     more \code{prey.types}) collected by D. Chabot and M. Hanson, Fisheries &
-#'     Oceans Canada (chabotd@dfo-mpo.gc.ca).
+#'     Oceans Canada \email{chabotd@@dfo-mpo.gc.ca}.
 #'
 #' @keywords datasets
 #' @examples
@@ -484,7 +484,7 @@
 #'   \describe{
 #'     \item{\code{year}}{From 1901 to 1997.}
 #'     \item{\code{precip}}{Milimeter precipitation.}
-#'     \item{\code{yield}}{Million feed units (se details).}
+#'     \item{\code{yield}}{Million feed units (see details).}
 #'     \item{\code{area}}{Area in 1000 ha for grains and root crop.}
 #'     \item{\code{fertil}}{1000 tons fertilizer.}
 #'     \item{\code{avgtmp1}}{Average temperature April-June (3 months).}

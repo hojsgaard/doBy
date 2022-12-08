@@ -1,7 +1,8 @@
 #' Convert expression into function object.
 #'
 #' @param expr_ R expression.
-#' @param vec_arg should the function take vector valued argument
+#' @param order desired order of function argument.
+#' @param vec_arg should the function take vector valued argument.
 #'
 #' @examples
 #'
@@ -25,18 +26,32 @@
 #' ff <- expr_to_fun(ee)
 #' 
 #' @export
-expr_to_fun <- function(expr_, vec_arg=FALSE){
+expr_to_fun <- function(expr_, order=NULL, vec_arg=FALSE){
 
     if (vec_arg){
-        expr_to_one_param_fun(expr_)
+        expr_to_one_param_fun(expr_, order=order)
     } else {
-        expr_to_multi_param_fun(expr_)
+        expr_to_multi_param_fun(expr_, order=order)
     }
     
 }
 
-expr_to_one_param_fun <- function(e){
+handle_order <- function(e, order){
+    if (is.null(order))
+        return(sort(all.vars(e)))
+
+    
     nms <- all.vars(e)
+    if (!setequal(nms, order)){        
+        stop("some arguments are not given in 'order'")
+    }
+    return(order)
+}
+  
+    
+expr_to_one_param_fun <- function(e, order=NULL){
+
+    nms <- handle_order(e, order)
     e_str <- expr_to_string()
     
     if (length(nms)) {
@@ -61,6 +76,20 @@ expr_to_one_param_fun <- function(e){
     return(fun)
 }
 
+
+expr_to_multi_param_fun <- function(e, order=NULL){
+
+    nms <- handle_order(e, order)   
+    e_str <- expr_to_string(e)
+    
+    fun_str <- paste0("function(", paste0(nms, collapse=", "), ")")
+        
+    bd <- paste0("\n{ \n", paste0(e_str, collapse=";\n "), "\n}")
+    ff <- paste0(fun_str, bd)
+    fun <- eval(parse(text=ff))
+    return(fun)
+}
+
 expr_to_string <- function(e){
     e_str <- lapply(e, deparse)
 
@@ -72,19 +101,6 @@ expr_to_string <- function(e){
     e_str
 }
 
-expr_to_multi_param_fun <- function(e){
-    nms <- all.vars(e)
-
-    e_str <- expr_to_string(e)
-    
-    fun_str <- paste0("function(", paste0(nms, collapse=", "), ")")
-    
-    
-    bd <- paste0("\n{ \n", paste0(e_str, collapse=";\n "), "\n}")
-    ff <- paste0(fun_str, bd)
-    fun <- eval(parse(text=ff))
-    return(fun)
-}
 
 ## expr_to_fun <- function(e){
     ## vn <- all.vars(e)
