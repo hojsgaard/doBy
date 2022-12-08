@@ -1,5 +1,8 @@
-## R CMD check results
+The NOTE in the previous release was
 
-0 errors | 0 warnings | 1 note
+* checking CRAN incoming feasibility ... [4s/4s] NOTE
+Maintainer: ‘Søren Højsgaard <sorenh@math.aau.dk>’
 
-* This is a new release.
+Size of tarball: 5107784 bytes
+
+The WARNING was about compressing vignettes with gs+qpdf
