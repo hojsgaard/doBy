@@ -7,7 +7,7 @@
 recodeVar(x, src, tgt, default = NULL, keep.na = TRUE)
 }
 \arguments{
-\item{x}{A vector; the variable to be recoded}
+\item{x}{A vector; the variable to be recoded.}
 
 \item{src}{The source values: a subset of the present values of x}
 

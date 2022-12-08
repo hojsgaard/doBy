@@ -19,7 +19,7 @@ splitBy(formula, data = parent.frame(), drop = TRUE)
 \arguments{
 \item{data}{A data frame}
 
-\item{formula}{Variables to split data frame by, as ‘as.quoted’
+\item{formula}{Variables to split data frame by, as \code{as.quoted}
 variables, a formula or character vector.}
 
 \item{drop}{Logical indicating if levels that do not occur should

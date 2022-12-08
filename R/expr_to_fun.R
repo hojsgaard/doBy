@@ -8,7 +8,7 @@
 #' ee <- expression(b1 + (b0 - b1)*exp(-k*x) + b2*x)
 #' ff <- expr_to_fun(ee)
 #'
-#' ee <- expression(matrix(c(x1+x2, x1-x2, x1^2+x2^2, x1^3+x2^3),nrow=2))
+#' ee <- expression(matrix(c(x1+x2, x1-x2, x1^2+x2^2, x1^3+x2^3), nrow=2))
 #' ff <- expr_to_fun(ee)
 #'
 #' ee <- expression(
@@ -75,7 +75,7 @@ expr_to_string <- function(e){
 expr_to_multi_param_fun <- function(e){
     nms <- all.vars(e)
 
-    e_str <- expr_to_string()
+    e_str <- expr_to_string(e)
     
     fun_str <- paste0("function(", paste0(nms, collapse=", "), ")")
     

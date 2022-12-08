@@ -19,9 +19,9 @@ lmBy(formula, data, id = NULL, ...)
 \arguments{
 \item{data}{A dataframe}
 
-\item{formula}{A linear model formula object of the form y ~ x1 +
-... + xn | g1 + ... + gm.  In the formula object, y represents
-the response, x1, ... ,xn the covariates, and the grouping
+\item{formula}{A linear model formula object of the form
+\code{y ~ x1 + ... + xn | g1 + ... + gm}.  In the formula object, \code{y} represents
+the response, \verb{x1, ..., xn} the covariates, and the grouping
 factors specifying the partitioning of the data according to
 which different lm fits should be performed.}
 

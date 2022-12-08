@@ -3,7 +3,7 @@
 #' Recodes a vector with values, say 1,2 to a variable with values, say 'a',
 #' 'b'
 #' 
-#' @param x A vector; the variable to be recoded
+#' @param x A vector; the variable to be recoded.
 #' @param src The source values: a subset of the present values of x
 #' @param tgt The target values: the corresponding new values of x
 #' @param default Default target value for those values of x not listed in

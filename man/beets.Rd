@@ -14,7 +14,7 @@ beets
 Yield and sugar percentage in sugar beets from a split plot
 experiment.  Data is obtained from a split plot experiment. There are 3
 blocks and in each of these the harvest time defines the "whole plot" and
-the sowing time defines the "split plot". Each plot was \eqn{25 m^2} and
+the sowing time defines the "split plot". Each plot was 25 square meters and
 the yield is recorded in kg. See 'details' for the experimental layout.
 }
 \details{

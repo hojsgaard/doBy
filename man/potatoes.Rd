@@ -19,9 +19,9 @@ My own garden; autumn 2015.
 potatoes
 }
 \description{
-Weight and size of 20 potatoes. Weight in grams; size in milimeter. There
+Weight and size of 20 potatoes. Weight in grams; size in millimeter. There
 are two sizes: \code{length} is the longest length and \code{width} is the
-shortest length across a potato. #'
+shortest length across a potato.
 }
 \examples{
 

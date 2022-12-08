@@ -12,8 +12,7 @@ first 1000 columns are numerical variables; the last column
 \code{control}.
 }
 \source{
-Dr. Chris Holmes, c.holmes at stats
-dot. ox . ac .uk
+Chris Holmes, \email{c.holmes@stats.ox.ac.uk}
 }
 \usage{
 breastcancer
@@ -23,7 +22,7 @@ Perturbations of the p53 pathway are associated with more aggressive and
 therapeutically refractory tumours. We preprocessed the data using Robust
 Multichip Analysis (RMA). Dataset has been truncated to the 1000 most
 informative genes (as selected by Wilcoxon test statistics) to simplify
-computation. The genes have been standardised to have zero mean and unit
+computation. The genes have been standardized to have zero mean and unit
 variance (i.e. z-scored).
 }
 \details{

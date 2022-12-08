@@ -28,10 +28,10 @@ sapplyBy(
 
 \item{formula}{A formula describing how data should be split.}
 
-\item{FUN}{A function to be applied to each element in the splitted
+\item{FUN}{A function to be applied to each element in the split
 list, see 'Examples' below.}
 
-\item{...}{optional arguments to FUN.}
+\item{\dots}{optional arguments to FUN.}
 
 \item{simplify}{Same as for \code{sapply}}
 

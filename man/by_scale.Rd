@@ -11,7 +11,7 @@ scaleBy(formula, data = parent.frame(), center = TRUE, scale = TRUE)
 scale_by(data, formula, center = TRUE, scale = TRUE)
 }
 \arguments{
-\item{formula}{Variables to split data frame by, as ‘as.quoted’
+\item{formula}{Variables to split data frame by, as \code{as.quoted}
 variables, a formula or character vector.}
 
 \item{data}{A dataframe or matrix}

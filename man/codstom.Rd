@@ -45,7 +45,7 @@ Oceans Canada (chabotd@dfo-mpo.gc.ca).
 codstom
 }
 \description{
-Stomach content data for Atlantic cod (Gadus morhua) in the Gulf of
+Stomach content data for Atlantic cod (\emph{Gadus morhua}) in the Gulf of
 St.Lawrence, Eastern Canada.  Note: many prey items were of no interest for
 this analysis and were regrouped into the "Other" category.
 }

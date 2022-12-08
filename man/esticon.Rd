@@ -21,7 +21,7 @@ esticon(obj, L, beta0, conf.int = TRUE, level = 0.95, joint.test = FALSE, ...)
 \arguments{
 \item{obj}{Regression object (of type lm, glm, lme, geeglm).}
 
-\item{L}{Matrix (or vector) specifying linear functions of the regresson
+\item{L}{Matrix (or vector) specifying linear functions of the regression
 parameters (one
 linear function per row).  The number of columns must match the number of
 fitted regression parameters in the model. See 'details' below.}
@@ -72,12 +72,12 @@ given by the user. A test is provided for the hypothesis \eqn{H_0:
 l=0} but other values of \eqn{\beta_0} can be specified.
 
 In general, one can specify r such linear functions at one time by
-speficying L to be an \eqn{r\times p} matrix where each row consists
+specifying L to be an \eqn{r\times p} matrix where each row consists
 of p numbers \eqn{\lambda_1,\lambda_2,\dots, \lambda_p}. Default is
 then that \eqn{\beta_0} is a p vector of 0s but other values can be
 given.
 
-It is possible to test simulatneously that all speficied linear functions
+It is possible to test simultaneously that all specified linear functions
 are equal to the corresponding values in \eqn{\beta_0}.
 
 For computing contrasts among levels of a single factor, 'contrast.lm' may

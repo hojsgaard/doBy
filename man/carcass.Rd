@@ -39,7 +39,7 @@ carcass
 }
 \description{
 Measurement of lean meat percentage of 344 pig carcasses together with
-auxillary information collected at three Danish slaughter houses
+auxiliary information collected at three Danish slaughter houses
 }
 \details{
 : Notice that there were slaughtered large pigs only at one slaughter house.
