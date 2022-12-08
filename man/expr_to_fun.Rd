@@ -4,12 +4,14 @@
 \alias{expr_to_fun}
 \title{Convert expression into function object.}
 \usage{
-expr_to_fun(expr_, vec_arg = FALSE)
+expr_to_fun(expr_, order = NULL, vec_arg = FALSE)
 }
 \arguments{
 \item{expr_}{R expression.}
 
-\item{vec_arg}{should the function take vector valued argument}
+\item{order}{desired order of function argument.}
+
+\item{vec_arg}{should the function take vector valued argument.}
 }
 \description{
 Convert expression into function object.

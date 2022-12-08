@@ -39,7 +39,7 @@ representing the southern and northern Gulf of St. Lawrence, respectively}
 \source{
 Small subset from a larger dataset (more stomachs, more variables,
 more \code{prey.types}) collected by D. Chabot and M. Hanson, Fisheries &
-Oceans Canada (chabotd@dfo-mpo.gc.ca).
+Oceans Canada \email{chabotd@dfo-mpo.gc.ca}.
 }
 \usage{
 codstom

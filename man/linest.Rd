@@ -32,7 +32,7 @@ p identity matrix}
 \item{\dots}{Additional arguments; currently not used.}
 
 \item{parm}{Specification of the parameters estimates for which
-confidence inctervals are to be calculated.}
+confidence intervals are to be calculated.}
 
 \item{level}{The level of the (asymptotic) confidence interval.}
 

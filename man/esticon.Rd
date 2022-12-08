@@ -35,7 +35,7 @@ fitted regression parameters in the model. See 'details' below.}
 \item{joint.test}{Logical value. If TRUE a 'joint' Wald test for the
 hypothesis L beta = beta0 is made. Default is that the 'row-wise' tests are
 made, i.e. (L beta)i=beta0i.  If joint.test is TRUE, then no confidence
-inteval etc. is calculated.}
+interval etc. is calculated.}
 
 \item{\dots}{Additional arguments; currently not used.}
 

@@ -14,7 +14,7 @@ recodeVar(x, src, tgt, default = NULL, keep.na = TRUE)
 \item{tgt}{The target values: the corresponding new values of x}
 
 \item{default}{Default target value for those values of x not listed in
-'src'. When default=NULL, values of x which are not given in 'src' will
+\code{src}. When default=NULL, values of x which are not given in \code{src} will
 be kept in the output.}
 
 \item{keep.na}{If TRUE then NA's in x will be retained in the output}
