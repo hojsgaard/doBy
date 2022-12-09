@@ -2,12 +2,15 @@
 % Please edit documentation in R/section_fun.R
 \name{section_fun}
 \alias{section_fun}
+\alias{set_default}
 \alias{section_fun_sub}
 \alias{section_fun_env}
 \alias{get_section}
 \alias{get_fun}
 \title{section}
 \usage{
+set_default(fun, nms, vls = NULL)
+
 section_fun(fun, nms, vls = NULL, method = "sub")
 
 section_fun_sub(fun, nms, vls = NULL, envir = parent.frame())
@@ -60,6 +63,11 @@ function $f_x$ defined on Ex given by $f_x(y)=f(x,y)$.
 f  <- function(x, y){x + y}
 f_ <- section_fun(f, list(y = 10))
 f_ <- section_fun(f, nms="y", vls=10) ## SAME AS ABOVE
+f_
+f_(x=1)
+
+f_ <- set_default(f, list(y = 10))
+f_ <- set_default(f, nms="y", vls=10) ## SAME AS ABOVE
 f_
 f_(x=1)
 

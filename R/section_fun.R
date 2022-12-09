@@ -43,6 +43,11 @@
 #' f_
 #' f_(x=1)
 #'
+#' f_ <- set_default(f, list(y = 10))
+#' f_ <- set_default(f, nms="y", vls=10) ## SAME AS ABOVE
+#' f_
+#' f_(x=1)
+#' 
 #' f_ <- section_fun(f, list(y = 10), method="env")
 #' f_ <- section_fun(f, nms="y", vls=10, method="env") ## SAME AS ABOVE
 #' f_
@@ -71,6 +76,26 @@
 #' 
 NULL
 
+#' @rdname section_fun
+#' @export
+set_default <- function(fun, nms, vls=NULL){
+
+    args <- nms_vls_to_list(nms, vls)
+
+    nms <- names(args)
+    vls <- args
+    
+    fmls <- formals(fun)
+    
+    i <- match(nms, names(fmls))
+    j <- c(setdiff(seq_along(fmls), i), i) # new order
+    
+    fmls <- fmls[j]
+    fmls[nms] <- vls
+    formals(fun) <- fmls
+    fun    
+}
+
 
 #' @rdname section_fun
 #' @export
@@ -79,11 +104,13 @@ section_fun <- function(fun, nms, vls=NULL, method="sub") {
 
     args <- nms_vls_to_list(nms, vls)
 
+    ## print(args)
     if (identical(method_, "env"))
         section_fun_env_worker(fun, args)
     else
         section_fun_sub_worker(fun, args)
 }
+
 
 
 #' @rdname section_fun
@@ -118,12 +145,12 @@ section_fun_sub_worker <- function(fun, args, envir=parent.frame()){
     bd1
     
     bd2 <- deparse(body(fun))
+
     bd2 <- bd2[2:(length(bd2) - 1)]
     bd2 <- gsub("^ *", "", bd2) ## Remove leading whites
-    bd2 <- paste0(paste0(bd2, collapse=";\n "))
-    bd2
+    bd2 <- paste0(paste0(bd2, collapse="\n "))
     
-    bd <- paste0("\n{ ", paste0(c(bd1, bd2), collapse=";\n "), "\n}")
+    bd <- paste0("\n{ ", paste0(c(bd1, bd2), collapse="\n "), "\n}")
     
     ff <- paste0(c(hd, bd), collapse="")
     out <- eval(parse(text=ff))
@@ -132,6 +159,12 @@ section_fun_sub_worker <- function(fun, args, envir=parent.frame()){
     out
 
 }
+
+
+
+
+
+
 
 
 
