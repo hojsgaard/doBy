@@ -1,4 +1,4 @@
-#' @title section
+#' @title Section a function and set default values in function
 #' 
 #' @description Section a functions domain by fixing certain
 #'     arguments of a function call.
@@ -131,15 +131,35 @@ section_fun_sub_worker <- function(fun, args, envir=parent.frame()){
         fmls  <- fmls[-idx]
     }
 
-    hd <- paste0("function(", paste0(names(fmls), collapse=", "), ")")
-    hd
+
+    nn <- names(fmls)
+    vv <- paste0(fmls)
+    nc <- nchar(vv)
+    fmls2 <- ""
     
+    if (length(fmls)>0){
+        fmls2 <-
+            sapply(1:length(fmls), function(i){
+                if (nc[i] > 0){
+                    paste0(nn[i], "=", vv[i])
+                } else {
+                    nn[i]
+                }    
+            })
+    }
+
+    
+
+    hd <- paste0("function(", paste0(fmls2, collapse = ", "), ")")
+    
+
     aux <- sapply(1:length(args),
                   function(i){
                       nm <- names(args)[i]
-                      paste0(nm, " = ", deparse(args[[i]]))
+                      ss <- deparse(args[[i]])
+                      ss <- paste0(ss, collapse = " ")
+                      paste0(nm, " = ", ss)
                   })
-    
     
     bd1 <- paste0("\n ## section\n ", paste0(aux, collapse=";\n "), "\n ## section (end)")
     bd1

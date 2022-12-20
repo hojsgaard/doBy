@@ -7,7 +7,7 @@
 \alias{section_fun_env}
 \alias{get_section}
 \alias{get_fun}
-\title{section}
+\title{Section a function and set default values in function}
 \usage{
 set_default(fun, nms, vls = NULL)
 
