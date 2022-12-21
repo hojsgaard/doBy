@@ -103,16 +103,16 @@ set_default <- function(fun, nms, vls=NULL){
 
 #' @rdname section_fun
 #' @export
-section_fun <- function(fun, nms, vls=NULL, method="sub") {
+section_fun <- function(fun, nms, vls=NULL, method="def") {
     method_ <- match.arg(method, c("def", "env", "sub"))
 
     args <- nms_vls_to_list(nms, vls)
 
     switch(method,
            def={set_default(fun, args)},
-           sub={section_fun_env_worker(fun, args)},
-           env={section_fun_sub_worker(fun, args)})
-        
+           env={section_fun_env_worker(fun, args)},
+           sub={section_fun_sub_worker(fun, args)}
+           )        
 }
 
 
