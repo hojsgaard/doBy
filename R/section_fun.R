@@ -14,13 +14,11 @@
 #'     `vls` is ignored) or a character vector of names of arguments.
 #' @param vls A vector or list of values of the arguments
 #' 
-#' @param method "sub": (for
-#'     substitute); based on substituting fixed values into the
-#'     function body. "def" (for
-#'     default); based on substituting fixed values into the
-#'     function argument list as default values). 
-#'     "env": (for environment); using an
-#'     auxillary argument for storing sectioned values.
+#' @param method "def" (for default); based on substituting fixed
+#'     values into the function argument list as default values).
+#'     "env": (for environment); using an auxillary argument for
+#'     storing sectioned values.  "sub": (for substitute); based on
+#'     substituting fixed values into the function body.
 #'
 #' @param envir Environment
 #' @param object An object from section_fun (a scaffold object).
@@ -32,36 +30,36 @@
 #'     E. Correspondingly, the section of f(x,y) defined by x is the
 #'     function $f_x$ defined on Ex given by $f_x(y)=f(x,y)$.
 #'
-#' `section_fun` is a wrapper for calling `section_fun_sub`
-#'     (default) or `section_fun_env`.
+#' `section_fun` is a wrapper for calling `set_default` (default
+#'     method), `section_fun_env` or `section_fun_sub`. Notice that
+#'     creating a sectioned function with `section_fun_sub` can be
+#'     time consuming.
 #'
 #' @return A new function: The input function `fun` but with certain
 #'     arguments fixed at specific values.
 #' 
 #' @examples
 #'
-#' f  <- function(x, y){x + y}
-#' f_ <- section_fun(f, list(y = 10),    method="sub") ## "sub" is default
-#' f_ <- section_fun(f, nms="y", vls=10, method="sub") ## SAME AS ABOVE
-#' f_
-#' f_(x=1)
-#'
-#' f_ <- section_fun(f, list(y = 10),    method="def")
+#' f_ <- section_fun(f, list(y = 10),    method="def") ## "def"" is default
 #' f_ <- section_fun(f, nms="y", vls=10, method="def") ## SAME AS ABOVE
 #' f_
 #' f_(x=1)
 #'
-#' f_ <- section_fun(f, list(y = 10), method="env")
+#' f  <- function(x, y){x + y}
+#' f_ <- section_fun(f, list(y = 10),    method="sub") ## 
+#' f_ <- section_fun(f, nms="y", vls=10, method="sub") ## SAME AS ABOVE
+#' f_
+#' f_(x=1)
+#'
+#' f_ <- section_fun(f, list(y = 10),    method="env")
 #' f_ <- section_fun(f, nms="y", vls=10, method="env") ## SAME AS ABOVE
 #' f_
 #' f_(x=1)
 #' get_section(f_)
 #' get_fun(f_)
 #'
-#' 
-#'
-#' 
-#' ## With moder complicated values:
+#'  
+#' ## With more complicated values:
 #' g <- function(A, B) {
 #'   A + B
 #' }
@@ -69,7 +67,7 @@
 #' g_ <- section_fun(g, "A", list(matrix(1:4, nrow=2)))
 #' g_(diag(1, 2))
 #'
-#' g_ <- section_fun(g, list(A = matrix(1:4, nrow=2)), method="env")
+#' g_ <- section_fun(g, list(A = matrix(1:4, nrow=2)))
 #'
 #' ## Using built in function
 #' set.seed(123)
@@ -106,14 +104,14 @@ set_default <- function(fun, nms, vls=NULL){
 #' @rdname section_fun
 #' @export
 section_fun <- function(fun, nms, vls=NULL, method="sub") {
-    method_ <- match.arg(method, c("sub", "env", "def"))
+    method_ <- match.arg(method, c("def", "env", "sub"))
 
     args <- nms_vls_to_list(nms, vls)
 
     switch(method,
-           sub={section_fun_sub_worker(fun, args)},
            def={set_default(fun, args)},
-           env={section_fun_env_worker(fun, args)})
+           sub={section_fun_env_worker(fun, args)},
+           env={section_fun_sub_worker(fun, args)})
         
 }
 
@@ -242,9 +240,6 @@ as.scaffold <- function(fun) {
 }
 
 
-
-
-
 scaffold_create <- function(fun, from = parent.frame()) {
 
   arg_env <- new.env(parent = emptyenv())
@@ -333,9 +328,6 @@ summary.scaffold <- function(object, ...){
 }
 
 
-
-
-
 getArgs <- function(added_env) {
   function() {
     ## cat("in getArgs:\n")
@@ -391,45 +383,3 @@ clone_environment <- function(e1){
 }
 
 
-
-
-
-
-## #' @rdname section_fun
-## #' @export
-## section_fun_sub <- function(fun, nms, vls, envir=parent.frame()){
-
-##     if (inherits(nms, "list")){
-##         if (!missing(vls)) {
-##             warning("vls ignored")
-##         }
-##         args <- nms
-##     } else {
-##         args <- nms_vls_to_list(nms, vls)
-##     }
-
-##     body1 <- as.expression(body(fun))
-##     body2 <- do.call("substitute", list(body1[[1]], args))
-    
-##     fmls  <- formals(fun)
-##     idx <- match(names(args), names(fmls))
-##     idx <- idx[!is.na(idx)]
-##     if (length(idx) > 0){
-##         fmls  <- fmls[-idx]
-##     }
-    
-##     out <- as.function(c(fmls, body2), envir=envir)
-##     environment(out) <- environment(fun)
-##     out
-## }
-
-
-## ' @rdname section_fun
-## ' @export
-## section_fun <- function(fun, args, method="env") {
-  ## method_ <- match.arg(method, c("env", "sub"))
-  ## if (identical(method_, "env"))
-    ## section_fun_env(fun, args)
-  ## else
-    ## section_fun_sub(fun, args)
-## }
