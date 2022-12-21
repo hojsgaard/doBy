@@ -14,10 +14,13 @@
 #'     `vls` is ignored) or a character vector of names of arguments.
 #' @param vls A vector or list of values of the arguments
 #' 
-#' @param method Either "env" (for environment; the default, using an
-#'     auxillary argument for storing sectioned values) or "sub" (for
-#'     substitute; based on substituting fixed values into the
-#'     function).
+#' @param method "sub": (for
+#'     substitute); based on substituting fixed values into the
+#'     function body. "def" (for
+#'     default); based on substituting fixed values into the
+#'     function argument list as default values). 
+#'     "env": (for environment); using an
+#'     auxillary argument for storing sectioned values.
 #'
 #' @param envir Environment
 #' @param object An object from section_fun (a scaffold object).
@@ -38,16 +41,16 @@
 #' @examples
 #'
 #' f  <- function(x, y){x + y}
-#' f_ <- section_fun(f, list(y = 10))
-#' f_ <- section_fun(f, nms="y", vls=10) ## SAME AS ABOVE
+#' f_ <- section_fun(f, list(y = 10),    method="sub") ## "sub" is default
+#' f_ <- section_fun(f, nms="y", vls=10, method="sub") ## SAME AS ABOVE
 #' f_
 #' f_(x=1)
 #'
-#' f_ <- set_default(f, list(y = 10))
-#' f_ <- set_default(f, nms="y", vls=10) ## SAME AS ABOVE
+#' f_ <- section_fun(f, list(y = 10),    method="def")
+#' f_ <- section_fun(f, nms="y", vls=10, method="def") ## SAME AS ABOVE
 #' f_
 #' f_(x=1)
-#' 
+#'
 #' f_ <- section_fun(f, list(y = 10), method="env")
 #' f_ <- section_fun(f, nms="y", vls=10, method="env") ## SAME AS ABOVE
 #' f_
@@ -55,6 +58,9 @@
 #' get_section(f_)
 #' get_fun(f_)
 #'
+#' 
+#'
+#' 
 #' ## With moder complicated values:
 #' g <- function(A, B) {
 #'   A + B
@@ -100,15 +106,15 @@ set_default <- function(fun, nms, vls=NULL){
 #' @rdname section_fun
 #' @export
 section_fun <- function(fun, nms, vls=NULL, method="sub") {
-    method_ <- match.arg(method, c("env", "sub"))
+    method_ <- match.arg(method, c("sub", "env", "def"))
 
     args <- nms_vls_to_list(nms, vls)
 
-    ## print(args)
-    if (identical(method_, "env"))
-        section_fun_env_worker(fun, args)
-    else
-        section_fun_sub_worker(fun, args)
+    switch(method,
+           sub={section_fun_sub_worker(fun, args)},
+           def={set_default(fun, args)},
+           env={section_fun_env_worker(fun, args)})
+        
 }
 
 

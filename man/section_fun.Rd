@@ -30,10 +30,13 @@ name is the name of an argument of the function (in which case
 
 \item{vls}{A vector or list of values of the arguments}
 
-\item{method}{Either "env" (for environment; the default, using an
-auxillary argument for storing sectioned values) or "sub" (for
-substitute; based on substituting fixed values into the
-function).}
+\item{method}{"sub": (for
+substitute); based on substituting fixed values into the
+function body. "def" (for
+default); based on substituting fixed values into the
+function argument list as default values).
+"env": (for environment); using an
+auxillary argument for storing sectioned values.}
 
 \item{envir}{Environment}
 
@@ -61,13 +64,13 @@ function $f_x$ defined on Ex given by $f_x(y)=f(x,y)$.
 \examples{
 
 f  <- function(x, y){x + y}
-f_ <- section_fun(f, list(y = 10))
-f_ <- section_fun(f, nms="y", vls=10) ## SAME AS ABOVE
+f_ <- section_fun(f, list(y = 10),    method="sub") ## "sub" is default
+f_ <- section_fun(f, nms="y", vls=10, method="sub") ## SAME AS ABOVE
 f_
 f_(x=1)
 
-f_ <- set_default(f, list(y = 10))
-f_ <- set_default(f, nms="y", vls=10) ## SAME AS ABOVE
+f_ <- section_fun(f, list(y = 10),    method="def")
+f_ <- section_fun(f, nms="y", vls=10, method="def") ## SAME AS ABOVE
 f_
 f_(x=1)
 
@@ -77,6 +80,9 @@ f_
 f_(x=1)
 get_section(f_)
 get_fun(f_)
+
+
+
 
 ## With moder complicated values:
 g <- function(A, B) {
