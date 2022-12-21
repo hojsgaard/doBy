@@ -11,7 +11,7 @@
 \usage{
 set_default(fun, nms, vls = NULL)
 
-section_fun(fun, nms, vls = NULL, method = "sub")
+section_fun(fun, nms, vls = NULL, method = "def")
 
 section_fun_sub(fun, nms, vls = NULL, envir = parent.frame())
 
