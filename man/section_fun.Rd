@@ -63,12 +63,13 @@ time consuming.
 }
 \examples{
 
+f  <- function(x, y){x + y}
+
 f_ <- section_fun(f, list(y = 10),    method="def") ## "def"" is default
 f_ <- section_fun(f, nms="y", vls=10, method="def") ## SAME AS ABOVE
 f_
 f_(x=1)
 
-f  <- function(x, y){x + y}
 f_ <- section_fun(f, list(y = 10),    method="sub") ## 
 f_ <- section_fun(f, nms="y", vls=10, method="sub") ## SAME AS ABOVE
 f_
@@ -101,6 +102,9 @@ set.seed(123)
 rnorm(5)
 
 
+}
+\seealso{
+\code{\link[=bquote_fun_list]{bquote_fun_list()}}
 }
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk} based on code
