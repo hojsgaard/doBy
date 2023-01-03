@@ -23,6 +23,7 @@
 #' @param envir Environment
 #' @param object An object from section_fun (a scaffold object).
 #'
+#' @seealso [bquote_fun_list()]
 #' @details Let E be a subset of the cartesian product X x Y where X
 #'     and Y are some sets. Consider a function f(x,y) defined on
 #'     E. Then for any x in X, the section of E defined by x (denoted
@@ -40,12 +41,13 @@
 #' 
 #' @examples
 #'
+#' f  <- function(x, y){x + y}
+#' 
 #' f_ <- section_fun(f, list(y = 10),    method="def") ## "def"" is default
 #' f_ <- section_fun(f, nms="y", vls=10, method="def") ## SAME AS ABOVE
 #' f_
 #' f_(x=1)
 #'
-#' f  <- function(x, y){x + y}
 #' f_ <- section_fun(f, list(y = 10),    method="sub") ## 
 #' f_ <- section_fun(f, nms="y", vls=10, method="sub") ## SAME AS ABOVE
 #' f_
