@@ -249,7 +249,7 @@ scaffold_create <- function(fun, from = parent.frame()) {
   assign('args_end', list(), envir = arg_env)
   
   fmls <- get_formals(fun)
-  arg_getter <- getArgs(arg_env)
+  arg_getter <- get_args(arg_env)
   do_scaffold(fun, arg_env, fmls, from)  
 }
 
@@ -263,23 +263,31 @@ scaffold_update <- function(fun, from = parent.frame()) {
   fmls[names(get_section(fun))] <- NULL
   
   fun_orig <- environment(fun)$fun
-  arg_getter <- getArgs(arg_env)
+  arg_getter <- get_args(arg_env)
   do_scaffold(fun_orig, arg_env, fmls, from)
 }
 
 do_scaffold <- function(fun, arg_env, fmls, from){
-  ## fmls <- get_formals(fun)
-  arg_getter <- getArgs(arg_env)
-  
-  new_fun <- function() {}    
-  formals(new_fun) <- fmls
-  body(new_fun) <- bquote({
-    args <- arg_getter()
-    do.call(.(fun), args)
-  }, list(fun = substitute(fun, from)))
+    ## fmls <- get_formals(fun)
+    arg_getter <- get_args(arg_env)
+    
+    new_fun <- function() {}    
+    formals(new_fun) <- fmls
+    body(new_fun) <- bquote(
+    {
+        . <- "use get_section(function_name) to see section"
+        . <- "use get_fun(function_name) to see original function"
+        args <- arg_getter()
+        do.call(.(fun), args)
+    },
+    list(fun = substitute(fun, from))
+    )
   
   structure(new_fun, class = 'scaffold', arg_env = arg_env)
 }
+
+
+
 
 get_formals <- function(fun){
   if (is.primitive(fun)) {
@@ -330,38 +338,35 @@ summary.scaffold <- function(object, ...){
 }
 
 
-getArgs <- function(added_env) {
-  function() {
-    ## cat("in getArgs:\n")
-    env <- parent.frame()
-    args <- names(formals(sys.function(sys.parent(1))))
-    ## cat("args:\n ");print(args) ## To be specified in call
-
-    if (length(args) > 0) {
-      vals <- mget(args, envir = env)
-      ## cat("vals:\n"); str(vals)  ## To be specified in call
-    
-      ellipsis <- names(vals) == '...'
-      if (any(ellipsis)) {
-        vals <- append(vals, eval(quote(list(...)), env), which(ellipsis))
-        vals[ellipsis] <- NULL
-      }
-      vals <- vals[!vapply(vals, is_missing_arg, logical(1))]
-    } else vals=NULL
-    ## cat("when done: \n")
-    ## str(list(args=added_env$args, vals=vals, args_end=added_env$args_end))   
-    out <- c(added_env$args, vals, added_env$args_end)
-    ## str(out)
-    out
+get_args <- function(added_env) {
+    function() {
+        ## cat("in get_args:\n")
+        env <- parent.frame()
+        args <- names(formals(sys.function(sys.parent(1))))
+        ## cat("args:\n ");print(args) ## To be specified in call
+        
+        if (length(args) > 0) {
+            vals <- mget(args, envir = env)
+            ## cat("vals:\n"); str(vals)  ## To be specified in call
+            
+            ellipsis <- names(vals) == '...'
+            if (any(ellipsis)) {
+                vals <- append(vals, eval(quote(list(...)), env), which(ellipsis))
+                vals[ellipsis] <- NULL
+            }
+            vals <- vals[!vapply(vals, is_missing_arg, logical(1))]
+        } else {
+            vals <- NULL
+        }
+        
+        ## cat("when done: \n")
+        ## str(list(args=added_env$args, vals=vals, args_end=added_env$args_end))   
+        out <- c(added_env$args, vals, added_env$args_end)
+        ## str(out)
+        out
   }
 }
 
-
-is_missing_arg <- function(x) identical(x, quote(expr = ))
-
-clone_environment <- function(e1){
-  as.environment(as.list(e1, all.names=TRUE))
-}
 
 .apply_args <- function(fun, args, last = FALSE) {
   fmls <- formals(fun)
@@ -385,3 +390,11 @@ clone_environment <- function(e1){
 }
 
 
+
+is_missing_arg <- function(x) {
+    identical(x, quote(expr = ))
+}
+
+clone_environment <- function(e1){
+  as.environment(as.list(e1, all.names=TRUE))
+}
