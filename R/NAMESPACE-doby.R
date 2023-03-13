@@ -18,5 +18,3 @@
 #' @importFrom methods setOldClass
 NULL
 
-## .dumfunction_afterimportFrom <- function(){}
-
