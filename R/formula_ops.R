@@ -191,6 +191,7 @@ stopifnot_chr <- function(a){
 
 ##' @export
 any2_rhs_frm.character <- function(object){
+    object <- object |> to_str()
     paste0("~", object)  |> as.formula()
 }
 
