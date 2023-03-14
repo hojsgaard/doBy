@@ -1,9 +1,20 @@
-doBy v4.6.16 (Release date: 2023-01-03)
+doBy v4.6.17 (Release date: 2023-01-18)
+=======================================
+
+Changes
+
+* `bquote_fun_list` removed again; too over engineered 
+* Minor bug fixes
+* Improved documentation
+* Added functions: `chr_to_matrix()`, `matrix_op()`
+
+doBy v4.6.16 (Release date: 2023-01-18)
 =======================================
 
 Changes
 
 * `bquote_fun_list` added
+* Improved documentation
 
 
 doBy v4.6.15 (Release date: 2022-12-08)
