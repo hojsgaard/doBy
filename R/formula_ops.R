@@ -129,6 +129,8 @@ to_str <- function(x, collapse="+"){
     paste0(x, collapse=collapse)
 }
 
+##' rdname formula_ops
+##' @export
 terms_labels <- function(f1){
     terms(f1)  |> attr("term.labels") |> sort()
 }
