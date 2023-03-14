@@ -7,21 +7,30 @@
 \alias{formula_nth}
 \alias{formula_to_interaction_matrix}
 \alias{formula_chr_to_form}
+\alias{to_str}
+\alias{terms_labels}
+\alias{simplify_rhs}
 \alias{any2_rhs_frm}
 \alias{any2_lhs_frm}
 \alias{any2_rhs_chr}
 \alias{any2_lhs_chr}
 \title{Formula operations and coercion.}
 \usage{
-formula_add(f1, f2)
+formula_add(frm1, frm2)
 
-formula_poly(x1, n, noint = FALSE)
+formula_poly(chr1, n, noint = FALSE)
 
-formula_nth(f1, n)
+formula_nth(frm1, n)
 
-formula_to_interaction_matrix(f1)
+formula_to_interaction_matrix(frm1)
 
 formula_chr_to_form(rhs, lhs = character(0))
+
+to_str(x, collapse = "+")
+
+terms_labels(frm1)
+
+simplify_rhs(object)
 
 any2_rhs_frm(object)
 
@@ -32,9 +41,9 @@ any2_rhs_chr(object, string = FALSE)
 any2_lhs_chr(object, string = FALSE)
 }
 \arguments{
-\item{f1, f2}{Formulas to be coerced to character vectors.}
+\item{frm1, frm2}{Formulas to be coerced to character vectors.}
 
-\item{x1}{Character vector to be coerced to formulas.}
+\item{chr1}{Character vector to be coerced to formulas.}
 
 \item{n}{Positive integer.}
 
