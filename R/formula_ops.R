@@ -20,18 +20,18 @@
 ##' formula_poly("z", 2)
 ##' formula_poly("z", 2, noint=TRUE)
 ##'
-##' any2_rhs_chr(c("a", "b", "z"))
-##' any2_rhs_chr(c("a*b", "z"))
+##' as_rhs_chr(c("a", "b", "z"))
+##' as_rhs_chr(c("a*b", "z"))
 ##'
-##' any2_rhs_chr(y~a+b+z)
-##' any2_rhs_chr(y~a+b+z, string=TRUE)
-##' any2_rhs_chr(y~a+b+z)
-##' any2_rhs_chr(y~a*b+z)
-##' any2_rhs_chr(y~a*b+z, string=TRUE)
+##' as_rhs_chr(y~a+b+z)
+##' as_rhs_chr(y~a+b+z, string=TRUE)
+##' as_rhs_chr(y~a+b+z)
+##' as_rhs_chr(y~a*b+z)
+##' as_rhs_chr(y~a*b+z, string=TRUE)
 ##'
-##' any2_lhs_chr(y~a*b+z)
-##' any2_lhs_chr(log(y)~a*b+z)      ## Not what one might expect
-##' any2_lhs_chr(cbind(y, u)~a*b+z) ## Not what one might expect
+##' as_lhs_chr(y~a*b+z)
+##' as_lhs_chr(log(y)~a*b+z)      ## Not what one might expect
+##' as_lhs_chr(cbind(y, u)~a*b+z) ## Not what one might expect
 ##'
 ##' formula_chr_to_form(c("a*b", "z"))
 ##' formula_chr_to_form(c("a*b", "z"), "y")
@@ -50,8 +50,8 @@ formula_add <- function(frm1, frm2){
     stopifnot_formula(frm2)
 
     ## Right-hand-side    
-    frm1_rhs <- any2_rhs_chr(frm1)
-    frm2_rhs <- any2_rhs_chr(frm2)
+    frm1_rhs <- as_rhs_chr(frm1)
+    frm2_rhs <- as_rhs_chr(frm2)
     o_rhs <- c(frm1_rhs, frm2_rhs)
 
     o_rhs <- o_rhs|> paste0(collapse="+") 
@@ -63,8 +63,8 @@ formula_add <- function(frm1, frm2){
 
     
     ## Left-hand-side
-    frm1_lhs <- any2_lhs_chr(frm1)
-    frm2_lhs <- any2_lhs_chr(frm2)
+    frm1_lhs <- as_lhs_chr(frm1)
+    frm2_lhs <- as_lhs_chr(frm2)
     
     if ((length(frm1_lhs) > 0) && (length(frm2_lhs) > 0))
         stop("Can not handle two left-sides\n")
@@ -94,16 +94,16 @@ formula_poly <- function(chr1, n, noint=FALSE){
 ##' @rdname formula_ops
 ##' @export
 formula_nth <- function(frm1, n){
-    fs <- any2_rhs_chr(frm1, string=TRUE)
+    fs <- as_rhs_chr(frm1, string=TRUE)
     fs2 <- paste0("(", fs, ")^", n)
-    o <- any2_rhs_frm(fs2)
+    o <- as_rhs_frm(fs2)
     o
 }
 
 ##' @rdname formula_ops
 ##' @export
 formula_to_interaction_matrix <- function(frm1){
-    ## aa <- any2_rhs_chr(frm1)  |> strsplit(":")
+    ## aa <- as_rhs_chr(frm1)  |> strsplit(":")
     aa <- terms_labels(frm1)
     aa <- aa |> strsplit(":")
 
@@ -129,9 +129,10 @@ formula_chr_to_form <- function(rhs, lhs=character(0)){
 ## UTILITIES
 
 ##' @rdname formula_ops
+##' @param collapse Character to use as separator.
 ##' @export
-to_str <- function(x, collapse="+"){
-    paste0(x, collapse=collapse)
+to_str <- function(chr1, collapse="+"){
+    paste0(chr1, collapse=collapse)
 }
 
 ##' @rdname formula_ops
@@ -148,11 +149,11 @@ simplify_rhs <- function(object){
 
 simplify_rhs.formula <- function(object){
     l <- terms_labels(object)
-    to_str(l) |> any2_rhs_frm()
+    to_str(l) |> as_rhs_frm()
 }
 
 simplify_rhs.character <- function(object){
-    o <- any2_rhs_frm(object)  |>
+    o <- as_rhs_frm(object)  |>
         terms_labels() |>
         to_str()
     o
@@ -169,12 +170,12 @@ formula_rhs_to_chr <- function(frm1, string=TRUE){
 }
 
 
-is_rhsf <- function(x){
-    is(x, "formula") && ((x |> terms() |> attr("response")) == 0)
+is_rhsf <- function(object){
+    is(object, "formula") && ((object |> terms() |> attr("response")) == 0)
 }
 
-stopifnot_rhsf <- function(x){
-    if (!is_rhsf(x))
+stopifnot_rhsf <- function(object){
+    if (!is_rhsf(object))
         stop("argument is not a right-hand-sided formula\n")
 }
 
@@ -193,18 +194,18 @@ stopifnot_chr <- function(a){
 ## RETURNING FORMULAS
 
 ##' @export
-any2_rhs_frm.character <- function(object){
+as_rhs_frm.character <- function(object){
     object <- object |> to_str()
     paste0("~", object)  |> as.formula()
 }
 
 ##' @export
-any2_rhs_frm.formula <- function(frm1){
+as_rhs_frm.formula <- function(frm1){
     formula(delete.response(terms(frm1)))    
 }
 
 ##' @export
-any2_lhs_frm.character <- function(object){
+as_lhs_frm.character <- function(object){
     stopifnot_chr(object)
     paste0(object, "~ 1")  |> as.formula()
 }
@@ -221,7 +222,7 @@ formula_lhs_to_chr <- function(frm1){
 }
 
 ##' @export
-any2_lhs_frm.formula <- function(frm1){
+as_lhs_frm.formula <- function(frm1){
     o <- frm1 |> formula_lhs_to_chr()
     as.formula(paste0(o, "~1"))
 }
@@ -230,18 +231,18 @@ any2_lhs_frm.formula <- function(frm1){
 ## RETURNING CHARACTERS
 
 ##' @export
-any2_rhs_chr.character <- function(object, string=TRUE){
+as_rhs_chr.character <- function(object, string=TRUE){
     object <- object |> to_str()
     rev(strsplit(object,"\\s~\\s")[[1]])[1]
 }
 
 ##' @export
-any2_rhs_chr.formula <- function(object, string=TRUE){
+as_rhs_chr.formula <- function(object, string=TRUE){
     formula_rhs_to_chr(object, string=string)    
 }
 
 ##' @export
-any2_lhs_chr.character <- function(object, string=TRUE){
+as_lhs_chr.character <- function(object, string=TRUE){
     object2 <- strsplit(object,"\\s~\\s")[[1]]
     if (length(object2) == 2)
         object2[1]
@@ -250,7 +251,7 @@ any2_lhs_chr.character <- function(object, string=TRUE){
 }
 
 ##' @export
-any2_lhs_chr.formula <- function(object, string=FALSE){
+as_lhs_chr.formula <- function(object, string=FALSE){
     r <- terms(object) |> attr("response")
     if (r > 0)
         object <- (terms(object) |> attr("variables"))[[r+1]] |> as.character()
@@ -264,26 +265,26 @@ any2_lhs_chr.formula <- function(object, string=FALSE){
 
 ##' @rdname formula_ops
 ##' @export
-any2_rhs_frm <- function(object){
-    UseMethod("any2_rhs_frm")    
+as_rhs_frm <- function(object){
+    UseMethod("as_rhs_frm")    
 }
 
 ##' @rdname formula_ops
 ##' @export
-any2_lhs_frm <- function(object){
-    UseMethod("any2_lhs_frm")
+as_lhs_frm <- function(object){
+    UseMethod("as_lhs_frm")
 }
 
 ##' @rdname formula_ops
 ##' @export
-any2_rhs_chr <- function(object, string=FALSE){
-    UseMethod("any2_rhs_chr")
+as_rhs_chr <- function(object, string=FALSE){
+    UseMethod("as_rhs_chr")
 }
 
 ##' @rdname formula_ops
 ##' @export
-any2_lhs_chr <- function(object, string=FALSE){
-    UseMethod("any2_lhs_chr")
+as_lhs_chr <- function(object, string=FALSE){
+    UseMethod("as_lhs_chr")
 }
 
 
