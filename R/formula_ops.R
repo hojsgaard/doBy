@@ -103,7 +103,10 @@ formula_nth <- function(frm1, n){
 ##' @rdname formula_ops
 ##' @export
 formula_to_interaction_matrix <- function(frm1){
-    aa <- any2_rhs_chr(frm1)  |> strsplit(":")
+    ## aa <- any2_rhs_chr(frm1)  |> strsplit(":")
+    aa <- terms_labels(frm1)
+    aa <- aa |> strsplit(":")
+
     nms <- unique(unlist(aa))
     mm <- matrix(0, nrow=length(nms), ncol=length(nms), dimnames=list(nms, nms))
     for(i in 1:length(aa)){
