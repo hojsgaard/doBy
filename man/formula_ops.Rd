@@ -10,10 +10,10 @@
 \alias{to_str}
 \alias{terms_labels}
 \alias{simplify_rhs}
-\alias{any2_rhs_frm}
-\alias{any2_lhs_frm}
-\alias{any2_rhs_chr}
-\alias{any2_lhs_chr}
+\alias{as_rhs_frm}
+\alias{as_lhs_frm}
+\alias{as_rhs_chr}
+\alias{as_lhs_chr}
 \title{Formula operations and coercion.}
 \usage{
 formula_add(frm1, frm2)
@@ -26,19 +26,19 @@ formula_to_interaction_matrix(frm1)
 
 formula_chr_to_form(rhs, lhs = character(0))
 
-to_str(x, collapse = "+")
+to_str(chr1, collapse = "+")
 
 terms_labels(frm1)
 
 simplify_rhs(object)
 
-any2_rhs_frm(object)
+as_rhs_frm(object)
 
-any2_lhs_frm(object)
+as_lhs_frm(object)
 
-any2_rhs_chr(object, string = FALSE)
+as_rhs_chr(object, string = FALSE)
 
-any2_lhs_chr(object, string = FALSE)
+as_lhs_chr(object, string = FALSE)
 }
 \arguments{
 \item{frm1, frm2}{Formulas to be coerced to character vectors.}
@@ -50,6 +50,8 @@ any2_lhs_chr(object, string = FALSE)
 \item{noint}{Boolean.}
 
 \item{rhs, lhs}{right-hand-side and left-hand-side for formula (as characters)}
+
+\item{collapse}{Character to use as separator.}
 
 \item{object}{Character vector or formula.}
 
@@ -63,18 +65,18 @@ Formula operations and coercion as a supplement to \code{update.formula()}
 formula_poly("z", 2)
 formula_poly("z", 2, noint=TRUE)
 
-any2_rhs_chr(c("a", "b", "z"))
-any2_rhs_chr(c("a*b", "z"))
+as_rhs_chr(c("a", "b", "z"))
+as_rhs_chr(c("a*b", "z"))
 
-any2_rhs_chr(y~a+b+z)
-any2_rhs_chr(y~a+b+z, string=TRUE)
-any2_rhs_chr(y~a+b+z)
-any2_rhs_chr(y~a*b+z)
-any2_rhs_chr(y~a*b+z, string=TRUE)
+as_rhs_chr(y~a+b+z)
+as_rhs_chr(y~a+b+z, string=TRUE)
+as_rhs_chr(y~a+b+z)
+as_rhs_chr(y~a*b+z)
+as_rhs_chr(y~a*b+z, string=TRUE)
 
-any2_lhs_chr(y~a*b+z)
-any2_lhs_chr(log(y)~a*b+z)      ## Not what one might expect
-any2_lhs_chr(cbind(y, u)~a*b+z) ## Not what one might expect
+as_lhs_chr(y~a*b+z)
+as_lhs_chr(log(y)~a*b+z)      ## Not what one might expect
+as_lhs_chr(cbind(y, u)~a*b+z) ## Not what one might expect
 
 formula_chr_to_form(c("a*b", "z"))
 formula_chr_to_form(c("a*b", "z"), "y")
