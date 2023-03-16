@@ -288,6 +288,21 @@ as_lhs_chr <- function(object, string=FALSE){
 }
 
 
+##' @rdname formula_ops
+##' @param list_of_formulas list of formulas
+##' @export
+unique_formula <- function(list_of_formulas){
+
+    l2 <- lapply(list_of_formulas, function(x){
+        environment(x) <- NULL
+        x
+    }
+    )
+
+    o <- list_of_formulas[!duplicated(l2)]
+    return(o)
+}
+
 ## ##' @export
 ## formula_to_rhs <- function(frm1){
 ##     terms(frm1) |> delete.response() |> formula()

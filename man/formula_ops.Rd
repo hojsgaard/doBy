@@ -14,6 +14,7 @@
 \alias{as_lhs_frm}
 \alias{as_rhs_chr}
 \alias{as_lhs_chr}
+\alias{unique_formula}
 \title{Formula operations and coercion.}
 \usage{
 formula_add(frm1, frm2)
@@ -39,6 +40,8 @@ as_lhs_frm(object)
 as_rhs_chr(object, string = FALSE)
 
 as_lhs_chr(object, string = FALSE)
+
+unique_formula(list_of_formulas)
 }
 \arguments{
 \item{frm1, frm2}{Formulas to be coerced to character vectors.}
@@ -56,6 +59,8 @@ as_lhs_chr(object, string = FALSE)
 \item{object}{Character vector or formula.}
 
 \item{string}{Boolean.}
+
+\item{list_of_formulas}{list of formulas}
 }
 \description{
 Formula operations and coercion as a supplement to \code{update.formula()}
