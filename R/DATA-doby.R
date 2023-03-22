@@ -281,7 +281,7 @@
 #' @docType data
 #' @format This data frame contains:
 #' \describe{
-## #' \item{State:}{State of the USA}
+#' \item{state:}{State of the USA}
 #' \item{murder:}{crime of murder}
 #' \item{rape:}{}
 #' \item{robbery:}{}
@@ -553,20 +553,23 @@
 "milkman_rdm1"
 
 
-#' NIRmilk
+#' @title NIRmilk
 #' 
-#' Near infra red light (NIR) measurements are made at 152 wavelengths on 17
-#' milk samples.  While milk runs through a glass tube, infra red light is sent
-#' through the tube and the amount of light passing though the tube is measured
-#' at different wavelengths.  Each milk sample was additionally analysed for
-#' fat, lactose, protein and dry matter.
+#' @description Near infra red light (NIR) measurements are made at
+#'     152 wavelengths on 17 milk samples.  While milk runs through a
+#'     glass tube, infra red light is sent through the tube and the
+#'     amount of light passing though the tube is measured at
+#'     different wavelengths.  Each milk sample was additionally
+#'     analysed for fat, lactose, protein and dry matter.
 #' 
 #' @name NIRmilk
 #' @docType data
-#' @format This data frame contains 18 rows and 158 columns.  The first column
-#'     is the sample number.  The columns `Xwww` contains the infra red light
-#'     amount at wavelength `www`.  The response variables are fat, protein,
-#'     lactose and dm (dry matter).
+#' @format This data frame contains 17 rows and 158 columns.  The
+#'     first column is the sample number.  The columns `Xklm` contains
+#'     the transmittance (fraction of electromagnetic power)
+#'     transmittance through the sample at wavelength `klm`.  The
+#'     response variables are fat, protein, lactose and dm (dry
+#'     matter).
 #' @keywords datasets
 #' @examples
 #' 	
@@ -574,27 +577,30 @@
 #' 
 "NIRmilk"
 
-## #' nir_milk
-## #' 
-## #' Near infra red light (NIR) measurments are made at 152 wavelengths on 17
-## #' milk samples.  While milk runs through a glass tube, infra red light is sent
-## #' through the tube and the amount of light passing though the tube is measured
-## #' at different wavelengths.  Each milk sample was additionally analysed for
-## #' fat, lactose, protein and drymatter.
-## #' 
-## #' @name nir_milk
-## #' @docType data
-## #' @format A list with two components
-## #'  x Datafrane with infra red light amount at different wavelengths (column names are the wavelengths; just remove the leading X).
-## #'  y Datafrane with response variables fat, protein,
-## #'     lactose and dm (drymatter)
-## #'
-## #' @keywords datasets
-## #' @examples
-## #' 	
-## #' data(nir_milk)
-## #' 
-## "nir_milk"
+
+#' @title nir_milk
+#'
+#' @description Near infra red light (NIR) measurements are made at
+#'     152 wavelengths on 17 milk samples.  While milk runs through a
+#'     glass tube, infra red light is sent through the tube and the
+#'     amount of light passing though the tube is measured at
+#'     different wavelengths.  Each milk sample was additionally
+#'     analysed for fat, lactose, protein and dry matter.
+#' 
+#' @name nir_milk
+#' @docType data
+#' @format A list with two components
+#'  x Datafrane with infra red light amount at different wavelengths (column names are the wavelengths; just remove the leading X).
+#'  y Datafrane with response variables fat, protein,
+#'     lactose and dm (drymatter)
+#'
+#' @keywords datasets
+#' @seealso [NIRmilk]
+#' @examples
+#' 	
+#' data(nir_milk)
+#' 
+"nir_milk"
 
 
 
