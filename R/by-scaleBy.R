@@ -38,9 +38,9 @@ scale_df <- function(x, center = TRUE, scale = TRUE){
         if (!any(b)){ ## x only has numeric values
             return(scale(x, center=center, scale=scale))
         } else { ## x is dataframe with non-numerics
-
+            
             x2 <- x[,b, drop=FALSE]
-            x2 <- scale(x2)#, center=center, scale=scale)
+            x2 <- scale(x2, center=center, scale=scale)
             x[, b] <- x2
 
             if (!is.null(a <- attributes(x2)$"scaled:center"))
