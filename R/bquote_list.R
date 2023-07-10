@@ -24,8 +24,8 @@
 #' sapply(fn_list_, eval) ## Yes
 #' 
 #' @export
-bquote_fun_list <- function(fun_list){
-    if (!inherits(fun_list, "list"))
+bquote_fun_list <- function(fun_list) {
+    if (!inherits(fun_list, "list")) 
         stop("'fun_list' is not a list.")
     cls <- c("function", "section_function")
     if (!all(sapply(fun_list, inherits, cls)))
