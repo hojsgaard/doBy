@@ -1,5 +1,5 @@
 Package: doBy
-Version: 4.6.17
+Version: 4.6.18
 Title: Groupwise Statistics, LSmeans, Linear Estimates, Utilities 
 Author: Søren Højsgaard <sorenh@math.aau.dk> and Ulrich Halekoh
     <uhalekoh@health.sdu.dk>
@@ -16,7 +16,7 @@ LazyData: true
 LazyDataCompression: xz 
 License: GPL (>= 2)
 Depends:
-    R (>= 3.6.0),
+    R (>= 4.1.0),
     methods
 Imports:
     broom,

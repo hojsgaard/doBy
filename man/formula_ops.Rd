@@ -10,6 +10,8 @@
 \alias{to_str}
 \alias{terms_labels}
 \alias{simplify_rhs}
+\alias{simplify_rhs.formula}
+\alias{simplify_rhs.character}
 \alias{as_rhs_frm}
 \alias{as_lhs_frm}
 \alias{as_rhs_chr}
@@ -32,6 +34,10 @@ to_str(chr1, collapse = "+")
 terms_labels(frm1)
 
 simplify_rhs(object)
+
+\method{simplify_rhs}{formula}(object)
+
+\method{simplify_rhs}{character}(object)
 
 as_rhs_frm(object)
 

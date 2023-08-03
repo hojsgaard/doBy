@@ -147,11 +147,15 @@ simplify_rhs <- function(object){
     UseMethod("simplify_rhs")
 }
 
+##' @rdname formula_ops
+##' @export
 simplify_rhs.formula <- function(object){
     l <- terms_labels(object)
     to_str(l) |> as_rhs_frm()
 }
 
+##' @rdname formula_ops
+##' @export
 simplify_rhs.character <- function(object){
     o <- as_rhs_frm(object)  |>
         terms_labels() |>
