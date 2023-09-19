@@ -26,9 +26,9 @@
 #' ff <- expr_to_fun(ee)
 #' 
 #' @export
-expr_to_fun <- function(expr_, order=NULL, vec_arg=FALSE){
+expr_to_fun <- function(expr_, order=NULL, vec_arg=FALSE) {
 
-    if (vec_arg){
+    if (vec_arg) {
         expr_to_one_param_fun(expr_, order=order)
     } else {
         expr_to_multi_param_fun(expr_, order=order)
@@ -36,23 +36,22 @@ expr_to_fun <- function(expr_, order=NULL, vec_arg=FALSE){
     
 }
 
-handle_order <- function(e, order){
+handle_order <- function(e, order) {
     if (is.null(order))
         return(sort(all.vars(e)))
-
     
     nms <- all.vars(e)
     ss <- setdiff(nms, order)
-    if (length(ss) > 0){        
+    if (length(ss) > 0) {        
         stop("some arguments are not given in 'order'")
     }
     return(order)
 }
   
     
-expr_to_one_param_fun <- function(e, order=NULL){
+expr_to_one_param_fun <- function(e, order=NULL) {
 
-    nms <- handle_order(e, order)
+    nms <- handle_order(e, order) 
     e_str <- expr_to_string(e)
     
     if (length(nms)) {
@@ -78,7 +77,7 @@ expr_to_one_param_fun <- function(e, order=NULL){
 }
 
 
-expr_to_multi_param_fun <- function(e, order=NULL){
+expr_to_multi_param_fun <- function(e, order=NULL) {
 
     nms <- handle_order(e, order)   
     e_str <- expr_to_string(e)
@@ -91,14 +90,14 @@ expr_to_multi_param_fun <- function(e, order=NULL){
     return(fun)
 }
 
-expr_to_string <- function(e){
+expr_to_string <- function(e) {
     e_str <- lapply(e, deparse)
-
+    
     e_str <-
         lapply(e_str,
-           function(e){
-               paste0(e, collapse=" ")               
-           })
+               function(e) {
+                   paste0(e, collapse=" ")               
+               })
     e_str
 }
 
