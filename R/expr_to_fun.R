@@ -27,13 +27,11 @@
 #' 
 #' @export
 expr_to_fun <- function(expr_, order=NULL, vec_arg=FALSE) {
-
     if (vec_arg) {
         expr_to_one_param_fun(expr_, order=order)
     } else {
         expr_to_multi_param_fun(expr_, order=order)
-    }
-    
+    }    
 }
 
 handle_order <- function(e, order) {
@@ -77,28 +75,29 @@ expr_to_one_param_fun <- function(e, order=NULL) {
 }
 
 
-expr_to_multi_param_fun <- function(e, order=NULL) {
 
-    nms <- handle_order(e, order)   
-    e_str <- expr_to_string(e)
+expr_to_multi_param_fun <- function(ee, order=NULL) {
+
+    nms <- handle_order(ee, order)   
+    ee_str <- expr_to_string(ee)
     
     fun_str <- paste0("function(", paste0(nms, collapse=", "), ")")
         
-    bd <- paste0("\n{ \n", paste0(e_str, collapse=";\n "), "\n}")
+    bd <- paste0("\n{ \n", paste0(ee_str, collapse=";\n "), "\n}")
     ff <- paste0(fun_str, bd)
     fun <- eval(parse(text=ff))
     return(fun)
 }
 
-expr_to_string <- function(e) {
-    e_str <- lapply(e, deparse)
+expr_to_string <- function(ee) {
+    ee_str <- lapply(ee, deparse)
     
-    e_str <-
-        lapply(e_str,
-               function(e) {
-                   paste0(e, collapse=" ")               
+    ee_str <-
+        lapply(ee_str,
+               function(e_) {
+                   paste0(e_, collapse="\n")               
                })
-    e_str
+    ee_str
 }
 
 
