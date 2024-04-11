@@ -17,5 +17,8 @@
 #' @importFrom utils str help
 #' @importFrom methods setOldClass
 #' @importFrom cowplot plot_grid
+#' @importFrom rlang enquo
+#' @importFrom tidyr pivot_longer
+#' @importFrom dplyr mutate select
 NULL
 
