@@ -1,0 +1,127 @@
+---
+title: "Stability selection"
+author: "Søren Højsgaard"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{stability: Stability selection}
+  %\VignettePackage{doBy}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+options("digits"=3)
+library(doBy)
+library(boot)
+#devtools::load_all()
+```
+
+## Stability selection: differences in models due to different data sets
+
+A model selection method consists of two parts: 
+
+1. A criterion for selecting a model and 
+1. A strategy for generating candidate models, that is a strategy for navigating the model space.
+
+The stability of a model selection method is the extent to which the method selects the same model when applied to different data sets. 
+
+Say we want to perform $K$ different model selections. We can do this by resampling or by creating subgroups. Resampling is done by drawing $n$ observations with replacement from the data set. Subgroups are created by dividing the data set into $K$ subgroups as follows: Form $K$ subgroups by dividing the data set into $K$ equal parts. Then for each $k=1,\ldots,K$ the $k$th subgroup is left out and the model is fitted to the remaining data. Default below is the subgroup method.
+
+Consider this subset of the mtcars data set. 
+
+```{r}
+dat0 <- mtcars[1:6,]
+dat0
+```
+
+
+Generate a list of data sets by resampling or by creating subgroups. 
+
+```{r}
+out1 <- generate_data_list(dat0, K=3, method="resample")
+out1
+
+out2 <- generate_data_list(dat0, K=3, method="subgroups")
+out2
+```
+
+## Model selection
+
+Focus on entire dataset. Fit a linear model to each data set and select the best model by stepwise regression. This gives an indication of the stability of the model. 
+
+
+```{r}
+dat <- mtcars
+mod <- glm(mpg ~ ., data = dat)
+n.searches <- 24
+
+set.seed(1411)
+ms2 <- model_stability_glm(dat, mod, n.searches=n.searches, method="subgroups", trace=0)
+ms2
+```
+
+We can obtain fitted models as follows
+
+```{r}
+formula(ms2, fit=TRUE)
+```
+
+
+Specifically, the matrix shows the predictors selected in each model and below is the frequency with which each model is selected. 
+
+
+
+```{r}
+su2 <- summary(ms2)
+su2
+```
+
+
+## Predictive performance
+
+
+For each model we can do cross-validation. 
+
+```{r}
+fit2 <- formula(ms2, fit=TRUE)
+cv2 <- cv_glm_fitlist(dat, fit2, K=8)
+cv2
+```
+
+
+```{r}
+plot(cv2, main="Subgroups")
+```
+
+
+
+
+
+```{r}
+i2 <- which.min(cv2)
+formula(ms2)[[i2]]
+cv2[i2]
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
