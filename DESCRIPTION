@@ -1,5 +1,5 @@
 Package: doBy
-Version: 4.6.20.9001
+Version: 4.6.20.9040
 Title: Groupwise Statistics, LSmeans, Linear Estimates, Utilities 
 Author: Søren Højsgaard <sorenh@math.aau.dk> and Ulrich Halekoh
     <uhalekoh@health.sdu.dk>
@@ -16,25 +16,30 @@ LazyData: true
 LazyDataCompression: xz 
 License: GPL (>= 2)
 Depends:
-    R (>= 4.1.0),
+    R (>= 4.2.0),
     methods
 Imports:
+    boot,
     broom,
+    cowplot,
     Deriv,
     dplyr,
     ggplot2,
     MASS,
     Matrix,
-    magrittr,
+    modelr,
     microbenchmark,
     pbkrtest (>= 0.4-8.1),
-    tibble
+    rlang,
+    tibble,
+    tidyr,
 Suggests:
     multcomp,
     geepack,
     lme4,
     survival,
     testthat (>= 2.1.0),
+    markdown,
     knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Roxygen: list(markdown = TRUE)
