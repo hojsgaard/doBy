@@ -8,7 +8,7 @@ model_stability_glm(
   data.,
   model,
   n.searches = 10,
-  method = c("resample", "subgroups"),
+  method = c("subgroups", "resample"),
   ...
 )
 }

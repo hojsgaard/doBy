@@ -214,25 +214,31 @@ aggregate_matrix <- function(zz2){
         zz2 <- zz2 |> as.data.frame()  |> table() |> as.data.frame.table()
         zz2 <- dplyr::filter(zz2, .data$Freq>0)
         zz2 <- zz2[order(zz2$Freq, decreasing=TRUE),]
-        zz2 <- sapply(zz2, function(o) as.numeric(as.character(o)))
-        zz2
+        zz2 <- sapply(zz2, 
+                      function(o){
+                        as.numeric(as.character(o))
+                        })
+        
+        if (is.null(dim(zz2)))
+            zz2 <- as.data.frame(t(zz2))
     } else { 
         as.data.frame(cbind(Freq=nrow(zz2)))        
     }
 }
 
 glist2matrix <- function(aa, nms, aggregate=TRUE){
-    zz <- matrix(0, length(aa), length(nms))
-    colnames(zz) <- nms
-    ii <- lapply(aa, match, nms)
-    
+      zz <- matrix(0, length(aa), length(nms))
+        colnames(zz) <- nms
+            ii <- lapply(aa, match, nms)
+
     for (i in 1:length(aa)){
         zz[i, ii[[i]]] <- 1
     }
+
     if (aggregate) {
-        zz <- aggregate_matrix(zz)
-        colnames(zz) <- c(nms, "Freq__")
-        zz
+       zz2 <- aggregate_matrix(zz)
+        colnames(zz2) <- c(nms, "Freq__")
+        zz2
         }
     else
         zz
