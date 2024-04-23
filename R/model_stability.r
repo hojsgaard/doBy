@@ -7,7 +7,8 @@
 #' @param ... Additional arguments to be passed to \code{\link{step}}
 #' 
 #' @export
-model_stability_glm <- function(data., model, n.searches=10, method=c("resample", "subgroups"), ...){
+model_stability_glm <- function(data., model, n.searches=10, method=c("subgroups", "resample"), ...){
+  method <- match.arg(method)
     data_list <- generate_data_list(data., K=n.searches, method=method)
 
     lhs <- as.character(model$formula[[2]])
