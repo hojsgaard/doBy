@@ -92,7 +92,10 @@ library(doBy)
 \label{sec:section}
 
 
-Let $E$ be a subset of the cartesian product $X \times Y$ where $X$
+Let $f(x,y)=x+y$. Then $f_x(y)=f(10, y)$ is a
+section of $f$ to be a function of $y$ alone.
+
+More generally, let $E$ be a subset of the cartesian product $X \times Y$ where $X$
 and $Y$ are some sets. Consider a function $f(x,y)$ defined on
 $E$. Then for any $x \in X$, the section of $E$ defined by $x$
 (denoted $E_x$) is the set of $y$'s in $Y$ such that $(x, y)$ is in
@@ -104,50 +107,50 @@ $$
 Correspondingly, the section of $f(x,y)$ defined by $x$ is the
 function $f_x$ defined on $E_x$ given by $f_x(y)=f(x,y)$.
 
-For example, if $f(x,y)=x+y$ then $f_x(y)=f(10, y)$ is a
-section of $f$ to be a function of $y$ alone.
+There are the following approaches:
 
-There are two approaches: 1) replace the section values in the
-function (default) or 2) store the section values
-in an auxiliary environment.
+1) insert the section values as default values in the function definition (default),
+2) insert the section values in the function body,
+3) store the section values in an auxillary environment.
 
-\subsection{Replace section into function body}
-\label{sec:subst-restr-valu}
+Consider this function:
 
-Default is to replace section value in functions body:
 <<>>=
-f  <- function(a, b, c=4, d=9){
+fun  <- function(a, b, c=4, d=9){
     a + b + c + d
 }
-fr_ <- section_fun(f, list(b=7, d=10))
-fr_
-f(a=10, b=7, c=5, d=10)
-fr_(a=10, c=5)
-@
-
-
-
-\subsection{Using an auxiliary environment}
-\label{sec:using-an-auxillary}
-
-An alternative is to store the section values in an auxiliary environment:
-
-<<>>=
-fe_ <- section_fun(f, list(b=7, d=10), method = "env")
-fe_
-f(a=10, b=7, c=5, d=10)
-fe_(a=10, c=5)
-@
-
-The section values are stored in an extra environment in the \code{scaffold} object and
-the original function is stored in the scaffold functions environment:
-
-<<>>=
-get_section(fe_) 
-## attr(fe_, "arg_env")$args ## Same result
-get_fun(fe_) 
-## environment(fe_)$fun ## Same result
 @ 
+
+
+<<>>=
+fun_def <- section_fun(fun, list(b=7, d=10))
+fun_def
+fun_body <- section_fun(fun, list(b=7, d=10), method="sub")
+fun_body
+fun_env <- section_fun(fun, list(b=7, d=10), method = "env")
+fun_env
+@
+
+In the last case, we can see the section and the original function definition as:
+
+<<>>=
+get_section(fun_env) 
+## same as: attr(fun_env, "arg_env")$args 
+get_fun(fun_env) 
+## same as: environment(fun_env)$fun
+@ 
+
+
+We get:
+
+<<>>=
+fun(a=10, b=7, c=5, d=10)
+fun_def(a=10, c=5)
+fun_body(a=10, c=5)
+fun_env(a=10, c=5)
+@
+
+
 
 \section{Example: Benchmarking}
 \label{sec:exampl-benchm}
@@ -162,18 +165,18 @@ toeplitz(1:n)
 
 A naive implementation is
 <<>>=
-inv_toeplitz <- function(n) {
+inv_toep <- function(n) {
     solve(toeplitz(1:n))
 }
-inv_toeplitz(4)
+inv_toep(4)
 @ 
 
 We can benchmark timing for different values of $n$ as
 <<>>=
 library(microbenchmark)
 microbenchmark(
-    inv_toeplitz(4), inv_toeplitz(8), inv_toeplitz(16),
-    inv_toeplitz(32), inv_toeplitz(64),
+    inv_toep(4), inv_toep(8), inv_toep(16),
+    inv_toep(32), inv_toep(64),
     times=5
 )
 @ 
@@ -182,14 +185,14 @@ However, it is tedious (and hence error prone) to write these function calls.
 
 A programmatic approach using \code{section\_fun} is as follows: First create a list of sectioned functions:
 <<>>=
-n.vec  <- c(4, 8, 16, 32, 64)
+n.vec  <- c(3, 4, 5)
 fun_list <- lapply(n.vec,
                   function(ni){
-                      section_fun(inv_toeplitz, list(n=ni))}
+                      section_fun(inv_toep, list(n=ni))}
                   )
 @ 
 
-Each element is a function (a scaffold object, to be precise) and we can evaluate each / all functions as:
+We can inspect and evaluate each / all functions as:
 <<>>=
 fun_list[[1]]
 fun_list[[1]]()
@@ -213,7 +216,7 @@ bq_fun_list[[1]]
 ## Evaluate one:
 eval(bq_fun_list[[1]])
 ## Evaluate all:
-## sapply(bq_fun_list, eval)
+## lapply(bq_fun_list, eval)
 @ 
 
 To use microbenchmark we must name the elements of the list:
@@ -226,36 +229,34 @@ microbenchmark(
 @ 
 
 
-To summarize: to experiment with many difference values of $n$ we can do
-% <<>>=
-% n.vec <- seq(50, 700, by=50)
-% fun_list <- lapply(n.vec,
-%                   function(ni){
-%                       section_fun(inv_toeplitz, list(n=ni))}
-%                   )
-% bq_fun_list <- bquote_list(fun_list)
-% names(bq_fun_list) <- n.vec
-% mb <- microbenchmark(
-%   list  = bq_fun_list,
-%   times = 5
-% )
-% doBy::mb_summary(mb)  %>% head(4)
-% @ 
+Running the code below provides a benchmark of the different ways of sectioning in terms of speed.
 
-% Notice: Above, \code{doBy::mb\_summary} is a faster version of the
-% \code{summary} method for \code{microbenchmark} objects than the
-% method provided by the \code{microbenchmark} package.
+<<eval=FALSE>>=
+n.vec  <- seq(20, 80, by=20)
+fun_def <- lapply(n.vec,
+                  function(ni){
+                      section_fun(inv_toep, list(n=ni), method="def")}
+                  )
+fun_body <- lapply(n.vec,
+                  function(ni){
+                      section_fun(inv_toep, list(n=ni), method="sub")}
+                  )
+fun_env <- lapply(n.vec,
+                  function(ni){
+                      section_fun(inv_toep, list(n=ni), method="env")}
+                  )
 
-% <<fig.height=3>>=
-% par(mfrow=c(1,2))
-% y <- mb_summary(mb)$mean
-% plot(n.vec, y)
-% plot(log(n.vec), log(y))
-% mm <- lm(log(y) ~ log(n.vec))
-% broom::tidy(mm)
-% abline(mm)
-% @ 
+bq_fun_list <- bquote_list(c(fun_def, fun_body, fun_env))
+names(bq_fun_list) <- paste0(rep(c("def", "body", "env"), each=length(n.vec)), rep(n.vec, 3))
+
+mb <- microbenchmark(
+  list  = bq_fun_list,
+  times = 2
+)
+
+@ 
 
 
 \end{document}
+
 
