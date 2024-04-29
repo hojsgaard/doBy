@@ -9,19 +9,19 @@ Groupwise Statistics, LSmeans, Linear Contrasts, Utilities
 
 Author: Søren Højsgaard,  Ulrich Halekoh
 
-## Online documentation
+### Online documentation
 
 https://hojsgaard.github.io/doBy
 
-## Development site
+### Development site
 
 https://github.com/hojsgaard/doBy
 
-## CRAN page:
+### CRAN page:
 
 https://cran.r-project.org/web/packages/doBy/index.html
 
-## Further info at:
+### Further info at:
 
 http://people.math.aau.dk/~sorenh/software/doBy/
 

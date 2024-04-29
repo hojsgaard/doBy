@@ -2,7 +2,7 @@ doBy v4.6.21 (Release date: )
 =======================================
 
 * crickets data added
-* Added function `binomial_to_bernoulli_data`, `model_stability_glm` 
+* Added function `binomial_to_bernoulli_data`, `model_stability_glm`, `plot_lm` 
 * Functionality of `split_byrow` and `split_bycol` extended
 
 
