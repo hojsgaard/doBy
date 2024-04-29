@@ -1,7 +1,10 @@
 ---
 title: "Stability selection"
 author: "Søren Højsgaard"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    number_sections: true
 vignette: >
   %\VignetteIndexEntry{stability: Stability selection}
   %\VignettePackage{doBy}

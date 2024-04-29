@@ -34,6 +34,9 @@
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/model_stability.html">Stability selection</a>
     </li>
+    <li>
+      <a href="../articles/section_fun.html">Sectioning a function</a>
+    </li>
   </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -138,10 +141,10 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">formula_poly</span><span class="op">(</span><span class="st">"z"</span>, <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ~z + I(z^2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x6424b8f28f88&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5958fb63b008&gt;</span>
 <span class="r-in"><span><span class="fu">formula_poly</span><span class="op">(</span><span class="st">"z"</span>, <span class="fl">2</span>, noint<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ~-1 + z + I(z^2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x6424b8a39948&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5958fb2dc960&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">as_rhs_chr</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"z"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "abz"</span>
@@ -168,20 +171,20 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">formula_chr_to_form</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a*b"</span>, <span class="st">"z"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ~a * b + z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x6424b8951218&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5959096b13c8&gt;</span>
 <span class="r-in"><span><span class="fu">formula_chr_to_form</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a*b"</span>, <span class="st">"z"</span><span class="op">)</span>, <span class="st">"y"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> y ~ a * b + z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x6424bc4697d8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x595908503280&gt;</span>
 <span class="r-in"><span><span class="fu">formula_chr_to_form</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a*b"</span>, <span class="st">"z"</span><span class="op">)</span>, <span class="st">"log(y)"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> log(y) ~ a * b + z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x6424ba36f830&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x595907f13e58&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">formula_add</span><span class="op">(</span><span class="va">y</span><span class="op">~</span><span class="va">a</span><span class="op">*</span><span class="va">b</span><span class="op">+</span><span class="va">z</span>, <span class="op">~</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> y ~ a + a:b + b + z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x6424bd75ce88&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x595907097c40&gt;</span>
 <span class="r-in"><span><span class="fu">formula_add</span><span class="op">(</span><span class="va">y</span><span class="op">~</span><span class="va">a</span><span class="op">*</span><span class="va">b</span><span class="op">+</span><span class="va">z</span>, <span class="op">~</span><span class="va">a</span><span class="op">:</span><span class="va">b</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> y ~ a + a:b + b + z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x6424b9aaeed8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x59590757a008&gt;</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
