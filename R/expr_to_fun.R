@@ -1,3 +1,5 @@
+##ee <- expression(matrix(c(a, b, 0, b, a, b, 0, b, a), nrow = 3))
+
 #' Convert expression into function object.
 #'
 #' @param expr_ R expression.
@@ -23,7 +25,10 @@
 #'     3 * x2 * (x1 - cos(x2 * x3)/3 -
 #'     0.5) * sin(x2 * x3) + 400 * x3 + 189.52380952381 + 20 * exp(-x1 *
 #'     x2)), nrow = 3))
-#' ff <- expr_to_fun(ee)
+#' f1 <- expr_to_fun(ee)
+#' f2 <- expr_to_fun(ee, vec_arg=TRUE)
+#' ## Note: how long should parm be in f2?
+#' formals(f2)$length_parm
 #' 
 #' @export
 expr_to_fun <- function(expr_, order=NULL, vec_arg=FALSE) {
@@ -65,9 +70,9 @@ expr_to_one_param_fun <- function(e, order=NULL) {
 
     comb <- c(aux, e_str)    
     
-    fun_str <- "function(parm)"
+    fun_str <- sprintf("function(parm, length_parm=%d)", length(nms))
     
-    bd <- paste0("\n{ \n", paste0(comb, collapse=";\n "), "\n}")
+    bd <- paste0("\n{ \n ", paste0(comb, collapse=";\n "), "\n}")
 
     ff <- paste0(fun_str, bd)
     fun <- eval(parse(text=ff))
@@ -100,15 +105,3 @@ expr_to_string <- function(ee) {
     ee_str
 }
 
-
-## expr_to_fun <- function(e){
-    ## vn <- all.vars(e)
-    ## fmls <- vector("list", length(vn))
-    ## names(fmls) <- vn
-    
-    ## out <- function(){}
-
-    ## formals(out) <- fmls
-    ## body(out) <- e
-    ## return(out)
-## }
