@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">doBy</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.6.21</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.6.22</span>
       </span>
     </div>
 
@@ -50,6 +50,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/doby.html">doby: Groupwise computations and miscellaneous utilities</a>
+    </li>
+    <li>
       <a href="../articles/model_stability.html">Stability selection</a>
     </li>
     <li>
@@ -147,7 +150,7 @@ definition (default),</li>
 <span><span class="co">#&gt;     args &lt;- arg_getter()</span></span>
 <span><span class="co">#&gt;     do.call(fun, args)</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x5dd3c6c2b990&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;environment: 0x622536f02b58&gt;</span></span></code></pre></div>
 <p>In the last case, we can see the section and the original function
 definition as:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -208,11 +211,11 @@ increasing dimensions:</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
 <span><span class="co">#&gt;          expr   min    lq  mean median    uq    max neval cld</span></span>
-<span><span class="co">#&gt;   inv_toep(4)  11.2  11.2  12.2   11.4  11.5   15.4     5   a</span></span>
-<span><span class="co">#&gt;   inv_toep(8)  13.2  13.4  14.3   13.7  14.1   17.2     5   a</span></span>
-<span><span class="co">#&gt;  inv_toep(16)  20.1  20.3 239.5   21.1  27.1 1109.0     5   a</span></span>
-<span><span class="co">#&gt;  inv_toep(32)  44.6  44.8  46.0   45.9  46.1   48.6     5   a</span></span>
-<span><span class="co">#&gt;  inv_toep(64) 147.6 147.9 155.5  148.9 163.5  169.7     5   a</span></span></code></pre></div>
+<span><span class="co">#&gt;   inv_toep(4)  11.1  11.2  14.2   11.4  11.7   25.7     5   a</span></span>
+<span><span class="co">#&gt;   inv_toep(8)  13.4  13.4  14.4   13.5  14.6   17.3     5   a</span></span>
+<span><span class="co">#&gt;  inv_toep(16)  20.2  20.5 238.3   21.1  26.9 1102.8     5   a</span></span>
+<span><span class="co">#&gt;  inv_toep(32)  43.9  45.0  45.3   45.1  45.6   47.0     5   a</span></span>
+<span><span class="co">#&gt;  inv_toep(64) 146.5 146.6 151.5  148.7 156.2  159.2     5   a</span></span></code></pre></div>
 <p>However, it is tedious (and hence error prone) to write these
 function calls.</p>
 <p>A programmatic approach using is as follows: First create a list of
@@ -269,9 +272,9 @@ bquote all functions using</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
 <span><span class="co">#&gt;  expr  min   lq mean median   uq  max neval cld</span></span>
-<span><span class="co">#&gt;     3 10.4 10.4 10.8   10.6 10.9 11.8     5   a</span></span>
-<span><span class="co">#&gt;     4 10.8 10.9 12.3   11.0 11.3 17.7     5   a</span></span>
-<span><span class="co">#&gt;     5 10.9 11.5 25.1   18.0 18.1 66.9     5   a</span></span></code></pre></div>
+<span><span class="co">#&gt;     3 10.3 10.5 10.7   10.6 10.7 11.6     5   a</span></span>
+<span><span class="co">#&gt;     4 11.1 11.1 12.5   11.2 11.4 17.6     5   a</span></span>
+<span><span class="co">#&gt;     5 10.9 11.7 24.7   14.2 17.6 69.0     5   a</span></span></code></pre></div>
 <p>Running the code below provides a benchmark of the different ways of
 sectioning in terms of speed.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
