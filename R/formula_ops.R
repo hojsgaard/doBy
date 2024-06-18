@@ -51,6 +51,7 @@
 ##' formula_add_str(y~x1 + x2, "x1", op="-")
 ##'
 
+##' @rdname formula_ops
 #' @export
 formula_add_str <- function(frm1, terms, op="+"){
     ## FIXME: Need to handle case where frm1 is a rhs-formula
