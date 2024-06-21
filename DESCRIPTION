@@ -1,5 +1,5 @@
 Package: doBy
-Version: 4.6.22
+Version: 4.6.22.9001
 Title: Groupwise Statistics, LSmeans, Linear Estimates, Utilities 
 Author: Søren Højsgaard <sorenh@math.aau.dk> and Ulrich Halekoh
     <uhalekoh@health.sdu.dk>
@@ -29,17 +29,17 @@ Imports:
     Matrix,
     modelr,
     microbenchmark,
-    pbkrtest (>= 0.4-8.1),
     rlang,
     tibble,
     tidyr,
 Suggests:
-    multcomp,
     geepack,
-    lme4,
-    survival,
-    testthat (>= 2.1.0),
+    knitr, 
+    lme4,	   
     markdown,
-    knitr
+    multcomp,
+    pbkrtest (>= 0.4-8.1),
+    survival,
+    testthat (>= 2.1.0)
 RoxygenNote: 7.3.1
 Roxygen: list(markdown = TRUE)
