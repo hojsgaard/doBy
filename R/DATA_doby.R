@@ -1,8 +1,26 @@
+#' @title income data
+#' @description Data on income, years of educations and ethnicity.
+#' @name income
+#' @docType data
+#' @format This data frame contains:
+#' \describe{
+#' \item{inc:}{Income: Yearly income.}
+#' \item{educ:}{Education: Number of years of education.}
+#' \item{eth:}{Ethnicity: Ethnicity: "b" (black), "h" (hispanic) and "w" (white).}
+#' }
+#' @keywords datasets
+#'
+#' @references Agresti, A. (2024) Statistical Methods for the Social
+#'     Sciences, Global Edition (6th edition).  ISBN-13: 9781292449197. Table 13.1
+#' 
+"income"
+
+
 #' @title crickets data
 #'
-#' @description
+#' @description Mating songs of male tree crickets.
 #'
-#' name crickets
+#' @name crickets
 #'
 #' @docType data
 #' @format This data frame contains:
@@ -36,7 +54,6 @@
 ##
 ## beets
 ##
-
 #' @title beets data
 #'
 #' @description Yield and sugar percentage in sugar beets from a split plot

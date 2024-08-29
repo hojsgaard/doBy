@@ -1,5 +1,5 @@
 Package: doBy
-Version: 4.6.22.9001
+Version: 4.6.22.9004
 Title: Groupwise Statistics, LSmeans, Linear Estimates, Utilities 
 Author: Søren Højsgaard <sorenh@math.aau.dk> and Ulrich Halekoh
     <uhalekoh@health.sdu.dk>
@@ -14,6 +14,7 @@ Encoding: UTF-8
 VignetteBuilder: knitr
 LazyData: true
 LazyDataCompression: xz 
+URL: https://github.com/hojsgaard/doBy
 License: GPL (>= 2)
 Depends:
     R (>= 4.2.0),
@@ -38,8 +39,8 @@ Suggests:
     lme4,	   
     markdown,
     multcomp,
-    pbkrtest (>= 0.4-8.1),
+    pbkrtest (>= 0.5.2),
     survival,
     testthat (>= 2.1.0)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)

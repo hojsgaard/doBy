@@ -16,7 +16,7 @@ This data frame contains:
 crickets
 }
 \description{
-name crickets
+Mating songs of male tree crickets.
 }
 \details{
 Walker (1962) studied the mating songs of male
