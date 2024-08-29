@@ -6,10 +6,12 @@
 #' \describe{
 #' \item{inc:}{Income: Yearly income.}
 #' \item{educ:}{Education: Number of years of education.}
-#' \item{eth:}{Ethnicity: Ethnicity: "b" (black), "h" (hispanic) and "w" (white).}
+#' \item{race:}{Ethnicity: "b" (black), "h" (hispanic) and "w" (white).}
 #' }
 #' @keywords datasets
 #'
+#' @details Variable names are as in the reference.
+#' 
 #' @references Agresti, A. (2024) Statistical Methods for the Social
 #'     Sciences, Global Edition (6th edition).  ISBN-13: 9781292449197. Table 13.1
 #' 
