@@ -9,7 +9,7 @@ This data frame contains:
 \describe{
 \item{inc:}{Income: Yearly income.}
 \item{educ:}{Education: Number of years of education.}
-\item{eth:}{Ethnicity: Ethnicity: "b" (black), "h" (hispanic) and "w" (white).}
+\item{race:}{Ethnicity: "b" (black), "h" (hispanic) and "w" (white).}
 }
 }
 \usage{
@@ -17,6 +17,9 @@ income
 }
 \description{
 Data on income, years of educations and ethnicity.
+}
+\details{
+Variable names are as in the reference.
 }
 \references{
 Agresti, A. (2024) Statistical Methods for the Social
