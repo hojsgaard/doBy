@@ -9,7 +9,7 @@ This data frame contains:
 \describe{
 \item{inc:}{Income: Yearly income.}
 \item{educ:}{Education: Number of years of education.}
-\item{race:}{Ethnicity: "b" (black), "h" (hispanic) and "w" (white).}
+\item{race:}{Racial-Ethnic group: "b" (black), "h" (hispanic) and "w" (white).}
 }
 }
 \usage{
