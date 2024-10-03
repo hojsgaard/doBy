@@ -5,7 +5,7 @@
 # global_aes <- list(color="Species")  # global_aes 
 # global_aes <- NULL
 # 
-# formula. <- Petal.Width ~ .
+# formula. <- Petal.Width ~ . 
 # data. <- dat
 # 
 # pl <- response_plot(Sepal.Width ~ . -Species, data=dat, geoms=geom_point(), global_aes)
@@ -24,11 +24,11 @@
 #'
 #' @examples
 #' library(ggplot2)
-#' response_plot(Sepal.Width ~ . , data=iris, geoms=geom_point())
-#' response_plot(Sepal.Width ~ . , data=iris, geoms=geom_point(), global_aes=list(color="Species"))
-#' response_plot(easygon~., data=personality, geoms=geom_point(), global_aes=NULL)
+#' response_plot(iris, Sepal.Width ~ ., geoms=geom_point())
+#' response_plot(iris, Sepal.Width ~ ., geoms=geom_point(), global_aes=list(color="Species"))
+#' personality |> response_plot(easygon~., geoms=geom_point(), global_aes=NULL)
 #' 
-response_plot <- function(formula., data., geoms=NULL, global_aes=NULL, plot=TRUE){
+response_plot <- function(data., formula., geoms=NULL, global_aes=NULL, plot=TRUE){
   
     trms <- terms(formula., data=data.)
     trms
