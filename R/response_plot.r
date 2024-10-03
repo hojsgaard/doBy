@@ -18,6 +18,7 @@
 #' @param geoms A list of ggplot2 geoms to be added to the plot.
 #' @param global_aes A list of global aesthetics to be added to the plot.
 #' @param plot A logical value indicating whether the plot should be displayed.
+#' @param nrow,ncol Number of rows / columns in plot. 
 #'
 #' @return A list of ggplot2 plots.
 #' @export
@@ -28,7 +29,7 @@
 #' response_plot(iris, Sepal.Width ~ ., geoms=geom_point(), global_aes=list(color="Species"))
 #' personality |> response_plot(easygon~., geoms=geom_point(), global_aes=NULL)
 #' 
-response_plot <- function(data., formula., geoms=NULL, global_aes=NULL, plot=TRUE){
+response_plot <- function(data., formula., geoms=NULL, global_aes=NULL, plot=TRUE, nrow=NULL, ncol=NULL){
   
     trms <- terms(formula., data=data.)
     trms
@@ -53,7 +54,7 @@ response_plot <- function(data., formula., geoms=NULL, global_aes=NULL, plot=TRU
         pl_ + geoms
     } )
     if (plot){
-        s <- cowplot::plot_grid(plotlist = plot_list)        
+        s <- cowplot::plot_grid(plotlist = plot_list, nrow=nrow, ncol=ncol)        
         print(s)
     }
 
