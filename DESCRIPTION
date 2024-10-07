@@ -1,8 +1,12 @@
 Package: doBy
 Version: 4.6.24
 Title: Groupwise Statistics, LSmeans, Linear Estimates, Utilities 
-Author: Søren Højsgaard <sorenh@math.aau.dk> and Ulrich Halekoh
-    <uhalekoh@health.sdu.dk>
+Authors@R: c(
+    person(given = "Ulrich", family = "Halekoh",
+        email = "uhalekoh@health.sdu.dk", role = c("aut", "cph")),
+    person(given = "Søren", family = "Højsgaard",
+        email = "sorenh@math.aau.dk", role = c("aut", "cre", "cph"))
+  )
 Maintainer: Søren Højsgaard <sorenh@math.aau.dk>
 Description: Utility package containing:
     1) Facilities for working with grouped data: 'do' something to data
