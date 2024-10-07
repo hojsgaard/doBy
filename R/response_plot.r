@@ -1,18 +1,9 @@
-# library(ggplot2)
-# library(ggpubr)
-
-# geoms <- c(geom_point(aes(color=Species)), geom_smooth(method = "lm"))
-# global_aes <- list(color="Species")  # global_aes 
-# global_aes <- NULL
-# 
-# formula. <- Petal.Width ~ . 
-# data. <- dat
-# 
-# pl <- response_plot(Sepal.Width ~ . -Species, data=dat, geoms=geom_point(), global_aes)
 
 #' Plot the response variable against the predictor variables.
 #'
-#' @param formula. A formula of the form y ~ x1 + x2 + ... + xn, where y is the response  variable and x1, x2, ..., xn are the predictor variables. A dot as right hand side is allowed.  
+#' @param formula. A formula of the form y ~ x1 + x2 + ... + xn, where
+#'     y is the response variable and x1, x2, ..., xn are the
+#'     predictor variables. A dot as right hand side is allowed.
 #' 
 #' @param data. A data frame containing the variables in the formula.
 #' @param geoms A list of ggplot2 geoms to be added to the plot.
