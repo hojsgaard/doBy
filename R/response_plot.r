@@ -29,13 +29,12 @@
 #' response_plot(iris, Sepal.Width ~ ., geoms=geom_point(), global_aes=list(color="Species"))
 #' personality |> response_plot(easygon~., geoms=geom_point(), global_aes=NULL)
 #' 
-response_plot <- function(data., formula., geoms=NULL, global_aes=NULL, plot=TRUE, nrow=NULL, ncol=NULL){
-  
+response_plot <- function(data., formula., geoms=NULL, global_aes=NULL, plot=TRUE, nrow=NULL, ncol=NULL) {  
     trms <- terms(formula., data=data.)
-    trms
+    ## trms
     yy <- as.character(formula.[[2]])
     xx <- setdiff(attr(trms, "term.labels"), yy)
-#    list(x=xx, y=yy) |> str()
+    ##    list(x=xx, y=yy) |> str()
 
     aes_template <- lapply(xx, function(x_){
         c(list(x=x_, y=yy), global_aes) 
@@ -49,7 +48,7 @@ response_plot <- function(data., formula., geoms=NULL, global_aes=NULL, plot=TRU
         data.  |> ggplot(mapping = z_)    
     })
     ## plot_basic
-
+    
     plot_list <-lapply(plot_basic, function(pl_) {
         pl_ + geoms
     } )
@@ -57,7 +56,7 @@ response_plot <- function(data., formula., geoms=NULL, global_aes=NULL, plot=TRU
         s <- cowplot::plot_grid(plotlist = plot_list, nrow=nrow, ncol=ncol)        
         print(s)
     }
-
+    
     return(invisible(plot_list))
 }
 
