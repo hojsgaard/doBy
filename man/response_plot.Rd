@@ -4,18 +4,28 @@
 \alias{response_plot}
 \title{Plot the response variable against the predictor variables.}
 \usage{
-response_plot(formula., data., geoms = NULL, global_aes = NULL, plot = TRUE)
+response_plot(
+  data.,
+  formula.,
+  geoms = NULL,
+  global_aes = NULL,
+  plot = TRUE,
+  nrow = NULL,
+  ncol = NULL
+)
 }
 \arguments{
-\item{formula.}{A formula of the form y ~ x1 + x2 + ... + xn, where y is the response  variable and x1, x2, ..., xn are the predictor variables. A dot as right hand side is allowed.}
-
 \item{data.}{A data frame containing the variables in the formula.}
+
+\item{formula.}{A formula of the form y ~ x1 + x2 + ... + xn, where y is the response  variable and x1, x2, ..., xn are the predictor variables. A dot as right hand side is allowed.}
 
 \item{geoms}{A list of ggplot2 geoms to be added to the plot.}
 
 \item{global_aes}{A list of global aesthetics to be added to the plot.}
 
 \item{plot}{A logical value indicating whether the plot should be displayed.}
+
+\item{nrow, ncol}{Number of rows / columns in plot.}
 }
 \value{
 A list of ggplot2 plots.
@@ -25,8 +35,8 @@ Plot the response variable against the predictor variables.
 }
 \examples{
 library(ggplot2)
-response_plot(Sepal.Width ~ . , data=iris, geoms=geom_point())
-response_plot(Sepal.Width ~ . , data=iris, geoms=geom_point(), global_aes=list(color="Species"))
-response_plot(easygon~., data=personality, geoms=geom_point(), global_aes=NULL)
+response_plot(iris, Sepal.Width ~ ., geoms=geom_point())
+response_plot(iris, Sepal.Width ~ ., geoms=geom_point(), global_aes=list(color="Species"))
+personality |> response_plot(easygon~., geoms=geom_point(), global_aes=NULL)
 
 }
