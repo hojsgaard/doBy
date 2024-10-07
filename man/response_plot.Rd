@@ -17,7 +17,9 @@ response_plot(
 \arguments{
 \item{data.}{A data frame containing the variables in the formula.}
 
-\item{formula.}{A formula of the form y ~ x1 + x2 + ... + xn, where y is the response  variable and x1, x2, ..., xn are the predictor variables. A dot as right hand side is allowed.}
+\item{formula.}{A formula of the form y ~ x1 + x2 + ... + xn, where
+y is the response variable and x1, x2, ..., xn are the
+predictor variables. A dot as right hand side is allowed.}
 
 \item{geoms}{A list of ggplot2 geoms to be added to the plot.}
 
