@@ -18,6 +18,35 @@
 "income"
 
 
+
+#' @title shoes
+#' @description Wear of soles of shoes of materials A and B for one foot each for of ten boys.
+#'
+#' @details The shoes data are measurements of the amount wear of the
+#'     soles of shoes worn by 10 boys. The soles were made to two
+#'     different synthetic materials, a standard material A and a
+#'     cheaper material B.
+#' 
+#' @name income
+#' @docType data
+#' @format This data frame contains:
+#' \describe{
+#' \item{A:}{Wear, material A}
+#' \item{B:}{Wear, material B}
+#' \item{boy:}{Id of boy}
+#' \item{footA:}{The foot with material A}
+#' }
+#' @keywords datasets
+#'
+#' @references Box, Hunter, Hunter (2005) Statistics for Experimenters, 2nd edition Wiley, p. 81.
+#' 
+"shoes"
+
+
+
+
+
+
 #' @title crickets data
 #'
 #' @description Mating songs of male tree crickets.
