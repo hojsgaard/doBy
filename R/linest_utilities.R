@@ -21,9 +21,6 @@
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @references \url{http://web.mit.edu/18.06/www/Essays/newpaper_ver3.pdf}
 #' @keywords utilities
-#' @examples
-#' 
-#' ## TO BE WRITTEN
 #' 
 #' @export is_estimable
 is_estimable <- function(K, null.basis){
@@ -41,3 +38,6 @@ is_estimable <- function(K, null.basis){
 }
 
 
+null_basis <- function(M){
+    MASS::Null(t(M))
+}

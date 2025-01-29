@@ -28,11 +28,6 @@ null space of \eqn{X}. Hence, with a basis \eqn{B} for the null space,
 \code{is_estimable()} checks if each row \eqn{l} of the matrix \eqn{K} is
 perpendicular to each column basis vector in \eqn{B}.
 }
-\examples{
-
-## TO BE WRITTEN
-
-}
 \references{
 \url{http://web.mit.edu/18.06/www/Essays/newpaper_ver3.pdf}
 }
