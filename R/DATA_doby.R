@@ -71,7 +71,7 @@
 #'  identify males of the correct species. Walker (1962) wanted to
 #'  know whether the chirps of the crickets Oecanthus
 #'  exclamationis and Oecanthus niveus had different pulse
-#'  rates. See \url{https://www.biostathandbook.com/ancova.html} for
+#'  rates. See \url{https://www.biostathandbook.com/} for
 #'  details.  He measured the pulse rate of the crickets (variable
 #'  `pps`) at a variety of temperatures (`temp`):
 #'
