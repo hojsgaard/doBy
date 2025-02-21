@@ -27,7 +27,7 @@
 #'     different synthetic materials, a standard material A and a
 #'     cheaper material B.
 #' 
-#' @name income
+#' @name shoes
 #' @docType data
 #' @format This data frame contains:
 #' \describe{
