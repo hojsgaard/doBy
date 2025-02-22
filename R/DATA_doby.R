@@ -1,11 +1,11 @@
 #' @title income data
-#' @description Data on income, years of educations and ethnicity.
+#' @description Data on income, years of educations and ethnicity for a samle of adult Americans aged over 25. The year of sampling is not avalable in the source.
 #' @name income
 #' @docType data
 #' @format This data frame contains:
 #' \describe{
-#' \item{inc:}{Income: Yearly income.}
-#' \item{educ:}{Education: Number of years of education.}
+#' \item{inc:}{Income: Yearly income (thousands of dollars).}
+#' \item{educ:}{Education: Number of years of education (12=high school graduate, 16=college graduate).}
 #' \item{race:}{Racial-Ethnic group: "b" (black), "h" (hispanic) and "w" (white).}
 #' }
 #' @keywords datasets
@@ -43,37 +43,31 @@
 "shoes"
 
 
-
-
-
-
 #' @title crickets data
-#'
 #' @description Mating songs of male tree crickets.
-#'
 #' @name crickets
 #'
 #' @docType data
 #' @format This data frame contains:
 #' \describe{
-#' \item{species:}{Species, see details}
+#' \item{species:}{Species, (exis, nius), see details}
 #' \item{temp:}{temperature}
 #' \item{pps:}{pulse per second}
 #' }
 #' @keywords datasets
 #'
-#
 #' @details
 #'
-#'  Walker (1962) studied the mating songs of male
-#'  tree crickets. Each wingstroke by a cricket produces a pulse of
-#'  song, and females may use the number of pulses per second to
-#'  identify males of the correct species. Walker (1962) wanted to
-#'  know whether the chirps of the crickets Oecanthus
-#'  exclamationis and Oecanthus niveus had different pulse
-#'  rates. See \url{https://www.biostathandbook.com/} for
-#'  details.  He measured the pulse rate of the crickets (variable
-#'  `pps`) at a variety of temperatures (`temp`):
+#'  Walker (1962) studied the mating songs of male tree crickets. Each
+#'  wingstroke by a cricket produces a pulse of song, and females may
+#'  use the number of pulses per second to identify males of the
+#'  correct species. Walker (1962) wanted to know whether the chirps
+#'  of the crickets Oecanthus exclamationis (abbreviated exis) and
+#'  Oecanthus niveus (abbreviated nius) had different pulse rates. See
+#'  \url{https://www.biostathandbook.com/} for details.  (The
+#'  abbreviations are made from the the first two and last two letters
+#'  of the species.) He measured the pulse rate of the crickets
+#'  (variable `pps`) at a variety of temperatures (`temp`):
 #'
 #' @examples
 #' 	
