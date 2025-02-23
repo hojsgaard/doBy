@@ -2,7 +2,8 @@
 #' @importFrom MASS ginv Null
 #'
 #' @importFrom Matrix rowMeans colMeans rowSums colSums
-#'
+#' @importFrom stats model.response model.weights rstandard rstudent residuals
+#' 
 #' @importClassesFrom Matrix Matrix
 #' @importFrom Matrix Matrix sparseMatrix
 #' @importMethodsFrom Matrix t isSymmetric "%*%" solve diag
