@@ -7,8 +7,8 @@
 \format{
 This data frame contains:
 \describe{
-\item{inc:}{Income: Yearly income.}
-\item{educ:}{Education: Number of years of education.}
+\item{inc:}{Income: Yearly income (thousands of dollars).}
+\item{educ:}{Education: Number of years of education (12=high school graduate, 16=college graduate).}
 \item{race:}{Racial-Ethnic group: "b" (black), "h" (hispanic) and "w" (white).}
 }
 }
@@ -16,7 +16,7 @@ This data frame contains:
 income
 }
 \description{
-Data on income, years of educations and ethnicity.
+Data on income, years of educations and ethnicity for a samle of adult Americans aged over 25. The year of sampling is not avalable in the source.
 }
 \details{
 Variable names are as in the reference.
