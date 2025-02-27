@@ -1,3 +1,49 @@
+#' Chemical composition of wine
+#' 
+#' Using chemical analysis determine the origin of wines
+#' 
+#' Data comes from the UCI Machine Learning Repository. The grape variety
+#' \code{Cult} is the class identifier.  
+#' @concept dataset
+#' @name data-wine
+#' @docType data
+#' @format A data frame with 178 observations on the following 14 variables.
+#'   \describe{
+#'   \item{\code{Cult}}{a factor with levels \code{v1} \code{v2}
+#'     \code{v3}: 3 different graph varieties}
+#'   \item{\code{Alch}}{Alcohol}
+#'   \item{\code{Mlca}}{Malic acid}
+#'   \item{\code{Ash}}{Ash}
+#'   \item{\code{Aloa}}{Alcalinity of ash}
+#'   \item{\code{Mgns}}{Magnesium}
+#'   \item{\code{Ttlp}}{Total phenols}
+#'   \item{\code{Flvn}}{Flavanoids}
+#'   \item{\code{Nnfp}}{Nonflavanoid phenols}
+#'   \item{\code{Prnt}}{Proanthocyanins}
+#'   \item{\code{Clri}}{Color intensity}
+#'   \item{\code{Hue}}{Hue}
+#'   \item{\code{Oodw}}{OD280/OD315 of diluted wines}
+#'   \item{\code{Prln}}{Proline}
+#' }
+#' 
+#' @references See references at
+#'   \url{https://archive.ics.uci.edu/ml/datasets/Wine/}
+#'
+#' @source Frank, A. & Asuncion, A. (2010). UCI Machine Learning
+#'     Repository \url{https://archive.ics.uci.edu/ml/}. Irvine, CA:
+#'     University of California, School of Information and Computer
+#'     Science.
+#'
+#' @keywords datasets
+#' @usage data(wine)
+#' @examples
+#' 
+#' data(wine)
+#' ## maybe str(wine) ; plot(wine) ...
+#' 
+"wine"
+
+
 #' @title income data
 #' @description Data on income, years of educations and ethnicity for a samle of adult Americans aged over 25. The year of sampling is not avalable in the source.
 #' @name income
