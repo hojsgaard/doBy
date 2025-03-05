@@ -126,3 +126,36 @@ response <- function(object){
 
 
 
+##' @title Add interaction columns to data frame
+##' @param .data dataframe
+##' @param .formula right hand sided formula
+##' @return dataframe
+##' @author Søren Højsgaard
+##' @export
+add_int <- function(.data, .formula) {
+
+    ff <- rhsf2list(.formula)
+    lapply(ff, function(g){
+        if (length(g)>1){
+            var <- paste(g, collapse="_")
+            ia <- apply(.data[,g], 1, function(r) paste(r, collapse="_"))
+            .data[[var]] <<- ia
+        }})
+    .data
+}
+
+
+rhsf2list <- function (.formula) {
+    if (is.character(.formula)) 
+        return(list(.formula))
+    if (is.numeric(.formula)) 
+        return(lapply(list(.formula), "as.character"))
+    if (is.list(.formula)) 
+        return(lapply(.formula, "as.character"))
+    .formula0 <- .formula[[length(.formula)]]
+    .formula1 <- unlist(strsplit(paste(deparse(.formula0), collapse = ""), 
+                             " *\\+ *"))
+    .formula2 <- unlist(lapply(.formula1, strsplit, " *\\* *| *: *| *\\| *"), 
+                    recursive = FALSE)
+    .formula2
+}

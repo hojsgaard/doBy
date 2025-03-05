@@ -117,7 +117,11 @@ interaction_plot <- function(.data, .formula, interval="conf.int"){
     rr <- sym(lhs)
     s1 <- sym(rhs[1])
     s2 <- sym(rhs[2])
+    ## s2 <- sym(rhs[-1])
+
+    # lapply(rhs, sym)
     
+    ## str(list(rr, s1, s2))
     ## If lhs is transformed
     resp <- eval(.formula[[2]], .data)
     .data$RESP <- resp  ## KLUDGY
@@ -151,7 +155,12 @@ interaction_plot <- function(.data, .formula, interval="conf.int"){
                    geom_point(data = tmp, aes(y = .data$val)) +
                    geom_line(data = tmp, aes(y = .data$val, group = !!sym(s2))) + 
                    geom_errorbar(aes(ymin=.data$lwr, ymax=.data$upr), data=tmp,
-                                 width=.4, position=position_dodge(0.1))
+                                 width=.4, position=position_dodge(0.1)) +
+                   geom_point(aes(x = factor(!!sym(s1)), y = !!sym(rr2),
+                                       colour = !!sym(s2)), data=.data)
+               
+
+               
            },
            "none" = {
                pp <- ggplot(tmp, aes(x = factor(!!sym(s1)), y = .data$val,
