@@ -2,6 +2,7 @@
 #'
 #' @param lm_fit An object of class 'lm'
 #' @param format The format of the plot (or a list of plots if format is "list")
+#' @param global_aes Currently no effect.
 #'
 #' @examples
 #' data(income)

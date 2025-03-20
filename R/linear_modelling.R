@@ -82,10 +82,10 @@ add_resid <- function (data, model, var = "resid", type) {
 
 ##' @title Get response variable from model
 ##' @param object lm or glm object 
-##' @param data dataframe or tibble
-##' @param model model object
-##' @param var name of new variable in dataframe / tibble
-##' @param type type of residual value
+## ' @param data dataframe or tibble
+## ' @param model model object
+## ' @param var name of new variable in dataframe / tibble
+## ' @param type type of residual value
 ##' @examples
 ##' data(cars)
 ##' lm1 <- lm(dist ~ speed + I(speed^2), data=cars)
