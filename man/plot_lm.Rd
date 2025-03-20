@@ -10,6 +10,8 @@ plot_lm(lm_fit, format = "2x2", global_aes = NULL)
 \item{lm_fit}{An object of class 'lm'}
 
 \item{format}{The format of the plot (or a list of plots if format is "list")}
+
+\item{global_aes}{Currently no effect.}
 }
 \description{
 Plot linear model object

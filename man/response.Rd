@@ -8,14 +8,6 @@ response(object)
 }
 \arguments{
 \item{object}{lm or glm object}
-
-\item{data}{dataframe or tibble}
-
-\item{model}{model object}
-
-\item{var}{name of new variable in dataframe / tibble}
-
-\item{type}{type of residual value}
 }
 \description{
 Get response variable from model
