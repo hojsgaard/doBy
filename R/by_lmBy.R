@@ -125,6 +125,10 @@ coef.summary_lmBy <- function(object, simplify=FALSE, ...){
   ans
 }
 
+
+
+
+
 #' @export
 getBy <- function(object, name=c()){
   if (missing(name)) 
@@ -147,6 +151,14 @@ coef.lmBy <- function(object, augment=FALSE, ...){
   }
   ans
 }
+
+#' @export
+sigma.lmBy <- function(object, ...){
+    out <- sapply(object, sigma, ...)
+    return(out)
+}
+
+
 
 #' @export
 fitted.lmBy <- function(object, augment=FALSE, ...){
