@@ -1,3 +1,38 @@
+##' @title Berkeley Growth Study data
+##' @description dataframe with heights of 39 boys and 54 girls from
+##'     age 1 to 18 and the ages at which they were collected.
+##'
+##' Format:
+##'
+##' gender: Gender of child
+##' age: Age at time of data recordning
+##' subject: Idenfication for each child
+##' height: Height of child
+##'
+##'
+##' @details Notice that the ages are not equally spaced. Data are
+##'     taken from the fda package (growth) but put in long format
+##'     here.
+##'
+##' @references
+##'     Ramsay, James O., Hooker, Giles, and Graves, Spencer (2009),
+##'     _Functional data analysis with R and Matlab_, Springer, New York.
+##'
+##'     Ramsay, James O., and Silverman, Bernard W. (2005), _Functional
+##'     Data Analysis, 2nd ed._, Springer, New York.
+##'
+##'     Ramsay, James O., and Silverman, Bernard W. (2002), _Applied
+##'     Functional Data Analysis_, Springer, New York.
+##'
+##'     Tuddenham, R. D., and Snyder, M. M. (1954) "Physical growth of
+##'     California boys and girls from birth to age 18", _University of
+##'     California Publications in Child Development_, 1, 183-364.
+##'
+##'
+"child_growth"     
+
+
+
 #' Chemical composition of wine
 #' 
 #' Using chemical analysis determine the origin of wines
