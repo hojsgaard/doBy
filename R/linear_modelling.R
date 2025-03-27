@@ -17,7 +17,7 @@
 ##' cars
 ##' 
 ##' @export
-add_pred <- function (data, model, var = "pred", type = NULL) 
+add_pred <- function (data, model, var = "pred", type = NULL, transformation=NULL) 
 {
     pred2 <- function (model, data, type = NULL) 
     {
@@ -29,8 +29,21 @@ add_pred <- function (data, model, var = "pred", type = NULL)
         }
     }
 
-    data[[var]] <- pred2(model, data, type = type)
+    pp <- pred2(model, data, type = type)
+    if (!is.null(transformation)){
+        pp <- transformation(pp)
+    }
+    data[[var]] <- pp
     data
+}
+
+##' @title Reciprocal function
+##' @description  A simple function returning the reciprocal of its argument
+##' @param x An R object for whih 1/x makes sense
+##' @author Søren Højsgaard
+##' @export
+reciprocal <- function(x){
+  1/x    
 }
 
 ##' @title Add residuals of different types to dataframe
