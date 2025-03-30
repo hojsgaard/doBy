@@ -4,7 +4,7 @@
 \alias{add_pred}
 \title{Add predicted values of different types to dataframe}
 \usage{
-add_pred(data, model, var = "pred", type = NULL)
+add_pred(data, model, var = "pred", type = NULL, transformation = NULL)
 }
 \arguments{
 \item{data}{dataframe or tibble}
@@ -14,6 +14,8 @@ add_pred(data, model, var = "pred", type = NULL)
 \item{var}{name of new variable in dataframe / tibble}
 
 \item{type}{type of predicted value}
+
+\item{transformation}{A possible transformation of predicted variable, e.g. reciprocal(), log() etc}
 }
 \value{
 dataframe / tibble
