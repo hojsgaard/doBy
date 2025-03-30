@@ -11,7 +11,7 @@
 #' @importFrom stats as.formula coef delete.response family fitted
 #'     formula ftable lm logLik median model.frame model.matrix pchisq pnorm
 #'     pt qnorm qt residuals sd summary.lm terms vcov aggregate
-#'     printCoefmat confint predict resid rstandard step update
+#'     printCoefmat confint predict resid rstandard step update sigma
 #'     
 #' @importFrom modelr rmse
 

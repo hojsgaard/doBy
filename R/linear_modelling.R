@@ -4,7 +4,8 @@
 ##' @param data dataframe or tibble
 ##' @param model model object
 ##' @param var name of new variable in dataframe / tibble
-##' @param type type of predicted value 
+##' @param type type of predicted value
+##' @param transformation A possible transformation of predicted variable, e.g. reciprocal(), log() etc
 ##' @return dataframe / tibble
 ##' @author Søren Højsgaard
 ##' @examples
