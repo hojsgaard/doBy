@@ -1,9 +1,9 @@
 doBy v4.6.27 (Release date: )
 =======================================
 
-* `exbr1()` and `exbr2()` functions added. Short for extract brackets with one or two brackets.
+* `pick1()` and `pick2()` functions added. Short for extract with one or two brackets.
 
-* math_teachers data dataset added.
+* `math_teachers` data dataset added.
 
 
 
