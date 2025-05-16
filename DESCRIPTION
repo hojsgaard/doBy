@@ -1,5 +1,5 @@
 Package: doBy
-Version: 4.6.26
+Version: 4.6.26.9009
 Title: Groupwise Statistics, LSmeans, Linear Estimates, Utilities 
 Authors@R: c(
     person(given = "Ulrich", family = "Halekoh",
