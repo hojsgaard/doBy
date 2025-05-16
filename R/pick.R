@@ -1,4 +1,4 @@
-#' @titel Extract (pick) elements without using brackets
+#' @title Extract (pick) elements without using brackets
 #'
 #' @description Extract (pick) elements without using brackets so that elements can be picked out as part of a pipe workflow.
 #'
