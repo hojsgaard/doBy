@@ -1,4 +1,9 @@
-doBy v4.6.27 (Release date: )
+doBy v4.6.28 (Release date: )
+=======================================
+
+* `parseGroupFormula` updated
+
+doBy v4.6.27 (Release date: 2025-05-16)
 =======================================
 
 * `pick1()` and `pick2()` functions added. Short for extract with one or two brackets.

@@ -11,23 +11,29 @@
 #' @keywords utilities
 #' @examples
 #' 
-#' gf <- parseGroupFormula(y ~ x1 + x2 | g1 + g2)
-#' gf 
+#' gf1 <- parseGroupFormula(y ~ x1 + x2 | g1 + g2)
+#' gf1
+#'
+#' gf2 <- parseGroupFormula( ~ x1 + x2 | g1 + g2)
+#' gf2
 #' 
 #' @export parseGroupFormula
 parseGroupFormula <- function(form)
 {
 
-    if (!inherits(form, "formula") || length(form) != 3)
+    if (!inherits(form, "formula"))
         stop("formula must be a two-sided formula object")
-    rhs <- form[[3]]
+
+
+    rhs <- form[[length(form)]]
 
     if (!inherits(rhs, "call") || rhs[[1]] != as.symbol('|'))
         stop("rhs of formula must be a conditioning expression")
-    form[[3]] <- rhs[[2]]
+    new_form <- form 
+    new_form[[length(form)]] <- rhs[[2]]
     groups <- rhs[[3]]
     grpFormula <- as.formula(paste("~", deparse(groups)))
-    list(model = form, groups = groups, groupFormula=grpFormula)
+    list(model = new_form, groups = groups, groupFormula=grpFormula)
 }
 
 #' @title Convert right hand sided formula to a list

@@ -20,8 +20,11 @@ Extract components from a formula with the form
 }
 \examples{
 
-gf <- parseGroupFormula(y ~ x1 + x2 | g1 + g2)
-gf 
+gf1 <- parseGroupFormula(y ~ x1 + x2 | g1 + g2)
+gf1
+
+gf2 <- parseGroupFormula( ~ x1 + x2 | g1 + g2)
+gf2
 
 }
 \author{
