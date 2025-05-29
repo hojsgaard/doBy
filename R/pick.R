@@ -48,3 +48,34 @@ pick1 <- function(x, which) {
 pick2 <- function(x, which) {
   x[[which]]
 }
+
+
+
+#' head and tail for matrices
+#' @param x matrix
+#' @param n,m number of rows and columns
+#' @name head_matrix
+#' @examples
+#' M <- matrix(1:20, nrow=4)
+#' head2(M)
+#' head2(M, 2)
+#' @export
+head2 <- function(x, n=6, m=n) {
+    if (!inherits(x, c("matrix","sparseMatrix")))
+        stop("'x' must be a matrix or a sparse matrix\n")
+    rr <- 1:min(n, nrow(x))
+    cc <- 1:min(m, ncol(x))  
+    x[rr, cc]
+}
+
+#' @rdname head_matrix
+#' @export
+tail2 <- function(x, n=6, m=n) {
+    if (!inherits(x, c("matrix","sparseMatrix")))
+        stop("'x' must be a matrix or a sparse matrix\n")
+    n <- min(n, nrow(x))
+    m <- min(m, ncol(x))
+    rr <- (nrow(x)-n+1):nrow(x)
+    cc <- (ncol(x)-m+1):ncol(x)
+    x[rr, cc]
+}

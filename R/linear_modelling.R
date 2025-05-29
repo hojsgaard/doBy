@@ -39,13 +39,24 @@ add_pred <- function (data, model, var = "pred", type = NULL, transformation=NUL
 }
 
 ##' @title Reciprocal function
-##' @description  A simple function returning the reciprocal of its argument
-##' @param x An R object for whih 1/x makes sense
+##' @description  A function returning the reciprocal of its argument
+##' @param x An R object for which 1/x makes sense
 ##' @author Søren Højsgaard
 ##' @export
 reciprocal <- function(x){
   1/x    
 }
+
+##' @title Power function
+##' @description  A function returning the reciprocal of its argument
+##' @param x An object for which x^p makes sense
+##' @param p A power
+##' @author Søren Højsgaard
+##' @export
+pow <- function(x){
+  x^p    
+}
+
 
 ##' @title Add residuals of different types to dataframe
 ##' 
