@@ -37,6 +37,17 @@ vparse <- function(...) {
 }
 
 
+#' Shorthand for vparse()
+#'
+#' A short and convenient alias for `vparse()`. Accepts unquoted names, character vectors, or a formula.
+#'
+#' @param ... Variable input in any accepted `vparse()` form
+#'
+#' @return A character vector of variable names
+#' @export
+v <- function(...) {
+  vparse(...)
+}
 
 
 
@@ -79,15 +90,6 @@ vmap <- function(.vars, .f) {
   lapply(vars, .f)
 }
 
-
-## #' @export
-## vmap <- function(..., .f) {
-##   vars <- vparse(...)
-##   print("Input to vmap:")
-##   print(vars)
-##   print(typeof(vars))
-##   lapply(vars, .f)
-## }
 
 #' Rename columns in a data frame
 #'
