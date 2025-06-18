@@ -7,10 +7,10 @@
 reciprocal(x)
 }
 \arguments{
-\item{x}{An R object for whih 1/x makes sense}
+\item{x}{An R object for which 1/x makes sense}
 }
 \description{
-A simple function returning the reciprocal of its argument
+A function returning the reciprocal of its argument
 }
 \author{
 Søren Højsgaard

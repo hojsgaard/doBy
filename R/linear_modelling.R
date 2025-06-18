@@ -48,12 +48,12 @@ reciprocal <- function(x){
 }
 
 ##' @title Power function
-##' @description  A function returning the reciprocal of its argument
+##' @description  A function returning x raised to the power p.
 ##' @param x An object for which x^p makes sense
 ##' @param p A power
 ##' @author Søren Højsgaard
 ##' @export
-pow <- function(x){
+pow <- function(x, p){
   x^p    
 }
 

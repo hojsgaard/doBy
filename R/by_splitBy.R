@@ -1,28 +1,19 @@
 ###########################################################################
 #'
-#' @title Split a data frame
+#' @title Split a data frame into groups defined by variable(s)
+#' 
 #' @description Split a dataframe according to the levels of variables
-#'     in the dataframe. The variables to split by can be given as a
-#'     formula or as a character vector.
+#'     in the dataframe. Uses vparse() to interpret flexible input.
 #' @name by-split
 #' 
-###########################################################################
+#' @param data. A data frame (or tibble) to split
+#' @param ... Variables defining the groups
+#' @param omit If TRUE (default), group-defining variables are omitted in each split group
+#' @param formula A right hand sided formula (for the old interface)
+#' @param data A data frame  (for the old interface)
 #'
-#' @param formula A character vector or a right hand sided formula.
-#' @param ... A character vector or, right hand sided formula or a
-#'     listing of variables.
-#' @param data A data frame
-#' @param omit Logical Should variables split on be omitted from the
-#'     output. Defaults to TRUE.
-#' 
-#' @param x An object.
-#' @param n A single integer.  If positive or zero, size for the
-#'     resulting object: number of elements for a vector (including
-#'     lists), rows for a matrix or data frame or lines for a
-#'     function.  If negative, all but the "n" last/first number of
-#'     elements of "x".
-#'
-#' @return A list of dataframes.
+#' @return An object of class \"splitByData\" (a named list with group attributes)
+#' @export
 #' 
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @seealso \code{\link{orderBy}}, \code{\link{order_by}},
@@ -34,28 +25,50 @@
 #' split_by(CO2, ~Treatment+Type)
 #' split_by(CO2, Treatment, Type)
 #' split_by(CO2, c("Treatment", "Type"))
-#' split_by(CO2, Treatment)
-#' x <- CO2 |> split_by(~Treatment)
+#' split_by(CO2, "Treatment", "Type")
+#'
+#' x <- split_by(CO2, "Treatment", "Type")
 #' head(x, 3)
 #' tail(x, 3)
-#' 
-#' x <- CO2 |> split_by(~Treatment, omit=FALSE)
-#' head(x, 3)
-#' tail(x, 3)
+#'
+#' ## Via wrapper:
+#' foo2 <- function(x) {
+#'  x <- rlang::enquo(x)
+#'  split_by(CO2, !!x)
+#' }
+#' foo2(~Treatment)
 #'
 #' ## The "Old" interface
-#' splitBy(~Treatment+Type, CO2)
-#' splitBy(~Treatment+Type, data=CO2)
+#' splitBy(~Treatment + Type, CO2)
+#' splitBy(~Treatment + Type, data=CO2)
 #' splitBy(c("Treatment", "Type"), data=CO2)
 #'
-NULL
+#' @rdname by-split
+#' @export 
+split_by <- function(data., ..., omit = TRUE) {
+  rhs <- vparse(...)
+  split_by_worker(data., rhs, omit = omit)
+}
+
+
+
+#' @export 
+#' @rdname by-split
+splitBy <- function(formula, data, omit=TRUE){
+    if (inherits(formula, "formula")){
+        rhs       <- all.vars(formula[[2]])
+    } else {
+        rhs <- formula
+    }
+    split_by_worker(data, rhs, omit=omit)
+}
 
 split_by_worker <- function(data., rhs, omit=TRUE){ 
 
     is.tib <- inherits(data., "tbl_df")
     if (is.tib)
         data. = as.data.frame(data.)
-    
+
     grps <- apply(data.[, rhs, drop=FALSE], 1, paste0, collapse="|")
 
     ## print(grps)
@@ -86,27 +99,6 @@ split_by_worker <- function(data., rhs, omit=TRUE){
 }
 
 
-#' @export 
-#' @rdname by-split
-split_by <- function(data, ..., omit=TRUE){
-    dots <- match.call(expand.dots = FALSE)$...
-    rhs <- dots2char(dots)
-    split_by_worker(data, rhs, omit=omit)
-}
-
-#' @export 
-#' @rdname by-split
-splitBy <- function(formula, data, omit=TRUE){
-    if (inherits(formula, "formula")){
-        rhs       <- all.vars(formula[[2]])
-    } else {
-        rhs <- formula
-    }
-    split_by_worker(data, rhs, omit=omit)
-}
-
-
-
 #' @export
 print.splitByData <- function(x, ...){
 #  print(attr(x,"groupid"))
@@ -115,6 +107,8 @@ print.splitByData <- function(x, ...){
 }
 
 #' @importFrom utils head
+#' @param x A splitByData object.
+#' @param n An integer vector.
 #' @export
 #' @rdname by-split
 head.splitByData  <- function(x, n=6L, ...){
@@ -127,11 +121,6 @@ head.splitByData  <- function(x, n=6L, ...){
 tail.splitByData  <- function(x, n=6L, ...){
     lapply(x, tail, n=n, ...)
 }
-
-
-
-
-
 
 
 

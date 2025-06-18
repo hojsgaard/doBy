@@ -63,19 +63,28 @@ pick2 <- function(x, which) {
 head2 <- function(x, n=6, m=n) {
     if (!inherits(x, c("matrix","sparseMatrix")))
         stop("'x' must be a matrix or a sparse matrix\n")
-    rr <- 1:min(n, nrow(x))
-    cc <- 1:min(m, ncol(x))  
+    if (length(dim(x)) != 2)
+        stop("'x' must be have dimension with length two. \n")        
+    di <- dim(x)
+    nr <- di[1]
+    nc <- di[2]
+
+    rr <- 1:min(n, nr)
+    cc <- 1:min(m, nc)  
     x[rr, cc]
 }
 
 #' @rdname head_matrix
 #' @export
 tail2 <- function(x, n=6, m=n) {
-    if (!inherits(x, c("matrix","sparseMatrix")))
-        stop("'x' must be a matrix or a sparse matrix\n")
-    n <- min(n, nrow(x))
-    m <- min(m, ncol(x))
-    rr <- (nrow(x)-n+1):nrow(x)
-    cc <- (ncol(x)-m+1):ncol(x)
+    if (length(dim(x)) != 2)
+        stop("'x' must be have dimension with length two. \n")        
+    di <- dim(x)
+    nr <- di[1]
+    nc <- di[2]
+    n  <- min(n, nr)
+    m  <- min(m, nc)
+    rr <- (nr-n+1):nr
+    cc <- (nc-m+1):nc
     x[rr, cc]
 }

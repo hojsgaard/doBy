@@ -2,12 +2,14 @@ doBy v4.6.28 (Release date: )
 =======================================
 
 * `parseGroupFormula` updated
+* `head2()` and `tail2()` for matrices added
+* `pow()` function added
 
 doBy v4.6.27 (Release date: 2025-05-16)
 =======================================
 
-* `pick1()` and `pick2()` functions added. Short for extract with one or two brackets.
-
+* `pick1()` and `pick2()` functions added. Short for extract with one
+  or two brackets.
 * `math_teachers` data dataset added.
 
 
@@ -15,9 +17,9 @@ doBy v4.6.27 (Release date: 2025-05-16)
 doBy v4.6.26 (Release date: 2025-04-02)
 =======================================
 
-* split_by reworked
-* datasets added
-* add_pred, add_resid, reciprocal functions added
+* `split_by()` reworked
+* Various datasets added
+* `add_pred()`, `add_resid()`, `reciprocal()` functions added
 
 
 doBy v4.6.25 (Release date: 2025-01-29)

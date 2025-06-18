@@ -8,9 +8,9 @@
 \alias{tail.splitByData}
 \alias{split_by.legacy}
 \alias{splitBy.legacy}
-\title{Split a data frame}
+\title{Split a data frame into groups defined by variable(s)}
 \usage{
-split_by(data, ..., omit = TRUE)
+split_by(data., ..., omit = TRUE)
 
 splitBy(formula, data, omit = TRUE)
 
@@ -23,51 +23,50 @@ split_by.legacy(data, formula, drop = TRUE)
 splitBy.legacy(formula, data = parent.frame(), drop = TRUE)
 }
 \arguments{
-\item{data}{A data frame}
+\item{data.}{A data frame (or tibble) to split}
 
-\item{...}{A character vector or, right hand sided formula or a
-listing of variables.}
+\item{...}{Variables defining the groups}
 
-\item{omit}{Logical Should variables split on be omitted from the
-output. Defaults to TRUE.}
+\item{omit}{If TRUE (default), group-defining variables are omitted in each split group}
 
-\item{formula}{A character vector or a right hand sided formula.}
+\item{formula}{A right hand sided formula (for the old interface)}
 
-\item{x}{An object.}
+\item{data}{A data frame  (for the old interface)}
 
-\item{n}{A single integer.  If positive or zero, size for the
-resulting object: number of elements for a vector (including
-lists), rows for a matrix or data frame or lines for a
-function.  If negative, all but the "n" last/first number of
-elements of "x".}
+\item{x}{A splitByData object.}
+
+\item{n}{An integer vector.}
 
 \item{drop}{Obsolete}
 }
 \value{
-A list of dataframes.
+An object of class \"splitByData\" (a named list with group attributes)
 }
 \description{
 Split a dataframe according to the levels of variables
-in the dataframe. The variables to split by can be given as a
-formula or as a character vector.
+in the dataframe. Uses vparse() to interpret flexible input.
 }
 \examples{
 
 split_by(CO2, ~Treatment+Type)
 split_by(CO2, Treatment, Type)
 split_by(CO2, c("Treatment", "Type"))
-split_by(CO2, Treatment)
-x <- CO2 |> split_by(~Treatment)
+split_by(CO2, "Treatment", "Type")
+
+x <- split_by(CO2, "Treatment", "Type")
 head(x, 3)
 tail(x, 3)
 
-x <- CO2 |> split_by(~Treatment, omit=FALSE)
-head(x, 3)
-tail(x, 3)
+## Via wrapper:
+foo2 <- function(x) {
+ x <- rlang::enquo(x)
+ split_by(CO2, !!x)
+}
+foo2(~Treatment)
 
 ## The "Old" interface
-splitBy(~Treatment+Type, CO2)
-splitBy(~Treatment+Type, data=CO2)
+splitBy(~Treatment + Type, CO2)
+splitBy(~Treatment + Type, data=CO2)
 splitBy(c("Treatment", "Type"), data=CO2)
 
 }
