@@ -47,12 +47,10 @@ lapplyBy <- function (formula, data = parent.frame(), FUN, ...)
 {
     out <- splitBy(formula, data = data)
     gr  <- unique(attr(out, "grps"))
-    ##print(gr)    
     out <- lapply(out, FUN, ...)
     out <- out[gr]
     out
 }
-
 
 #' @export
 #' @rdname by-lapply
@@ -71,9 +69,6 @@ sapplyBy <- function (formula, data = parent.frame(), FUN, ..., simplify = TRUE,
 {
     out <- splitBy(formula, data = data)
     gr  <- unique(attr(out, "grps"))
-    ##print(gr)    
-    #print(out)
-    #print(FUN)
     out <- sapply(out, FUN, ..., simplify=simplify, USE.NAMES=USE.NAMES)
     if (!simplify)
         out <- out[gr] 

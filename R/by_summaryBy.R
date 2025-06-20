@@ -1,92 +1,58 @@
-###############################################################################
-##
-#' @title Function to calculate groupwise summary statistics
-#' @description Function to calculate groupwise summary statistics,
-#'     much like the summary procedure of SAS
+#' @title Groupwise summary statistics
+#'
+#' @description Computes summary statistics by groups, similar to the `summary` procedure in SAS.
+#' A more flexible alternative to base R's \code{\link[stats]{aggregate}}.
+#'
 #' @name by-summary
-##
-###############################################################################
-#'
-#' @details Extra arguments (...) are passed onto the functions in
-#'     FUN. Hence care must be taken that all functions in FUN accept
-#'     these arguments - OR one can explicitly write a functions which
-#'     get around this.  This can particularly be an issue in
-#'     connection with handling NAs. See examples below.  Some code
-#'     for this function has been suggested by Jim
-#'     Robison-Cox. Thanks.
-#' 
-#' @param formula A formula object, see examples below.
+#' @param formula A formula specifying response and grouping variables.
 #' @param data A data frame.
-#' @param FUN A list of functions to be applied, see examples below.
-#' @param id A formula specifying variables which data are not grouped by but
-#'     which should appear in the output. See examples below.
-#' @param keep.names If TRUE and if there is only ONE function in FUN, then the
-#'     variables in the output will have the same name as the variables in the
-#'     input, see 'examples'.
-#' @param p2d Should parentheses in output variable names be replaced by dots?
-#' @param order Should the resulting dataframe be ordered according to the
-#'     variables on the right hand side of the formula? (using \link{orderBy}
-#' @param full.dimension If TRUE then rows of summary statistics are repeated
-#'     such that the result will have the same number of rows as the input
-#'     dataset.
-#' @param var.names Option for user to specify the names of the variables on the
-#'     left hand side.
-#' @param fun.names Option for user to specify function names to apply to the
-#'     variables on the left hand side.
-#' @param \dots Additional arguments to FUN. This could for example be NA actions.
-
-#' @return A dataframe.
+#' @param FUN A function or list of functions to apply to the response variables.
+#' @param id A formula indicating variables to retain (not grouped by).
+#' @param keep.names Logical; keep original variable names if only one function is applied.
+#' @param p2d Replace parentheses in output names with dots?
+#' @param order Logical; should result be ordered by grouping variables?
+#' @param full.dimension Logical; if TRUE, repeat rows so output matches input size.
+#' @param var.names Optional custom names for response variables.
+#' @param fun.names Optional custom names for functions applied.
+#' @param ... Additional arguments passed to functions in `FUN`.
+#'
+#' @return A data frame of grouped summary statistics.
+#'
+#' @details
+#' Extra arguments in `...` are passed to all functions in `FUN`. If needed, wrap functions to handle these consistently (e.g., for `na.rm = TRUE`).
+#'
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
-#' @seealso \code{\link{ave}}, \code{\link{descStat}}, \code{\link{orderBy}}, \code{\link{order_by}},
-#'     \code{\link{splitBy}}, \code{\link{split_by}}, \code{\link{transformBy}}, \code{\link{transform_by}}
-#' @keywords univar
+#' @seealso \code{\link[stats]{aggregate}}, \code{\link{orderBy}}, \code{\link{transformBy}}, \code{\link{splitBy}}
+#' @keywords summary, grouping
+#'
+
+
+
+
 #' @examples
-#' 
-#' data(dietox)
-#' dietox12    <- subset(dietox,Time==12)
+#' data(CO2)
 #'
-#' fun <- function(x){
-#'   c(m=mean(x), v=var(x), n=length(x))
-#' }
-#' 
-#' summaryBy(cbind(Weight, Feed) ~ Evit + Cu, data=dietox12,
-#'           FUN=fun)
-#' 
-#' summaryBy(list(c("Weight", "Feed"), c("Evit", "Cu")), data=dietox12,
-#'           FUN=fun)
+#' # Simple groupwise mean
+#' summaryBy(uptake ~ Type + Treatment, data = CO2, FUN = mean)
+#' summaryBy(cbind(uptake, conc) ~ Type + Treatment, data = CO2, FUN = mean)
 #'
-#' ## Computations on several variables is done using cbind( )
-#' summaryBy(cbind(Weight, Feed) ~ Evit + Cu, data=subset(dietox, Time > 1),
-#'    FUN=fun)
-#' 
-#' ## Calculations on transformed data is possible using cbind( ), but
-#' # the transformed variables must be named
-#' 
-#' summaryBy(cbind(lw=log(Weight), Feed) ~ Evit + Cu, data=dietox12, FUN=mean)
-#'  
-#' ## There are missing values in the 'airquality' data, so we remove these
-#' ## before calculating mean and variance with 'na.rm=TRUE'. However the
-#' ## length function does not accept any such argument. Hence we get
-#' ## around this by defining our own summary function in which length is
-#' ## not supplied with this argument while mean and var are:
-#' 
-#' sumfun <- function(x, ...){
-#'   c(m=mean(x, na.rm=TRUE, ...), v=var(x, na.rm=TRUE, ...), l=length(x))
-#' }
-#' summaryBy(cbind(Ozone, Solar.R) ~ Month, data=airquality, FUN=sumfun)
-#' ## Compare with
-#' aggregate(cbind(Ozone, Solar.R) ~ Month, data=airquality, FUN=sumfun)
+#' # Compare with
+#' aggregate(cbind(uptake, conc) ~ Type + Treatment, data = CO2, FUN = mean)
 #' 
 #' ## Using '.' on the right hand side of a formula means to stratify by
 #' ## all variables not used elsewhere:
+#' summaryBy(uptake ~ ., data = CO2, FUN = mean)
 #' 
-#' data(warpbreaks)
-#' summaryBy(breaks ~ wool + tension, warpbreaks, FUN=mean)
-#' summaryBy(breaks ~ ., warpbreaks, FUN=mean)
-#' summaryBy(. ~ wool + tension, warpbreaks, FUN=mean)
-#' 
-#' summaryBy(. ~ wool + tension, warpbreaks, FUN=mean)
-#' 
+#' # Multiple functions using a custom summary function
+#' myfun <- function(x, ...)
+#'   c(m = mean(x, na.rm = TRUE), v = var(x, na.rm = TRUE), n = length(x))
+#' summaryBy(uptake ~ Type + Treatment, data = CO2, FUN = myfun)
+#'
+#' # Summary on transformed variables
+#' # works:
+#' summaryBy(cbind(lu=log(uptake), conc) ~ Type, data = CO2, FUN = mean)
+#' # fails:
+#' #summaryBy(cbind(log(uptake), conc) ~ Type, data = CO2, FUN = mean)
 
 #' @export
 #' @rdname by-summary
@@ -440,3 +406,97 @@ summaryBy <- function (formula, data=parent.frame(), id=NULL, FUN=mean,
 
 
 
+
+
+
+## ' 
+## ' data(dietox)
+## ' dietox12    <- subset(dietox,Time==12)
+## '
+## ' fun <- function(x){
+## '   c(m=mean(x), v=var(x), n=length(x))
+## ' }
+## ' 
+## ' summaryBy(cbind(Weight, Feed) ~ Evit + Cu, data=dietox12,
+## '           FUN=fun)
+## ' 
+## ' summaryBy(list(c("Weight", "Feed"), c("Evit", "Cu")), data=dietox12,
+## '           FUN=fun)
+## '
+## ' ## Computations on several variables is done using cbind( )
+## ' summaryBy(cbind(Weight, Feed) ~ Evit + Cu, data=subset(dietox, Time > 1),
+## '    FUN=fun)
+## ' 
+## ' ## Calculations on transformed data is possible using cbind( ), but
+## ' # the transformed variables must be named
+## ' 
+## ' summaryBy(cbind(lw=log(Weight), Feed) ~ Evit + Cu, data=dietox12, FUN=mean)
+## '  
+## ' ## There are missing values in the 'airquality' data, so we remove these
+## ' ## before calculating mean and variance with 'na.rm=TRUE'. However the
+## ' ## length function does not accept any such argument. Hence we get
+## ' ## around this by defining our own summary function in which length is
+## ' ## not supplied with this argument while mean and var are:
+## ' 
+## ' sumfun <- function(x, ...){
+## '   c(m=mean(x, na.rm=TRUE, ...), v=var(x, na.rm=TRUE, ...), l=length(x))
+## ' }
+## ' summaryBy(cbind(Ozone, Solar.R) ~ Month, data=airquality, FUN=sumfun)
+## ' ## Compare with
+## ' aggregate(cbind(Ozone, Solar.R) ~ Month, data=airquality, FUN=sumfun)
+## ' 
+## ' ## Using '.' on the right hand side of a formula means to stratify by
+## ' ## all variables not used elsewhere:
+## ' 
+## ' data(warpbreaks)
+## ' summaryBy(breaks ~ wool + tension, warpbreaks, FUN=mean)
+## ' summaryBy(breaks ~ ., warpbreaks, FUN=mean)
+## ' summaryBy(. ~ wool + tension, warpbreaks, FUN=mean)
+## ' 
+## ' summaryBy(. ~ wool + tension, warpbreaks, FUN=mean)
+## '
+## '
+## '
+
+
+
+## ' @title Function to calculate groupwise summary statistics
+## ' @description Function to calculate groupwise summary statistics,
+## '     much like the summary procedure of SAS
+## ' @name by-summary
+
+
+## '
+## ' @details Extra arguments (...) are passed onto the functions in
+## '     FUN. Hence care must be taken that all functions in FUN accept
+## '     these arguments - OR one can explicitly write a functions which
+## '     get around this.  This can particularly be an issue in
+## '     connection with handling NAs. See examples below.  Some code
+## '     for this function has been suggested by Jim
+## '     Robison-Cox. Thanks.
+## ' 
+## ' @param formula A formula object, see examples below.
+## ' @param data A data frame.
+## ' @param FUN A list of functions to be applied, see examples below.
+## ' @param id A formula specifying variables which data are not grouped by but
+## '     which should appear in the output. See examples below.
+## ' @param keep.names If TRUE and if there is only ONE function in FUN, then the
+## '     variables in the output will have the same name as the variables in the
+## '     input, see 'examples'.
+## ' @param p2d Should parentheses in output variable names be replaced by dots?
+## ' @param order Should the resulting dataframe be ordered according to the
+## '     variables on the right hand side of the formula? (using \link{orderBy}
+## ' @param full.dimension If TRUE then rows of summary statistics are repeated
+## '     such that the result will have the same number of rows as the input
+## '     dataset.
+## ' @param var.names Option for user to specify the names of the variables on the
+## '     left hand side.
+## ' @param fun.names Option for user to specify function names to apply to the
+## '     variables on the left hand side.
+## ' @param \dots Additional arguments to FUN. This could for example be NA actions.
+
+## ' @return A dataframe.
+## ' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
+## ' @seealso \code{\link{ave}}, \code{\link{descStat}}, \code{\link{orderBy}}, \code{\link{order_by}},
+## '     \code{\link{splitBy}}, \code{\link{split_by}}, \code{\link{transformBy}}, \code{\link{transform_by}}
+## ' @keywords univar
