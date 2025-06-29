@@ -139,6 +139,8 @@ get_formulas <- function(object, unique=TRUE, text=FALSE){
 
 
 
+
+
 #' @title Cross-validation for list of glm objects
 #' 
 #' @param data. A data frame
@@ -164,13 +166,6 @@ cv_glm_fitlist <- function(data., fit_list, K=10){
     
     return(cv.error)    
 }
-
-
-
-
-
-
-
 
 
 
