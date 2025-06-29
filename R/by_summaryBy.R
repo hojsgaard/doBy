@@ -23,7 +23,7 @@
 #'
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @seealso \code{\link[stats]{aggregate}}, \code{\link{orderBy}}, \code{\link{transformBy}}, \code{\link{splitBy}}
-#' @keywords summary, grouping
+#' @keywords summary grouping
 #'
 
 
