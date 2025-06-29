@@ -25,10 +25,9 @@
 #' orderBy(~ conc + Treatment, CO2)
 #' ## Sort decreasingly by conc
 #' orderBy(~ - conc + Treatment, CO2)
-
-## #' ## Same as:
-## #' order_by(CO2, c("conc", "Treatment"))
-## #' order_by(CO2, c("-conc", "Treatment"))
+#' ## Same as:
+#' order_by(CO2, c("conc", "Treatment"))
+#' order_by(CO2, c("-conc", "Treatment"))
 
 
 #' @export

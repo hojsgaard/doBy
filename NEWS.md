@@ -1,9 +1,10 @@
-doBy v4.6.28 (Release date: )
+doBy v4.7.0 (Release date: 2025-06-29)
 =======================================
 
 * `parseGroupFormula` updated
 * `head2()` and `tail2()` for matrices added
 * `pow()` function added
+*  Cleanups of code
 
 doBy v4.6.27 (Release date: 2025-05-16)
 =======================================

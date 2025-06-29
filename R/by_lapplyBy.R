@@ -13,13 +13,9 @@
 #' @param \dots optional arguments to FUN.
 #' @param USE.NAMES Same as for `sapply`
 #' @param simplify Same as for `sapply`
-#'
 #' @return A list.
-#'
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
-#'
 #' @seealso \code{\link{splitBy}}, \code{\link{split_by}}
-#'
 #' @keywords utilities
 #'
 #' @examples

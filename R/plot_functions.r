@@ -57,28 +57,6 @@ plot_lm <- function(lm_fit, format="2x2", global_aes=NULL) {
 }
 
 
-    
-    ## aes_ <- c(list(x = predict(lm_fit),
-    ##                y = rstandard(lm_fit)),
-    ##           global_aes)
-
-    ## print(aes_)
-    
-    ## aes_ <- ggpubr_create_aes(aes_)
-
-    ## print(aes_)
-
-    ## pl1 <- ggplot(dd, aes_) +
-        ## geom_point() + geom_hline(yintercept=c(0, -1.96, 1.95))
-    
-    ## pl1 <- ggplot(dd,
-    ##               ggpubr_create_aes(list(x = .data$fitted_values,
-    ##                   y = .data$standardized_residuals))) +
-    ##     geom_point() + geom_hline(yintercept=c(0, -1.96, 1.95))
-
-
-
-
 #' @title Two-way interaction plot 
 #'
 #' @description Plots the mean of the response for
@@ -95,11 +73,12 @@ plot_lm <- function(lm_fit, format="2x2", global_aes=NULL) {
 #'
 #' @examples
 #'
-#' ToothGrowth |> interaction_plot(len ~ dose + supp)
-#' ToothGrowth |> interaction_plot(len ~ dose + supp, interval="conf.int")
-#' ToothGrowth |> interaction_plot(len ~ dose + supp, interval="boxplot")
-#' ToothGrowth |> interaction_plot(len ~ dose + supp, interval="none")
-
+#' income$educf <- cut(income$educ, breaks=3)
+#' income |> interaction_plot(inc ~ race + educf)
+#' income |> interaction_plot(inc ~ race + educf, interval="conf.int")
+#' income |> interaction_plot(inc ~ race + educf, interval="boxplot")
+#' income |> interaction_plot(inc ~ race + educf, interval="none")
+#' 
 #' @import dplyr
 #' @import ggplot2
 
@@ -171,3 +150,142 @@ interaction_plot <- function(.data, .formula, interval="conf.int"){
                    geom_line(data = tmp, aes(y = .data$val, group = !!sym(s2))) 
            })
 }
+
+
+
+#' Plot the response variable against the predictor variables.
+#'
+#' @param formula. A formula of the form y ~ x1 + x2 + ... + xn, where
+#'     y is the response variable and x1, x2, ..., xn are the
+#'     predictor variables. A dot as right hand side is allowed.
+#' 
+#' @param data. A data frame containing the variables in the formula.
+#' @param geoms A list of ggplot2 geoms to be added to the plot.
+#' @param global_aes A list of global aesthetics to be added to the plot.
+#' @param plot A logical value indicating whether the plot should be displayed.
+#' @param nrow,ncol Number of rows / columns in plot. 
+#'
+#' @return A list of ggplot2 plots.
+#' @export
+#'
+#' @examples
+#' library(ggplot2)
+#' response_plot(iris, Sepal.Width ~ ., geoms=geom_point())
+#' response_plot(iris, Sepal.Width ~ ., geoms=geom_point(), global_aes=list(color="Species"))
+#' personality |> response_plot(easygon~., geoms=geom_point(), global_aes=NULL)
+#' 
+response_plot <- function(data., formula., geoms=NULL, global_aes=NULL, plot=TRUE, nrow=NULL, ncol=NULL) {  
+    trms <- terms(formula., data=data.)
+    ## trms
+    yy <- as.character(formula.[[2]])
+    xx <- setdiff(attr(trms, "term.labels"), yy)
+    ##    list(x=xx, y=yy) |> str()
+
+    aes_template <- lapply(xx, function(x_){
+        c(list(x=x_, y=yy), global_aes) 
+    })
+    ## aes_template
+
+    aes_list <- aes_template |> lapply(ggpubr_create_aes)
+    ## aes_list
+    
+    plot_basic <- lapply(aes_list, function(z_){
+        data.  |> ggplot(mapping = z_)    
+    })
+    ## plot_basic
+    
+    plot_list <-lapply(plot_basic, function(pl_) {
+        pl_ + geoms
+    } )
+    if (plot){
+        s <- cowplot::plot_grid(plotlist = plot_list, nrow=nrow, ncol=ncol)        
+        print(s)
+    }
+    
+    return(invisible(plot_list))
+}
+
+
+### Taken from ggpubr::create_aes to avoid circular dependencies
+
+ggpubr_create_aes <- function (.list, parse = TRUE) 
+{
+  # if (missing(parse)) {
+  #   parse <- base::getOption("ggpubr.parse_aes", default = TRUE)
+  # }
+#  if (parse) {
+    return(create_aes.parse(.list))
+#  }
+#  else {
+#    return(create_aes.name(.list))
+#  }
+}
+
+create_aes.parse <- function (.list) 
+{
+#  .list <- .list %>% purrr::map(function(x) parse_expression(x))
+  .list <- .list |> lapply(function(x) parse_expression(x))
+  do.call(ggplot2::aes, .list)
+}
+
+parse_expression <- function (x) 
+{
+  if (is_parsable_aes(x)) {
+    if (contains_space(x)) {
+      if (!is_math_string(x)) 
+        return(as.name(x))
+    }
+    x <- parse(text = x)[[1]]
+  }
+  x
+}
+
+is_numeric_char <- function (x) 
+{
+  if (is.character(x)) 
+    res <- grepl("^[[:digit:]]+$", x)
+  else res <- FALSE
+  res
+}
+
+is_parsable_aes <- function (x) 
+{
+  is.character(x) & (!is_numeric_char(x)) & (length(x) == 1)
+}
+
+contains_space <- function (x) 
+{
+  grepl("\\s", x)
+}
+
+is_math_string <- function (x) 
+{
+  operators <- c("+", "-", "*", "^", "%%", "%/%", "/", "==", 
+                 ">", "<", "!=", "<=", ">=")
+  contains_math_operators <- unlist(lapply(operators, grepl, 
+                                           x, fixed = TRUE))
+  contains_parentheses <- grepl(pattern = "\\(.*\\)", x)
+  any(c(contains_math_operators, contains_parentheses))
+}
+
+
+
+
+# parse_as_expression <- function (text) 
+# {
+#   stopifnot(is.character(text))
+#   out <- vector("expression", length(text))
+#   for (i in seq_along(text)) {
+#     expr <- parse(text = text[[i]])
+#     out[[i]] <- if (length(expr) == 0) 
+#       NA
+#     else expr[[1]]
+#   }
+#   out
+# }
+
+
+
+
+
+

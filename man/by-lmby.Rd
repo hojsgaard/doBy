@@ -19,11 +19,10 @@ lmBy(formula., data., id = NULL, ...)
 \arguments{
 \item{data.}{A dataframe}
 
-\item{formula.}{A linear model formula object of the form
-\code{y ~ x1 + ... + xn | g1 + ... + gm}.  In the formula object, \code{y} represents
-the response, \verb{x1, ..., xn} the covariates, and the grouping
-factors specifying the partitioning of the data according to
-which different lm fits should be performed.}
+\item{formula.}{A linear model formula object of the form \code{y ~ x1 + ... + xn | g1 + ... + gm}.  In the formula object, \code{y}
+represents the response, \verb{x1, ..., xn} the covariates, and the
+grouping factors specifying the partitioning of the data
+according to which different lm fits should be performed.}
 
 \item{id}{A formula describing variables from data which are to be
 available also in the output.}
@@ -40,15 +39,16 @@ each stratum.
 }
 \examples{
 
-bb <- lmBy(1 / uptake ~ log(conc) | Treatment, data=CO2)
-coef(bb)
+lm_lst <- lmBy(1 / uptake ~ log(conc) | Treatment, data=CO2)
+coef(lm_lst)
 
-fitted(bb)
-residuals(bb)
+fitted(lm_lst)
+residuals(lm_lst)
 
-summary(bb)
-coef(summary(bb))
-coef(summary(bb), simplify=TRUE)
+summary(lm_lst)
+coef(summary(lm_lst))
+coef(summary(lm_lst), simplify=TRUE)
+
 }
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}

@@ -161,9 +161,9 @@
 #'  correct species. Walker (1962) wanted to know whether the chirps
 #'  of the crickets Oecanthus exclamationis (abbreviated exis) and
 #'  Oecanthus niveus (abbreviated nius) had different pulse rates. See
-#'  \url{https://www.biostathandbook.com/} for details.  (The
+#'  the biostathandbook for details. (The
 #'  abbreviations are made from the the first two and last two letters
-#'  of the species.) He measured the pulse rate of the crickets
+#'  of the species.) Walker measured the pulse rate of the crickets
 #'  (variable `pps`) at a variety of temperatures (`temp`):
 #'
 #' @examples

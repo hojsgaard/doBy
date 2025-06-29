@@ -10,11 +10,11 @@
 #'
 #' @aliases lmBy coef.lmBy coef.summary_lmBy summary.lmBy fitted.lmBy
 #'     residuals.lmBy getBy
-#' @param formula. A linear model formula object of the form
-#'     `y ~ x1 + ... + xn | g1 + ... + gm`.  In the formula object, `y` represents
-#'     the response, `x1, ..., xn` the covariates, and the grouping
-#'     factors specifying the partitioning of the data according to
-#'     which different lm fits should be performed.
+#' @param formula. A linear model formula object of the form `y ~ x1 +
+#'     ... + xn | g1 + ... + gm`.  In the formula object, `y`
+#'     represents the response, `x1, ..., xn` the covariates, and the
+#'     grouping factors specifying the partitioning of the data
+#'     according to which different lm fits should be performed.
 #' @param data. A dataframe
 #' @param id A formula describing variables from data which are to be
 #'     available also in the output.
@@ -26,16 +26,16 @@
 #' @keywords models
 #' @examples
 #' 
-#' bb <- lmBy(1 / uptake ~ log(conc) | Treatment, data=CO2)
-#' coef(bb)
+#' lm_lst <- lmBy(1 / uptake ~ log(conc) | Treatment, data=CO2)
+#' coef(lm_lst)
 #' 
-#' fitted(bb)
-#' residuals(bb)
+#' fitted(lm_lst)
+#' residuals(lm_lst)
 #' 
-#' summary(bb)
-#' coef(summary(bb))
-#' coef(summary(bb), simplify=TRUE)
-
+#' summary(lm_lst)
+#' coef(summary(lm_lst))
+#' coef(summary(lm_lst), simplify=TRUE)
+#' 
 #' @export
 #' @rdname by-lmby
 lm_by <- function (data., formula., id=NULL, ...) {

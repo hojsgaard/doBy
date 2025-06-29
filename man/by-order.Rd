@@ -34,6 +34,9 @@ sorting should be ascending or decreasing; see examples below
 orderBy(~ conc + Treatment, CO2)
 ## Sort decreasingly by conc
 orderBy(~ - conc + Treatment, CO2)
+## Same as:
+order_by(CO2, c("conc", "Treatment"))
+order_by(CO2, c("-conc", "Treatment"))
 }
 \seealso{
 \code{\link{transformBy}}, \code{\link{transform_by}}, \code{\link{splitBy}}, \code{\link{split_by}}

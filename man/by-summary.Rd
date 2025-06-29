@@ -4,7 +4,7 @@
 \alias{by-summary}
 \alias{summary_by}
 \alias{summaryBy}
-\title{Function to calculate groupwise summary statistics}
+\title{Groupwise summary statistics}
 \usage{
 summary_by(
   data,
@@ -37,103 +37,66 @@ summaryBy(
 \arguments{
 \item{data}{A data frame.}
 
-\item{formula}{A formula object, see examples below.}
+\item{formula}{A formula specifying response and grouping variables.}
 
-\item{id}{A formula specifying variables which data are not grouped by but
-which should appear in the output. See examples below.}
+\item{id}{A formula indicating variables to retain (not grouped by).}
 
-\item{FUN}{A list of functions to be applied, see examples below.}
+\item{FUN}{A function or list of functions to apply to the response variables.}
 
-\item{keep.names}{If TRUE and if there is only ONE function in FUN, then the
-variables in the output will have the same name as the variables in the
-input, see 'examples'.}
+\item{keep.names}{Logical; keep original variable names if only one function is applied.}
 
-\item{p2d}{Should parentheses in output variable names be replaced by dots?}
+\item{p2d}{Replace parentheses in output names with dots?}
 
-\item{order}{Should the resulting dataframe be ordered according to the
-variables on the right hand side of the formula? (using \link{orderBy}}
+\item{order}{Logical; should result be ordered by grouping variables?}
 
-\item{full.dimension}{If TRUE then rows of summary statistics are repeated
-such that the result will have the same number of rows as the input
-dataset.}
+\item{full.dimension}{Logical; if TRUE, repeat rows so output matches input size.}
 
-\item{var.names}{Option for user to specify the names of the variables on the
-left hand side.}
+\item{var.names}{Optional custom names for response variables.}
 
-\item{fun.names}{Option for user to specify function names to apply to the
-variables on the left hand side.}
+\item{fun.names}{Optional custom names for functions applied.}
 
-\item{\dots}{Additional arguments to FUN. This could for example be NA actions.}
+\item{...}{Additional arguments passed to functions in \code{FUN}.}
 }
 \value{
-A dataframe.
+A data frame of grouped summary statistics.
 }
 \description{
-Function to calculate groupwise summary statistics,
-much like the summary procedure of SAS
+Computes summary statistics by groups, similar to the \code{summary} procedure in SAS.
+A more flexible alternative to base R's \code{\link[stats]{aggregate}}.
 }
 \details{
-Extra arguments (...) are passed onto the functions in
-FUN. Hence care must be taken that all functions in FUN accept
-these arguments - OR one can explicitly write a functions which
-get around this.  This can particularly be an issue in
-connection with handling NAs. See examples below.  Some code
-for this function has been suggested by Jim
-Robison-Cox. Thanks.
+Extra arguments in \code{...} are passed to all functions in \code{FUN}. If needed, wrap functions to handle these consistently (e.g., for \code{na.rm = TRUE}).
 }
 \examples{
+data(CO2)
 
-data(dietox)
-dietox12    <- subset(dietox,Time==12)
+# Simple groupwise mean
+summaryBy(uptake ~ Type + Treatment, data = CO2, FUN = mean)
+summaryBy(cbind(uptake, conc) ~ Type + Treatment, data = CO2, FUN = mean)
 
-fun <- function(x){
-  c(m=mean(x), v=var(x), n=length(x))
-}
-
-summaryBy(cbind(Weight, Feed) ~ Evit + Cu, data=dietox12,
-          FUN=fun)
-
-summaryBy(list(c("Weight", "Feed"), c("Evit", "Cu")), data=dietox12,
-          FUN=fun)
-
-## Computations on several variables is done using cbind( )
-summaryBy(cbind(Weight, Feed) ~ Evit + Cu, data=subset(dietox, Time > 1),
-   FUN=fun)
-
-## Calculations on transformed data is possible using cbind( ), but
-# the transformed variables must be named
-
-summaryBy(cbind(lw=log(Weight), Feed) ~ Evit + Cu, data=dietox12, FUN=mean)
- 
-## There are missing values in the 'airquality' data, so we remove these
-## before calculating mean and variance with 'na.rm=TRUE'. However the
-## length function does not accept any such argument. Hence we get
-## around this by defining our own summary function in which length is
-## not supplied with this argument while mean and var are:
-
-sumfun <- function(x, ...){
-  c(m=mean(x, na.rm=TRUE, ...), v=var(x, na.rm=TRUE, ...), l=length(x))
-}
-summaryBy(cbind(Ozone, Solar.R) ~ Month, data=airquality, FUN=sumfun)
-## Compare with
-aggregate(cbind(Ozone, Solar.R) ~ Month, data=airquality, FUN=sumfun)
+# Compare with
+aggregate(cbind(uptake, conc) ~ Type + Treatment, data = CO2, FUN = mean)
 
 ## Using '.' on the right hand side of a formula means to stratify by
 ## all variables not used elsewhere:
+summaryBy(uptake ~ ., data = CO2, FUN = mean)
 
-data(warpbreaks)
-summaryBy(breaks ~ wool + tension, warpbreaks, FUN=mean)
-summaryBy(breaks ~ ., warpbreaks, FUN=mean)
-summaryBy(. ~ wool + tension, warpbreaks, FUN=mean)
+# Multiple functions using a custom summary function
+myfun <- function(x, ...)
+  c(m = mean(x, na.rm = TRUE), v = var(x, na.rm = TRUE), n = length(x))
+summaryBy(uptake ~ Type + Treatment, data = CO2, FUN = myfun)
 
-summaryBy(. ~ wool + tension, warpbreaks, FUN=mean)
-
+# Summary on transformed variables
+# works:
+summaryBy(cbind(lu=log(uptake), conc) ~ Type, data = CO2, FUN = mean)
+# fails:
+#summaryBy(cbind(log(uptake), conc) ~ Type, data = CO2, FUN = mean)
 }
 \seealso{
-\code{\link{ave}}, \code{\link{descStat}}, \code{\link{orderBy}}, \code{\link{order_by}},
-\code{\link{splitBy}}, \code{\link{split_by}}, \code{\link{transformBy}}, \code{\link{transform_by}}
+\code{\link[stats]{aggregate}}, \code{\link{orderBy}}, \code{\link{transformBy}}, \code{\link{splitBy}}
 }
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
-\keyword{univar}
+\keyword{grouping}
+\keyword{summary,}

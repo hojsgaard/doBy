@@ -24,8 +24,10 @@ This is a recent addition to the package and is subject to change.
 }
 \examples{
 
-ToothGrowth |> interaction_plot(len ~ dose + supp)
-ToothGrowth |> interaction_plot(len ~ dose + supp, interval="conf.int")
-ToothGrowth |> interaction_plot(len ~ dose + supp, interval="boxplot")
-ToothGrowth |> interaction_plot(len ~ dose + supp, interval="none")
+income$educf <- cut(income$educ, breaks=3)
+income |> interaction_plot(inc ~ race + educf)
+income |> interaction_plot(inc ~ race + educf, interval="conf.int")
+income |> interaction_plot(inc ~ race + educf, interval="boxplot")
+income |> interaction_plot(inc ~ race + educf, interval="none")
+
 }
