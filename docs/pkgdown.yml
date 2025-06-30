@@ -1,9 +1,5 @@
-pandoc: 2.17.1.1
-pkgdown: 2.0.9
+pandoc: 3.1.3
+pkgdown: 2.1.3
 pkgdown_sha: ~
-articles:
-  doby: doby.html
-  model_stability: model_stability.html
-  section_fun: section_fun.html
-last_built: 2024-06-07T07:25Z
-
+articles: {}
+last_built: 2025-06-30T21:04Z

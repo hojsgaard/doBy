@@ -1,240 +1,107 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/articles/doby.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/model_stability.html</loc>
-  </url>
-  <url>
-    <loc>/articles/section_fun.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/NIRmilk.html</loc>
-  </url>
-  <url>
-    <loc>/reference/beets.html</loc>
-  </url>
-  <url>
-    <loc>/reference/binomial_to_bernoulli_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bquote_fun_list.html</loc>
-  </url>
-  <url>
-    <loc>/reference/breastcancer.html</loc>
-  </url>
-  <url>
-    <loc>/reference/by-lapply.html</loc>
-  </url>
-  <url>
-    <loc>/reference/by-lmby.html</loc>
-  </url>
-  <url>
-    <loc>/reference/by-order.html</loc>
-  </url>
-  <url>
-    <loc>/reference/by-sample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/by-split.html</loc>
-  </url>
-  <url>
-    <loc>/reference/by-subset.html</loc>
-  </url>
-  <url>
-    <loc>/reference/by-summary.html</loc>
-  </url>
-  <url>
-    <loc>/reference/by-transform.html</loc>
-  </url>
-  <url>
-    <loc>/reference/by_scale.html</loc>
-  </url>
-  <url>
-    <loc>/reference/carcass.html</loc>
-  </url>
-  <url>
-    <loc>/reference/chr_to_matrix.html</loc>
-  </url>
-  <url>
-    <loc>/reference/codstom.html</loc>
-  </url>
-  <url>
-    <loc>/reference/crickets.html</loc>
-  </url>
-  <url>
-    <loc>/reference/crimeRate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/crime_rate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/cropyield.html</loc>
-  </url>
-  <url>
-    <loc>/reference/cv_glm_fitlist.html</loc>
-  </url>
-  <url>
-    <loc>/reference/data-budworm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/data-mathmark.html</loc>
-  </url>
-  <url>
-    <loc>/reference/data-personality.html</loc>
-  </url>
-  <url>
-    <loc>/reference/data-prostate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/data_cad.html</loc>
-  </url>
-  <url>
-    <loc>/reference/descStat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dietox.html</loc>
-  </url>
-  <url>
-    <loc>/reference/doBy-internal.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-rhsf2list.html</loc>
-  </url>
-  <url>
-    <loc>/reference/esticon.html</loc>
-  </url>
-  <url>
-    <loc>/reference/expr_to_fun.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fatacid.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fev.html</loc>
-  </url>
-  <url>
-    <loc>/reference/firstlastobs.html</loc>
-  </url>
-  <url>
-    <loc>/reference/formula_ops.html</loc>
-  </url>
-  <url>
-    <loc>/reference/generate_data_list.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_formulas.html</loc>
-  </url>
-  <url>
-    <loc>/reference/haldCement.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/interaction-plot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is-estimable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/linest-get.html</loc>
-  </url>
-  <url>
-    <loc>/reference/linest-matrix.html</loc>
-  </url>
-  <url>
-    <loc>/reference/linest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ls-means.html</loc>
-  </url>
-  <url>
-    <loc>/reference/matrix_op.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mb_summary.html</loc>
-  </url>
-  <url>
-    <loc>/reference/milkman.html</loc>
-  </url>
-  <url>
-    <loc>/reference/model_stability_glm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/nir_milk.html</loc>
-  </url>
-  <url>
-    <loc>/reference/null-basis.html</loc>
-  </url>
-  <url>
-    <loc>/reference/parseGroupFormula.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_lm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/potatoes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/recodeVar.html</loc>
-  </url>
-  <url>
-    <loc>/reference/recover_pca_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/renameCol.html</loc>
-  </url>
-  <url>
-    <loc>/reference/scale_df.html</loc>
-  </url>
-  <url>
-    <loc>/reference/section_fun.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_list_set_matrix.html</loc>
-  </url>
-  <url>
-    <loc>/reference/split_byrow_bycol.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sub_seq.html</loc>
-  </url>
-  <url>
-    <loc>/reference/taylor.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidy-esticon.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidy-linest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/timeSinceEvent.html</loc>
-  </url>
-  <url>
-    <loc>/reference/truncate0.html</loc>
-  </url>
-  <url>
-    <loc>/reference/which.maxn.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/articles/doby.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/model_stability.html</loc></url>
+<url><loc>/articles/section_fun.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/NIRmilk.html</loc></url>
+<url><loc>/reference/add_int.html</loc></url>
+<url><loc>/reference/add_pred.html</loc></url>
+<url><loc>/reference/add_resid.html</loc></url>
+<url><loc>/reference/align_coefs.html</loc></url>
+<url><loc>/reference/beets.html</loc></url>
+<url><loc>/reference/binomial_to_bernoulli_data.html</loc></url>
+<url><loc>/reference/bquote_fun_list.html</loc></url>
+<url><loc>/reference/by-lapply.html</loc></url>
+<url><loc>/reference/by-lmby.html</loc></url>
+<url><loc>/reference/by-order.html</loc></url>
+<url><loc>/reference/by-sample.html</loc></url>
+<url><loc>/reference/by-split.html</loc></url>
+<url><loc>/reference/by-subset.html</loc></url>
+<url><loc>/reference/by-summary.html</loc></url>
+<url><loc>/reference/by-transform.html</loc></url>
+<url><loc>/reference/by_scale.html</loc></url>
+<url><loc>/reference/carcass.html</loc></url>
+<url><loc>/reference/child_growth.html</loc></url>
+<url><loc>/reference/chr_to_matrix.html</loc></url>
+<url><loc>/reference/codstom.html</loc></url>
+<url><loc>/reference/crickets.html</loc></url>
+<url><loc>/reference/crimeRate.html</loc></url>
+<url><loc>/reference/crime_rate.html</loc></url>
+<url><loc>/reference/cropyield.html</loc></url>
+<url><loc>/reference/cv_glm_fitlist.html</loc></url>
+<url><loc>/reference/data-budworm.html</loc></url>
+<url><loc>/reference/data-mathmark.html</loc></url>
+<url><loc>/reference/data-personality.html</loc></url>
+<url><loc>/reference/data-prostate.html</loc></url>
+<url><loc>/reference/data-wine.html</loc></url>
+<url><loc>/reference/data_breastcancer.html</loc></url>
+<url><loc>/reference/data_budworm.html</loc></url>
+<url><loc>/reference/data_cad.html</loc></url>
+<url><loc>/reference/data_mathmark.html</loc></url>
+<url><loc>/reference/data_personality.html</loc></url>
+<url><loc>/reference/descStat.html</loc></url>
+<url><loc>/reference/dietox.html</loc></url>
+<url><loc>/reference/doBy-internal.html</loc></url>
+<url><loc>/reference/dot-rhsf2list.html</loc></url>
+<url><loc>/reference/esticon.html</loc></url>
+<url><loc>/reference/expr_to_fun.html</loc></url>
+<url><loc>/reference/fatacid.html</loc></url>
+<url><loc>/reference/fev.html</loc></url>
+<url><loc>/reference/firstlastobs.html</loc></url>
+<url><loc>/reference/formula_ops.html</loc></url>
+<url><loc>/reference/generate_data_list.html</loc></url>
+<url><loc>/reference/get_formulas.html</loc></url>
+<url><loc>/reference/haldCement.html</loc></url>
+<url><loc>/reference/head_matrix.html</loc></url>
+<url><loc>/reference/income.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/interaction-plot.html</loc></url>
+<url><loc>/reference/is-estimable.html</loc></url>
+<url><loc>/reference/is_estimable.html</loc></url>
+<url><loc>/reference/linest-get.html</loc></url>
+<url><loc>/reference/linest-matrix.html</loc></url>
+<url><loc>/reference/linest.html</loc></url>
+<url><loc>/reference/ls-means.html</loc></url>
+<url><loc>/reference/math_teachers.html</loc></url>
+<url><loc>/reference/matrix_op.html</loc></url>
+<url><loc>/reference/mb_summary.html</loc></url>
+<url><loc>/reference/milkman.html</loc></url>
+<url><loc>/reference/model_stability_glm.html</loc></url>
+<url><loc>/reference/nir_milk.html</loc></url>
+<url><loc>/reference/null-basis.html</loc></url>
+<url><loc>/reference/parseGroupFormula.html</loc></url>
+<url><loc>/reference/pick_elements.html</loc></url>
+<url><loc>/reference/pipe_arithmetic.html</loc></url>
+<url><loc>/reference/plot_lm.html</loc></url>
+<url><loc>/reference/potatoes.html</loc></url>
+<url><loc>/reference/rbind_list.html</loc></url>
+<url><loc>/reference/recodeVar.html</loc></url>
+<url><loc>/reference/recover_pca_data.html</loc></url>
+<url><loc>/reference/renameCol.html</loc></url>
+<url><loc>/reference/response.html</loc></url>
+<url><loc>/reference/response_plot.html</loc></url>
+<url><loc>/reference/scale_df.html</loc></url>
+<url><loc>/reference/section_fun.html</loc></url>
+<url><loc>/reference/set_list_set_matrix.html</loc></url>
+<url><loc>/reference/shoes.html</loc></url>
+<url><loc>/reference/split_byrow_bycol.html</loc></url>
+<url><loc>/reference/sub_seq.html</loc></url>
+<url><loc>/reference/taylor.html</loc></url>
+<url><loc>/reference/tidy-esticon.html</loc></url>
+<url><loc>/reference/tidy-linest.html</loc></url>
+<url><loc>/reference/time_since_event.html</loc></url>
+<url><loc>/reference/truncate0.html</loc></url>
+<url><loc>/reference/v.html</loc></url>
+<url><loc>/reference/vcheck.html</loc></url>
+<url><loc>/reference/vmap.html</loc></url>
+<url><loc>/reference/vparse.html</loc></url>
+<url><loc>/reference/vrename.html</loc></url>
+<url><loc>/reference/vselect.html</loc></url>
+<url><loc>/reference/which.maxn.html</loc></url>
 </urlset>
+
