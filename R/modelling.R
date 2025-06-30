@@ -34,36 +34,36 @@
 #' models_list <- list(lm = lm_fit, glm = glm_fit)
 #' result <- align_coefs(models_list)
 #' print(result)
-#' 
+#'
+#' @importFrom purrr imap_dfr
 #' @export
 align_coefs <- function(models) {
   purrr::imap_dfr(models, function(mod, label) {
     out <- broom::tidy(mod)
     
-    # Check if 'effect' column exists
+    # Filter to fixed effects only if 'effect' column exists
     if ("effect" %in% names(out)) {
-      out <- out %>% filter(effect == "fixed")
+      out <- out |> dplyr::filter(.data$effect == "fixed")
     }
     
-    # Ensure these columns exist
+    # Add missing columns with NA
     if (!"std.error" %in% names(out)) out$std.error <- NA_real_
     if (!"statistic" %in% names(out)) out$statistic <- NA_real_
     if (!"p.value" %in% names(out)) out$p.value <- NA_real_
 
-    # Compute statistic if missing but std.error exists
-    out <- out %>%
-      mutate(
-        statistic = ifelse(is.na(statistic) & !is.na(estimate) & !is.na(std.error),
-                           estimate / std.error, statistic),
-        p.value = ifelse(is.na(p.value) & !is.na(statistic),
-                         2 * (1 - pnorm(abs(statistic))),
-                         p.value)
-      ) %>%
-      mutate(model = label) %>%
-      select(model, term, estimate, std.error, statistic, p.value)
+    # Compute missing statistic and p.value if possible
+    out |> 
+      dplyr::mutate(
+        statistic = ifelse(is.na(.data$statistic) & !is.na(.data$estimate) & !is.na(.data$std.error),
+                           .data$estimate / .data$std.error, .data$statistic),
+        p.value = ifelse(is.na(.data$p.value) & !is.na(.data$statistic),
+                         2 * (1 - pnorm(abs(.data$statistic))),
+                         .data$p.value),
+        model = label
+      ) |> 
+      dplyr::select(dplyr::all_of(c("model", "term", "estimate", "std.error", "statistic", "p.value")))
   })
 }
-
 
 
 
@@ -106,24 +106,24 @@ add_pred <- function (data, model, var = "pred", type = NULL, transformation=NUL
     data
 }
 
-##' @title Reciprocal function
-##' @description  A function returning the reciprocal of its argument
-##' @param x An R object for which 1/x makes sense
-##' @author Søren Højsgaard
-##' @export
-reciprocal <- function(x){
-  1/x    
-}
+## ##' @title Reciprocal function
+## ##' @description  A function returning the reciprocal of its argument
+## ##' @param x An R object for which 1/x makes sense
+## ##' @author Søren Højsgaard
+## ##' @export
+## reciprocal <- function(x){
+##   1/x    
+## }
 
-##' @title Power function
-##' @description  A function returning x raised to the power p.
-##' @param x An object for which x^p makes sense
-##' @param p A power
-##' @author Søren Højsgaard
-##' @export
-pow <- function(x, p){
-  x^p    
-}
+## ##' @title Power function
+## ##' @description  A function returning x raised to the power p.
+## ##' @param x An object for which x^p makes sense
+## ##' @param p A power
+## ##' @author Søren Højsgaard
+## ##' @export
+## pow <- function(x, p){
+##   x^p    
+## }
 
 
 ##' @title Add residuals of different types to dataframe

@@ -29,6 +29,7 @@ Imports:
     modelr,
     microbenchmark,
     rlang,
+    purrr,
     tibble,
     tidyr,
 Suggests:

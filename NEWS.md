@@ -2,6 +2,7 @@ doBy v4.7.1 (Release date: )
 =======================================
 
 * `align_coefs` added. 
+* File with pipe-friendly arithmetic added.
 
 doBy v4.7.0 (Release date: 2025-06-29)
 =======================================
