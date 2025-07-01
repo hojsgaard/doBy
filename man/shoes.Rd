@@ -3,7 +3,7 @@
 \docType{data}
 \name{shoes}
 \alias{shoes}
-\title{shoes}
+\title{Wear of shoes}
 \format{
 This data frame contains:
 \describe{
@@ -28,4 +28,5 @@ cheaper material B.
 \references{
 Box, Hunter, Hunter (2005) Statistics for Experimenters, 2nd edition Wiley, p. 81.
 }
+\concept{dataset}
 \keyword{datasets}

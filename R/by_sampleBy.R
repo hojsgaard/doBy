@@ -14,6 +14,7 @@
 #' @param data A data frame.
 #' @param systematic Should sampling be systematic.
 #'
+#' @concept byfunction
 #' @return A dataframe.
 #' @seealso \code{\link{orderBy}}, \code{\link{order_by}},
 #'    \code{\link{splitBy}}, \code{\link{split_by}}, 

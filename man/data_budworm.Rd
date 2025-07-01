@@ -69,4 +69,5 @@ Venables, W.N; Ripley, B.D.(1999) Modern Applied Statistics with
 S-Plus, Heidelberg, Springer, 3rd edition, chapter 7.2
 }
 \concept{data}
+\concept{dataset}
 \keyword{datasets}

@@ -39,38 +39,45 @@
 #'   reciprocal()
 #'
 #' @name pipe_arithmetic
+#' @concept pipe_arithmetic
 NULL
 
 #' @rdname pipe_arithmetic
+#' @concept pipe_arithmetic
 #' @export
 reciprocal <- function(x) {
   1 / x
 }
 
+#' @concept pipe_arithmetic
 #' @rdname pipe_arithmetic
 #' @export
 pow <- function(x, p) {
   x ^ p
 }
 
+#' @concept pipe_arithmetic
 #' @rdname pipe_arithmetic
 #' @export
 add <- function(x, k) {
   x + k
 }
 
+#' @concept pipe_arithmetic
 #' @rdname pipe_arithmetic
 #' @export
 subtract <- function(x, k) {
   x - k
 }
 
+#' @concept pipe_arithmetic
 #' @rdname pipe_arithmetic
 #' @export
 mult <- function(x, k) {
   x * k
 }
 
+#' @concept pipe_arithmetic
 #' @rdname pipe_arithmetic
 #' @export
 divide <- function(x, k) {

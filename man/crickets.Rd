@@ -35,4 +35,5 @@ of the species.) Walker measured the pulse rate of the crickets
 data(crickets)
 coplot(pps ~ temp | species, data=crickets) 
 }
+\concept{dataset}
 \keyword{datasets}

@@ -5,6 +5,7 @@
 #' @description Split a dataframe according to the levels of variables
 #'     in the dataframe. Uses vparse() to interpret flexible input.
 #' @name by-split
+#' @concept byfunction
 #' 
 #' @param data. A data frame (or tibble) to split
 #' @param ... Variables defining the groups

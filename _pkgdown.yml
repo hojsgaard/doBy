@@ -1,0 +1,59 @@
+pkgdown:
+  title: "doBy"
+
+template:
+  params:
+    bootswatch: flatly
+
+reference:
+
+- title: By-functions
+  desc: >    
+    Do something to grouped data
+  contents:
+  - has_concept("byfunction")
+
+- title: Plotting
+  desc: >    
+    Plotting functions
+  contents:
+  - has_concept("plotting")
+
+- title: Functional programming
+  desc: > 
+    Functional programming
+  contents:
+  - has_concept("functional")
+
+- title: Datasets
+  desc: > 
+    Datasets
+  contents:
+  - has_concept("dataset")
+
+
+- title: Data handling
+  desc: > 
+    Data handling
+  contents:
+  - has_concept("data_handling")
+
+
+
+- title: Pipe arithmetic
+  desc: > 
+    Support for arithmetic in pipes, e.g. x^3: x |> pow(3)
+  contents:
+  - has_concept("pipe_arithmetic")
+
+
+- title: Others
+  desc: > 
+    These are functions not mentioned above.
+  contents:
+  - lacks_concepts(c("plotting", "functional", "dataset", "pipe_arithmetic", "byfunction"))
+
+- title: Complete reference
+  desc: ~
+  contents:
+  - matches(".*")

@@ -42,3 +42,4 @@ response_plot(iris, Sepal.Width ~ ., geoms=geom_point(), global_aes=list(color="
 personality |> response_plot(easygon~., geoms=geom_point(), global_aes=NULL)
 
 }
+\concept{plotting}

@@ -44,4 +44,5 @@ transformBy(~Pig, data=dietox, minW=min(Weight), maxW=max(Weight),
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
+\concept{byfunction}
 \keyword{univar}

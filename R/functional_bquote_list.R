@@ -1,7 +1,7 @@
 #' Backquote a list of functions
 #'
 #' @param fun_list List of functions
-#'
+#' @concept functional 
 #' @seealso [base::bquote()], [set_default()], [section_fun()]
 #' @examples
 #'

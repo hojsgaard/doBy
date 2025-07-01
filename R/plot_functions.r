@@ -4,6 +4,7 @@
 #' @param format The format of the plot (or a list of plots if format is "list")
 #' @param global_aes Currently no effect.
 #'
+#' @concept plotting
 #' @examples
 #' data(income)
 #' m1 <- lm(inc ~ race + educ, data=income)
@@ -70,7 +71,7 @@ plot_lm <- function(lm_fit, format="2x2", global_aes=NULL) {
 #' @param .data A data frame
 #' @param .formula A formula of the form `y ~ x1 + x2`
 #' @param interval Either `conf.int`, `boxplot` or `none`
-#'
+#' @concept plotting
 #' @examples
 #'
 #' income$educf <- cut(income$educ, breaks=3)
@@ -165,6 +166,7 @@ interaction_plot <- function(.data, .formula, interval="conf.int"){
 #' @param plot A logical value indicating whether the plot should be displayed.
 #' @param nrow,ncol Number of rows / columns in plot. 
 #'
+#' @concept plotting
 #' @return A list of ggplot2 plots.
 #' @export
 #'

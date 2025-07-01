@@ -1,6 +1,6 @@
 #' @title Group-wise scaling of data
 #' @description Splits a data frame or matrix by grouping variables and scales numeric variables within each group.
-#'
+#' @concept byfunction
 #' @param formula Grouping structure: a formula, character vector, or variables as `as.quoted`.
 #' @param data A data frame or matrix.
 #' @param center Logical; if TRUE, center the variables.

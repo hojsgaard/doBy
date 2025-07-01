@@ -58,4 +58,5 @@ lapply(splitBy(~Treatment + Type, data=CO2), FUN=fun)
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
+\concept{byfunction}
 \keyword{utilities}

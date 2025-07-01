@@ -3,7 +3,7 @@
 #' @description Applies `base::scale()` to numeric, integer, or
 #'     logical columns in a data frame. Non-numeric columns are left
 #'     unchanged.
-#'
+#' @concept data_handling
 #' @param x A data frame or matrix.
 #' @param center Logical; if TRUE, center the variables.
 #' @param scale Logical; if TRUE, scale the variables.

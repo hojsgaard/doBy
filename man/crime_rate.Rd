@@ -28,4 +28,5 @@ types in 1977.
 data(crime_rate)
 
 }
+\concept{dataset}
 \keyword{datasets}

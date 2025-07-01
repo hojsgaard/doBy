@@ -3,13 +3,13 @@
 #' @param expr_ R expression.
 #' @param order desired order of function argument.
 #' @param vec_arg should the function take vector valued argument.
-#'
+#' @concept functional 
 #' @examples
 #'
 #' ee  <- expression(b1 + (b0 - b1)*exp(-k*x) + b2*x)
 #' ff1 <- expr_to_fun(ee)
 #' formals(ff1)
-#' 
+#'
 #' ff2 <- expr_to_fun(ee, vec_arg=TRUE)
 #' formals(ff2)
 #' formals(ff2)$length_parm

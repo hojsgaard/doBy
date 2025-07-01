@@ -4,7 +4,7 @@
 #' @description Function to make groupwise transformations of data by applying
 #'     the transform function to subsets of data.
 #' @name by-transform
-#' 
+#' @concept byfunction
 ###############################################################################
 #'
 #' @details The ... arguments are tagged vector expressions, which are evaluated

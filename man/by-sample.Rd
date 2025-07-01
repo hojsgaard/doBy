@@ -49,4 +49,5 @@ sampleBy(formula = ~ Evit + Cu, frac=.1, data = dietox)
 \code{\link{summaryBy}}, \code{\link{summary_by}},
 \code{\link{transformBy}}, \code{\link{transform_by}}
 }
+\concept{byfunction}
 \keyword{utilities}

@@ -53,4 +53,5 @@ coef(summary(lm_lst), simplify=TRUE)
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
+\concept{byfunction}
 \keyword{models}

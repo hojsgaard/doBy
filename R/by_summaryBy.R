@@ -4,6 +4,7 @@
 #' A more flexible alternative to base R's \code{\link[stats]{aggregate}}.
 #'
 #' @name by-summary
+#' @concept byfunction
 #' @param formula A formula specifying response and grouping variables.
 #' @param data A data frame.
 #' @param FUN A function or list of functions to apply to the response variables.

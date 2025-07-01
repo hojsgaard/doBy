@@ -36,3 +36,4 @@ sapply(fn_list_, eval) ## Yes
 \seealso{
 \code{\link[base:bquote]{base::bquote()}}, \code{\link[=set_default]{set_default()}}, \code{\link[=section_fun]{section_fun()}}
 }
+\concept{functional}

@@ -57,4 +57,5 @@ subsetBy(~Evit, Weight < mean(Weight), data=dietox)
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
+\concept{byfunction}
 \keyword{utilities}

@@ -13,10 +13,6 @@ math_teachers
 \description{
 Height of a sample of math teachers in Danish high
 schools collected at a continued education day at Mariager Fjord Gymnasium in 2019.
-
-Format:
-height: Height in centimeters
-sex: male or female
 }
 \examples{
 
@@ -24,4 +20,8 @@ aggregate(height ~  sex, data=math_teachers, FUN=mean)
 aggregate(height ~  sex, data=math_teachers, FUN=function(x) {c(mean=mean(x), sd=sd(x))})
 
 }
+\concept{dataset
+Format:
+height: Height in centimeters
+sex: male or female}
 \keyword{datasets}

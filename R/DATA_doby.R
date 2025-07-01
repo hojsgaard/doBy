@@ -1,7 +1,49 @@
+
+#' @title Near infra red light (NIR) measurements in milk
+#' 
+#' @description Near infra red light (NIR) measurements are made at
+#'     152 wavelengths on 17 milk samples.  While milk runs through a
+#'     glass tube, infra red light is sent through the tube and the
+#'     amount of light passing though the tube is measured at
+#'     different wavelengths.  Each milk sample was additionally
+#'     analysed for fat, lactose, protein and dry matter.
+#' @concept dataset
+#' @name nir_milk
+#' @docType data
+#' 
+#' @format
+#' Data comes in two formats:
+#' 
+#' nir_milk: A list with two components
+#' * x Datafrane with infra red light
+#'  amount at different wavelengths (column names are the wavelengths;
+#'  just remove the leading X).
+#' * y Datafrane with response variables
+#'  fat, protein, lactose and dm (drymatter)
+#'
+#' NIRmilk: This data frame contains 17 rows and 158 columns.
+#'
+#' * The first column is the sample number.
+#' * The columns named in the form `Xw` contains
+#'     the transmittance (fraction of electromagnetic power)
+#'     transmittance through the sample at wavelength `w`.
+#' * The response variables are fat, protein, lactose and dm (dry
+#'     matter).
+#'
+#' @keywords datasets
+#' @examples
+#' 	
+#' data(nir_milk)
+#' data(NIRmilk)
+#' 
+"nir_milk"
+"NIRmilk"
+
+
 #' @title Height of math teachers
 #' @description Height of a sample of math teachers in Danish high
 #'     schools collected at a continued education day at Mariager Fjord Gymnasium in 2019.
-#'
+#' @concept dataset
 #' Format:
 #' height: Height in centimeters
 #' sex: male or female
@@ -17,7 +59,7 @@
 ##' @title Berkeley Growth Study data
 ##' @description dataframe with heights of 39 boys and 54 girls from
 ##'     age 1 to 18 and the ages at which they were collected.
-##'
+##' @concept dataset
 ##' Format:
 ##'
 ##' gender: Gender of child
@@ -95,9 +137,10 @@
 "wine"
 
 
-#' @title income data
+#' @title Income data, years of educations and ethnicity
 #' @description Data on income, years of educations and ethnicity for a samle of adult Americans aged over 25. The year of sampling is not avalable in the source.
 #' @name income
+#' @concept dataset
 #' @docType data
 #' @format This data frame contains:
 #' \describe{
@@ -116,9 +159,9 @@
 
 
 
-#' @title shoes
+#' @title Wear of shoes
 #' @description Wear of soles of shoes of materials A and B for one foot each for of ten boys.
-#'
+#' @concept dataset
 #' @details The shoes data are measurements of the amount wear of the
 #'     soles of shoes worn by 10 boys. The soles were made to two
 #'     different synthetic materials, a standard material A and a
@@ -143,7 +186,7 @@
 #' @title crickets data
 #' @description Mating songs of male tree crickets.
 #' @name crickets
-#'
+#' @concept dataset
 #' @docType data
 #' @format This data frame contains:
 #' \describe{
@@ -185,7 +228,7 @@
 #'     the yield is recorded in kg. See 'details' for the experimental layout.
 #'
 #' @name beets
-#' 
+#' @concept dataset
 #' @docType data
 #' @format The format is: chr "beets"
 #'
@@ -241,7 +284,7 @@
 #' sequence (code=case) or not (code=control).
 #' 
 #' @name data_breastcancer
-#'
+#' @concept dataset
 #' @docType data
 #'
 #' @format A data frame with 250 observations on 1001 variables. The
@@ -286,7 +329,7 @@
 #' auxiliary information collected at three Danish slaughter houses
 #' 
 #' @name carcass
-#' 
+#' @concept dataset
 #' @aliases carcass carcassall
 #' @format carcassall: A data frame with 344 observations on the following 17
 #' variables.
@@ -403,7 +446,7 @@
 #' @source Small subset from a larger dataset (more stomachs, more variables,
 #'     more \code{prey.types}) collected by D. Chabot and M. Hanson, Fisheries &
 #'     Oceans Canada \email{chabotd@@dfo-mpo.gc.ca}.
-#'
+#' @concept dataset
 #' @keywords datasets
 #' @examples
 #' 
@@ -448,7 +491,7 @@
 #' types in 1977.
 #' 
 #' @name crimeRate
-#' 
+#' @concept dataset
 #' @docType data
 #' @format This data frame contains:
 #' \describe{
@@ -474,7 +517,7 @@
 #' types in 1977.
 #' 
 #' @name crime_rate
-#' 
+#' @concept dataset
 #' @docType data
 #' @format This data frame contains:
 #' \describe{
@@ -515,7 +558,7 @@
 #'     different levels of Cu=copper (dose: 0, 35, 175 mg/kg feed) in the feed.
 #'     The cumulated feed intake is also recorded. The pigs are litter mates.
 #' 
-#' 
+#' @concept dataset
 #' @format This data frame contains the following columns:
 #' 
 #' \describe{
@@ -556,7 +599,7 @@
 #'
 #' @name fatacid
 #' @docType data
-#'
+#' @concept dataset
 #' @format A dataframe.
 #'
 #' @details A fish oil fatty acid \code{X14} has been added in
@@ -616,7 +659,7 @@
 #' 
 #' @name haldCement
 #' @docType data
-#'
+#' @concept dataset
 #' @format A data frame with 13 observations on the following 5 variables.
 #'   \describe{
 #'     \item{\code{x1}}{Percentage (weight) of `[3Ca0][Al2O3]`}
@@ -677,7 +720,7 @@
 #' (in different lactations) and there are 288 different lactations.
 #'
 #' @aliases milkman_rdm1
-#' 
+#' @concept dataset
 #' @name milkman
 #' @docType data
 #'
@@ -719,54 +762,6 @@
 "milkman_rdm1"
 
 
-#' @title NIRmilk
-#' 
-#' @description Near infra red light (NIR) measurements are made at
-#'     152 wavelengths on 17 milk samples.  While milk runs through a
-#'     glass tube, infra red light is sent through the tube and the
-#'     amount of light passing though the tube is measured at
-#'     different wavelengths.  Each milk sample was additionally
-#'     analysed for fat, lactose, protein and dry matter.
-#' 
-#' @name NIRmilk
-#' @docType data
-#' @format This data frame contains 17 rows and 158 columns.  The
-#'     first column is the sample number.  The columns `Xklm` contains
-#'     the transmittance (fraction of electromagnetic power)
-#'     transmittance through the sample at wavelength `klm`.  The
-#'     response variables are fat, protein, lactose and dm (dry
-#'     matter).
-#' @keywords datasets
-#' @examples
-#' 	
-#' data(NIRmilk)
-#' 
-"NIRmilk"
-
-
-#' @title nir_milk
-#'
-#' @description Near infra red light (NIR) measurements are made at
-#'     152 wavelengths on 17 milk samples.  While milk runs through a
-#'     glass tube, infra red light is sent through the tube and the
-#'     amount of light passing though the tube is measured at
-#'     different wavelengths.  Each milk sample was additionally
-#'     analysed for fat, lactose, protein and dry matter.
-#' 
-#' @name nir_milk
-#' @docType data
-#' @format A list with two components
-#'  x Datafrane with infra red light amount at different wavelengths (column names are the wavelengths; just remove the leading X).
-#'  y Datafrane with response variables fat, protein,
-#'     lactose and dm (drymatter)
-#'
-#' @keywords datasets
-#' @seealso [NIRmilk]
-#' @examples
-#' 	
-#' data(nir_milk)
-#' 
-"nir_milk"
 
 
 
@@ -780,7 +775,7 @@
 #' 
 #' @name potatoes
 #' @docType data
-#'
+#' @concept dataset
 #' @format A data frame with 20 observations on the following 3 variables.
 #'   \describe{
 #'     \item{\code{weight}}{a numeric vector}
@@ -804,7 +799,7 @@
 #' The \code{mathmark} data frame has 88 rows and 5 columns.
 #'
 #' @name data_mathmark
-#' 
+#' @concept dataset
 #' @aliases mathmark math
 #' @format This data frame contains the following columns: mechanics, vectors,
 #' algebra, analysis, statistics.
@@ -835,7 +830,7 @@
 #' @concept data
 #' @name data_budworm
 #' @docType data
-#' 
+#' @concept dataset
 #' @format This data frame contains 12 rows and 4 columns:
 #'
 #' \describe{
@@ -904,7 +899,8 @@
 #'
 #' * cad2: Incomplete dataset, 67 cases. Information on (some of) the
 #'     variables 'Hyperchol', 'Smoker' and 'Inherit' is missing.
-#' 
+#'
+#' @concept dataset
 #' @name data_cad
 #' @aliases cad1 cad2
 #' @docType data
@@ -961,9 +957,7 @@
 #' models Induced From Relevant knowledge, Observations and
 #' Statistical Techniques. Computational Statistics and Data Analysis,
 #' vol. 19, p. 155-175
-#' 
-#' 
-#'
+#' #'
 #' @keywords datasets
 #' @usage data(cad1)
 #' 
@@ -981,7 +975,7 @@
 #' The `peronality` dataframe has 240 rows and 32 columns
 #'
 #' @name data_personality
-#'
+#' @concept dataset
 #' @format This dataframe has recordings on the following 32
 #'     variables: distant, talkatv, carelss, hardwrk, anxious,
 #'     agreebl, tense, kind, opposng, relaxed, disorgn, outgoin,

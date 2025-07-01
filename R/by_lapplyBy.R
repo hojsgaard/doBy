@@ -17,7 +17,7 @@
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @seealso \code{\link{splitBy}}, \code{\link{split_by}}
 #' @keywords utilities
-#'
+#' @concept byfunction
 #' @examples
 #' fun <- function(x) range(x$uptake)
 #' lapplyBy(~Treatment + Type, data=CO2, FUN=fun)

@@ -84,5 +84,7 @@ Højsgaard, Søren and Thiesson, Bo (1995). BIFROST - Block recursive
 models Induced From Relevant knowledge, Observations and
 Statistical Techniques. Computational Statistics and Data Analysis,
 vol. 19, p. 155-175
+#'
 }
+\concept{dataset}
 \keyword{datasets}

@@ -4,7 +4,11 @@
 <url><loc>/articles/doby.html</loc></url>
 <url><loc>/articles/index.html</loc></url>
 <url><loc>/articles/model_stability.html</loc></url>
+<url><loc>/articles/pipe-arithmetic.html</loc></url>
+<url><loc>/articles/pipe_arithmetic.html</loc></url>
 <url><loc>/articles/section_fun.html</loc></url>
+<url><loc>/articles/sectioning_fun.html</loc></url>
+<url><loc>/articles/vtools.html</loc></url>
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/news/index.html</loc></url>
@@ -41,6 +45,7 @@
 <url><loc>/reference/data-wine.html</loc></url>
 <url><loc>/reference/data_breastcancer.html</loc></url>
 <url><loc>/reference/data_budworm.html</loc></url>
+<url><loc>/reference/data_cad-hash-hash-at-aliases-cad1-cad2.html</loc></url>
 <url><loc>/reference/data_cad.html</loc></url>
 <url><loc>/reference/data_mathmark.html</loc></url>
 <url><loc>/reference/data_personality.html</loc></url>
@@ -87,6 +92,7 @@
 <url><loc>/reference/response_plot.html</loc></url>
 <url><loc>/reference/scale_df.html</loc></url>
 <url><loc>/reference/section_fun.html</loc></url>
+<url><loc>/reference/set_default.html</loc></url>
 <url><loc>/reference/set_list_set_matrix.html</loc></url>
 <url><loc>/reference/shoes.html</loc></url>
 <url><loc>/reference/split_byrow_bycol.html</loc></url>

@@ -6,7 +6,7 @@
 #'
 #' @param lst A named list of data frames or tibbles.
 #' @param name A character scalar: name of the column to hold the list names (default "name").
-#'
+#' @concept data_handling
 #' @return A data frame or tibble, depending on the class of the input.
 #'
 #' @examples

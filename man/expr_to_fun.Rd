@@ -36,3 +36,4 @@ formals(ff2)$length_parm
 formals(ff2)$names_parm |> eval()
 
 }
+\concept{functional}

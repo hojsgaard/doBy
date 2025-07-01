@@ -3,12 +3,28 @@
 \docType{data}
 \name{nir_milk}
 \alias{nir_milk}
-\title{nir_milk}
+\title{Near infra red light (NIR) measurements in milk}
 \format{
-A list with two components
-x Datafrane with infra red light amount at different wavelengths (column names are the wavelengths; just remove the leading X).
-y Datafrane with response variables fat, protein,
-lactose and dm (drymatter)
+Data comes in two formats:
+
+nir_milk: A list with two components
+\itemize{
+\item x Datafrane with infra red light
+amount at different wavelengths (column names are the wavelengths;
+just remove the leading X).
+\item y Datafrane with response variables
+fat, protein, lactose and dm (drymatter)
+}
+
+NIRmilk: This data frame contains 17 rows and 158 columns.
+\itemize{
+\item The first column is the sample number.
+\item The columns named in the form \code{Xw} contains
+the transmittance (fraction of electromagnetic power)
+transmittance through the sample at wavelength \code{w}.
+\item The response variables are fat, protein, lactose and dm (dry
+matter).
+}
 }
 \usage{
 nir_milk
@@ -24,9 +40,8 @@ analysed for fat, lactose, protein and dry matter.
 \examples{
 	
 data(nir_milk)
+data(NIRmilk)
 
 }
-\seealso{
-\link{NIRmilk}
-}
+\concept{dataset}
 \keyword{datasets}

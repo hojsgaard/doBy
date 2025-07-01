@@ -3,7 +3,7 @@
 \docType{data}
 \name{income}
 \alias{income}
-\title{income data}
+\title{Income data, years of educations and ethnicity}
 \format{
 This data frame contains:
 \describe{
@@ -25,4 +25,5 @@ Variable names are as in the reference.
 Agresti, A. (2024) Statistical Methods for the Social
 Sciences, Global Edition (6th edition).  ISBN-13: 9781292449197. Table 13.1
 }
+\concept{dataset}
 \keyword{datasets}

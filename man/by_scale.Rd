@@ -43,4 +43,5 @@ scaleBy(~1, data = iris)
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
+\concept{byfunction}
 \keyword{utilities}

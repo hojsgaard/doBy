@@ -53,4 +53,5 @@ lastobs(~Pig, data=dietox)
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
+\concept{data_handling}
 \keyword{utilities}

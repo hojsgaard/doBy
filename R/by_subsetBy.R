@@ -6,7 +6,7 @@
 #'     subsets are found within each group, and the result is
 #'     collected into a data frame.
 #' @name by-subset
-#' 
+#' @concept byfunction
 ###############################################################################
 #' @param formula A right hand sided formula or a character vector of
 #'     variables to split by.

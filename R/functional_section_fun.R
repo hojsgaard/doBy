@@ -1,10 +1,100 @@
+#' Set default values in a functions arguments
+#'
+#' `set_default()` takes a function and returns a new version with
+#' updated default values for specified arguments.
+#'
+#' This is useful when you want to programmatically create specialized
+#' versions of a function with certain arguments preset to default
+#' values.
+#'
+#' @param fun A function whose arguments will get new default values.
+#' @param nms Character vector of argument names, or something coercible to that
+#'   (e.g. a call to `v()`).
+#' @param vls Optional vector or list of values to use as defaults.
+#'   If `nms` is a named list, `vls` can be `NULL`.
+#' @concept functional
+#' @return A new function with updated default values in its formals.
+#' 
+#' @details
+#' - The specified arguments will be moved to the end of the formal argument list in the returned function.
+#' - You can supply arguments as a named list or as separate names and values.
+#'
+#' @examples
+#' ## Simple example
+#' f1 <- function(x, y, z) { x + y + z }
+#'
+#' ## Add defaults for x and y
+#' set_default(f1, list(x = 1, y = 2))
+#' # function (z, x = 1, y = 2) { x + y + z }
+#'
+#' ## Same using separate vectors of names and values
+#' set_default(f1, c("x", "y"), c(1, 2))
+#'
+#' ## Works with v() style if supported
+#' # set_default(f1, v(x, y), c(1, 2))
+#'
+#' ## Another example with more arguments
+#' f2 <- function(a, b, c, d) { a + b + c + d }
+#' set_default(f2, list(b = 10, d = 5))
+#'
+#' @export
+set_default <- function(fun, nms, vls = NULL) {
+    args <- nms_vls_to_list(nms, vls)
+
+    nms <- names(args)
+    vls <- args
+
+    fmls <- formals(fun)
+
+    i <- match(nms, names(fmls))
+    j <- c(setdiff(seq_along(fmls), i), i) # new order
+
+    fmls <- fmls[j]
+    fmls[nms] <- vls
+    formals(fun) <- fmls
+    fun
+}
+
+
+
+
+
+## #' @export
+## set_default <- function(fun, nms, vls=NULL){
+
+##     args <- nms_vls_to_list(nms, vls)
+
+##     nms <- names(args)
+##     vls <- args
+    
+##     fmls <- formals(fun)
+    
+##     i <- match(nms, names(fmls))
+##     j <- c(setdiff(seq_along(fmls), i), i) # new order
+    
+##     fmls <- fmls[j]
+##     fmls[nms] <- vls
+##     formals(fun) <- fmls
+##     fun    
+## }
+
+
+
+
+
+
+
+
+
+
+
 #' @title Section a function and set default values in function
 #' 
 #' @description Section a functions domain by fixing certain
 #'     arguments of a function call.
 #'
 #' @name section_fun
-#'
+#' @concept functional 
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk} based on code
 #'   adapted from the curry package.
 #' 
@@ -88,25 +178,6 @@ NULL
 ## FIXME: If nms is a list it should be reported if not all elements
 ## of nms have names. Guess the same applies to caracas.
 
-#' @rdname section_fun
-#' @export
-set_default <- function(fun, nms, vls=NULL){
-
-    args <- nms_vls_to_list(nms, vls)
-
-    nms <- names(args)
-    vls <- args
-    
-    fmls <- formals(fun)
-    
-    i <- match(nms, names(fmls))
-    j <- c(setdiff(seq_along(fmls), i), i) # new order
-    
-    fmls <- fmls[j]
-    fmls[nms] <- vls
-    formals(fun) <- fmls
-    fun    
-}
 
 
 #' @rdname section_fun

@@ -1,11 +1,13 @@
 ## doBy
 
-Groupwise Statistics, LSmeans, Linear Contrasts, Utilities
+A utility package: Groupwise Statistics, LSmeans, Linear Contrasts, Utilities
 
 1. Facilities for working with grouped data: 'do' something to data stratified 'by' some variables.
-2. LSmeans (least-squares means), general linear contrasts. 
-3. Miscellaneous utilities
-4. Miscellaneous datasets
+2. Linear estimates and LSmeans (marginal means)
+3. Functional  programming
+4. Pipe arithmetic
+5. Flexible variable selection
+6. Miscellaneous datasets
 
 Author: Søren Højsgaard,  Ulrich Halekoh
 
@@ -21,7 +23,4 @@ https://github.com/hojsgaard/doBy
 
 https://cran.r-project.org/web/packages/doBy/index.html
 
-### Further info at:
-
-http://people.math.aau.dk/~sorenh/software/doBy/
 

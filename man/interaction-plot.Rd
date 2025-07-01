@@ -31,3 +31,4 @@ income |> interaction_plot(inc ~ race + educf, interval="boxplot")
 income |> interaction_plot(inc ~ race + educf, interval="none")
 
 }
+\concept{plotting}

@@ -12,7 +12,9 @@
 #' @param formula A formula (only the first term is used, see 'details').
 #' @param data A data frame
 #' @param \dots Currently not used
+#' @concept data_handling
 #' @return A vector.
+#' 
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @keywords utilities
 #' @examples
@@ -24,10 +26,12 @@
 #' lastobs(~Pig, data=dietox)
 #' 
 
+#' @concept data_handling
 #' @export
 #' @rdname firstlastobs
 lastobs <- function(x, ...)  UseMethod("lastobs")
 
+#' @concept data_handling
 #' @export
 #' @rdname firstlastobs
 firstobs <- function(x, ...) UseMethod("firstobs")

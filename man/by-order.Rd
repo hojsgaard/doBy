@@ -45,4 +45,5 @@ order_by(CO2, c("-conc", "Treatment"))
 Søren Højsgaard, \email{sorenh@math.aau.dk} and Kevin
 Wright
 }
+\concept{byfunction}
 \keyword{utilities}

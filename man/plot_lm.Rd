@@ -26,3 +26,4 @@ plot_lm(m1, "4x1")
 plot_lm(m1, "list")
 
 }
+\concept{plotting}

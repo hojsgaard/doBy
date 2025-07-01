@@ -44,4 +44,5 @@ head(dietox)
 coplot(Weight ~ Time | Evit * Cu, data=dietox)
 
 }
+\concept{dataset}
 \keyword{datasets}

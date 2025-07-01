@@ -19,6 +19,7 @@
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk} and Kevin
 #'     Wright
 #' @seealso \code{\link{transformBy}}, \code{\link{transform_by}}, \code{\link{splitBy}}, \code{\link{split_by}}
+#' @concept byfunction
 #' @keywords utilities
 #' @examples
 #'

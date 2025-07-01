@@ -41,4 +41,5 @@ summary(m)
 Anders Hald (1949); Statistiske Metoder; Akademisk Forlag (in
 Danish), page 509.
 }
+\concept{dataset}
 \keyword{datasets}

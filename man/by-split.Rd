@@ -78,4 +78,5 @@ splitBy(c("Treatment", "Type"), data=CO2)
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
+\concept{byfunction}
 \keyword{utilities}

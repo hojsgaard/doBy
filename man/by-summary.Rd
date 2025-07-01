@@ -98,5 +98,6 @@ summaryBy(cbind(lu=log(uptake), conc) ~ Type, data = CO2, FUN = mean)
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}
 }
+\concept{byfunction}
 \keyword{grouping}
 \keyword{summary}

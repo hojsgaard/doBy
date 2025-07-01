@@ -28,3 +28,4 @@ If \code{x} is not a data frame, \code{base::scale()} is applied directly.
 scale_df(iris)
 
 }
+\concept{data_handling}

@@ -2,15 +2,12 @@
 % Please edit documentation in R/functional_section_fun.R
 \name{section_fun}
 \alias{section_fun}
-\alias{set_default}
 \alias{section_fun_sub}
 \alias{section_fun_env}
 \alias{get_section}
 \alias{get_fun}
 \title{Section a function and set default values in function}
 \usage{
-set_default(fun, nms, vls = NULL)
-
 section_fun(fun, nms, vls = NULL, method = "args")
 
 section_fun_sub(fun, nms, vls = NULL, envir = parent.frame())
@@ -112,3 +109,4 @@ rnorm(5)
 Søren Højsgaard, \email{sorenh@math.aau.dk} based on code
 adapted from the curry package.
 }
+\concept{functional}

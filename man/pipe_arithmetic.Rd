@@ -66,3 +66,4 @@ x |>
   reciprocal()
 
 }
+\concept{pipe_arithmetic}

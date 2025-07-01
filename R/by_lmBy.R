@@ -20,7 +20,7 @@
 #'     available also in the output.
 #' @param \dots Additional arguments passed on to \code{lm()}.
 #' @return A list of lm fits.
-#'
+#' @concept byfunction
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #'
 #' @keywords models

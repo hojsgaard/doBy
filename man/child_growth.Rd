@@ -13,13 +13,6 @@ child_growth
 \description{
 dataframe with heights of 39 boys and 54 girls from
 age 1 to 18 and the ages at which they were collected.
-
-Format:
-
-gender: Gender of child
-age: Age at time of data recordning
-subject: Idenfication for each child
-height: Height of child
 }
 \details{
 Notice that the ages are not equally spaced. Data are
@@ -41,4 +34,11 @@ California boys and girls from birth to age 18", _University of
 California Publications in Child Development_, 1, 183-364.
 }\if{html}{\out{</div>}}
 }
+\concept{dataset
+Format:
+
+gender: Gender of child
+age: Age at time of data recordning
+subject: Idenfication for each child
+height: Height of child}
 \keyword{datasets}

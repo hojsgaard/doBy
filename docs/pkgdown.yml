@@ -1,5 +1,9 @@
 pandoc: 3.1.3
 pkgdown: 2.1.3
 pkgdown_sha: ~
-articles: {}
-last_built: 2025-06-30T21:04Z
+articles:
+  doby: doby.html
+  pipe_arithmetic: pipe_arithmetic.html
+  sectioning_fun: sectioning_fun.html
+  vtools: vtools.html
+last_built: 2025-07-01T07:03Z
