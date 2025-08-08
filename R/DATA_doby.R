@@ -181,6 +181,7 @@
 #' @references Box, Hunter, Hunter (2005) Statistics for Experimenters, 2nd edition Wiley, p. 81.
 #' 
 "shoes"
+"shoes_long"
 
 
 #' @title crickets data
