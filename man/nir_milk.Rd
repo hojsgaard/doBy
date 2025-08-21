@@ -3,6 +3,7 @@
 \docType{data}
 \name{nir_milk}
 \alias{nir_milk}
+\alias{NIRmilk}
 \title{Near infra red light (NIR) measurements in milk}
 \format{
 Data comes in two formats:
@@ -25,9 +26,13 @@ transmittance through the sample at wavelength \code{w}.
 \item The response variables are fat, protein, lactose and dm (dry
 matter).
 }
+
+An object of class \code{data.frame} with 17 rows and 158 columns.
 }
 \usage{
 nir_milk
+
+NIRmilk
 }
 \description{
 Near infra red light (NIR) measurements are made at

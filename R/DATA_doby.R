@@ -37,6 +37,8 @@
 #' data(NIRmilk)
 #' 
 "nir_milk"
+
+#' @rdname nir_milk
 "NIRmilk"
 
 
@@ -180,7 +182,12 @@
 #'
 #' @references Box, Hunter, Hunter (2005) Statistics for Experimenters, 2nd edition Wiley, p. 81.
 #' 
+NULL
+
+#' @rdname shoes
 "shoes"
+
+#' @rdname shoes
 "shoes_long"
 
 

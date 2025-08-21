@@ -3,6 +3,7 @@
 \docType{data}
 \name{shoes}
 \alias{shoes}
+\alias{shoes_long}
 \title{Wear of shoes}
 \format{
 This data frame contains:
@@ -12,9 +13,15 @@ This data frame contains:
 \item{boy:}{Id of boy}
 \item{footA:}{The foot with material A}
 }
+
+An object of class \code{data.frame} with 10 rows and 4 columns.
+
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 20 rows and 4 columns.
 }
 \usage{
 shoes
+
+shoes_long
 }
 \description{
 Wear of soles of shoes of materials A and B for one foot each for of ten boys.

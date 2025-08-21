@@ -13,3 +13,5 @@ vignette/figure
 ^cran-comments\.md$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+vig
+_pkgdown.yml
