@@ -46,9 +46,13 @@
 #' @description Height of a sample of math teachers in Danish high
 #'     schools collected at a continued education day at Mariager Fjord Gymnasium in 2019.
 #' @concept dataset
-#' Format:
-#' height: Height in centimeters
-#' sex: male or female
+#' @format:
+#' \describe{
+#'   \item{height}{Height in centimeters}
+#'   \item{sex}{Male or female}
+#' }
+#' 
+#' 
 #'
 #' @examples
 #'
@@ -62,12 +66,13 @@
 ##' @description dataframe with heights of 39 boys and 54 girls from
 ##'     age 1 to 18 and the ages at which they were collected.
 ##' @concept dataset
-##' Format:
-##'
-##' gender: Gender of child
-##' age: Age at time of data recordning
-##' subject: Idenfication for each child
-##' height: Height of child
+##' @format
+##' \describe{
+##'   \item{gender}{Gender of child}
+##'   \item{age}{Age at time of data recording}
+##'   \item{subject}{Identification for each child}
+##'   \item{height}{Height of child}
+##' }
 ##'
 ##'
 ##' @details Notice that the ages are not equally spaced. Data are

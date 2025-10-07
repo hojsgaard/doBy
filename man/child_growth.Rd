@@ -5,7 +5,12 @@
 \alias{child_growth}
 \title{Berkeley Growth Study data}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2883 rows and 4 columns.
+\describe{
+\item{gender}{Gender of child}
+\item{age}{Age at time of data recording}
+\item{subject}{Identification for each child}
+\item{height}{Height of child}
+}
 }
 \usage{
 child_growth
@@ -34,11 +39,5 @@ California boys and girls from birth to age 18", _University of
 California Publications in Child Development_, 1, 183-364.
 }\if{html}{\out{</div>}}
 }
-\concept{dataset
-Format:
-
-gender: Gender of child
-age: Age at time of data recordning
-subject: Idenfication for each child
-height: Height of child}
+\concept{dataset}
 \keyword{datasets}

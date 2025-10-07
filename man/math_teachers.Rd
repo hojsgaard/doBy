@@ -5,7 +5,11 @@
 \alias{math_teachers}
 \title{Height of math teachers}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 30 rows and 2 columns.
+:
+\describe{
+\item{height}{Height in centimeters}
+\item{sex}{Male or female}
+}
 }
 \usage{
 math_teachers
@@ -20,8 +24,5 @@ aggregate(height ~  sex, data=math_teachers, FUN=mean)
 aggregate(height ~  sex, data=math_teachers, FUN=function(x) {c(mean=mean(x), sd=sd(x))})
 
 }
-\concept{dataset
-Format:
-height: Height in centimeters
-sex: male or female}
+\concept{dataset}
 \keyword{datasets}
