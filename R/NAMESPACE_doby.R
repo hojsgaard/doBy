@@ -2,7 +2,8 @@
 #' @importFrom MASS ginv Null
 #'
 #' @importFrom Matrix rowMeans colMeans rowSums colSums
-#' @importFrom stats model.response model.weights rstandard rstudent residuals
+#' @importFrom stats model.response model.weights rstandard rstudent residuals tsp
+#' @importFrom forecast auto.arima Arima autoplot forecast
 #' 
 #' @importClassesFrom Matrix Matrix
 #' @importFrom Matrix Matrix sparseMatrix

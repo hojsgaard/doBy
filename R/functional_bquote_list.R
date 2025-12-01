@@ -2,7 +2,7 @@
 #'
 #' @param fun_list List of functions
 #' @concept functional 
-#' @seealso [base::bquote()], [set_default()], [section_fun()]
+#' @seealso [base::bquote()], [doBy::set_default()], [doBy::section_fun()]
 #' @examples
 #'
 #' ## Evaluate a list of functions
@@ -23,7 +23,7 @@
 #' eval(fn_list_[[1]])    ## Yes
 #' sapply(fn_list_, eval) ## Yes
 #' 
-#' @export
+#' @export 
 bquote_fun_list <- function(fun_list) {
     if (!inherits(fun_list, "list")) 
         stop("'fun_list' is not a list.")
