@@ -2,7 +2,7 @@
 title: "vtools: Flexible Variable Selection"
 author: "Søren Højsgaard"
 output:
-  html_document:
+  rmarkdown::html_vignette
     toc: true
     number_sections: true
 vignette: >

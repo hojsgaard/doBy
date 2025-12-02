@@ -1,8 +1,9 @@
-doBy v4.7.1 (Release date: )
+doBy v4.7.1 (Release date: 2025-12-01)
 =======================================
 
 * `align_coefs` added. 
 * File with pipe-friendly arithmetic added.
+* transform_forecast() function added 
 
 doBy v4.7.0 (Release date: 2025-06-29)
 =======================================

@@ -23,6 +23,7 @@ Imports:
     cowplot,
     Deriv,
     dplyr,
+    forecast,
     ggplot2,
     MASS,
     Matrix,
@@ -37,9 +38,10 @@ Suggests:
     knitr, 
     lme4,	   
     markdown,
+    rmarkdown,
     multcomp,
     pbkrtest (>= 0.5.2),
     survival,
     testthat (>= 2.1.0)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)

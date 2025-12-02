@@ -131,7 +131,11 @@
 #'                             nsim = 20, level = 95, y0 = 1)
 #'   plot(fc_lynx)
 #'   forecast::autoplot(fc_lynx) + ggplot2::theme_minimal()
+#' }
 #'
+#'
+#' \dontrun{
+#' if (requireNamespace("forecast", quietly = TRUE)) {
 #' ## Example 2 (variation): CO2 series, log-transform
 #'   lco2    <- log(co2)
 #'   fit_co2 <- forecast::auto.arima(lco2)
@@ -144,7 +148,7 @@
 #'   forecast::autoplot(fc_co2) + ggplot2::theme_minimal()
 #' }
 #' 
-#' \dontrun{
+
 #' # ## Example 3: Percentage change in income (uschange$Income)
 #' if (requireNamespace("forecast", quietly = TRUE) &&
 #'     requireNamespace("fpp2", quietly = TRUE)) {

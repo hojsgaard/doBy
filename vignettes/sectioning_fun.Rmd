@@ -2,12 +2,11 @@
 title: "Functional programming: Sectioning function to a smaller domain"
 author: "Søren Højsgaard"
 output: 
-  html_document:
+  rmarkdown::html_vignette
     toc: true
     number_sections: true
 vignette: >
   %\VignetteIndexEntry{section_fun: Section functions to a smaller domain}
-  %\VignettePackage{doBy}
   %\VignetteEngine{knitr::knitr}
   %\VignetteEncoding{UTF-8}
 ---
