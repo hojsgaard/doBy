@@ -4,10 +4,17 @@
 \alias{transform_forecast}
 \title{Transform forecasts from model scale to data scale by simulation}
 \usage{
-transform_forecast(fc_object, trans_fun, nsim = 2000L, level = 95, y0 = 1)
+transform_forecast(
+  fc,
+  trans_fun,
+  xreg_future = NULL,
+  nsim = 1000,
+  level = 95,
+  y0 = 1
+)
 }
 \arguments{
-\item{fc_object}{A \code{"forecast"} object (from the \pkg{forecast} package)
+\item{fc}{A \code{"forecast"} object (from the \pkg{forecast} package)
 for a univariate time series, typically obtained via
 \code{forecast::forecast()}.}
 
@@ -15,6 +22,8 @@ for a univariate time series, typically obtained via
 that takes a numeric vector \code{x} on the model scale and a scalar
 starting value \code{y0} on the output scale and returns a numeric vector
 of the same length on the output scale.}
+
+\item{xreg_future}{Optional matrix or vector of future values for regressors in ARMAX model.}
 
 \item{nsim}{Integer; number of simulated future paths to use. Larger
 values give smoother prediction intervals but take longer to compute.}
@@ -73,8 +82,7 @@ if (requireNamespace("forecast", quietly = TRUE)) {
     exp(z)
   }
   fc_lynx <- transform_forecast(fc_log, trans_fun = trans_log,
-                            nsim = 20, level = 95, y0 = 1)
-  plot(fc_lynx)
+                            nsim = 20)
   forecast::autoplot(fc_lynx) + ggplot2::theme_minimal()
 }
 
@@ -89,28 +97,58 @@ if (requireNamespace("forecast", quietly = TRUE)) {
   trans_log <- function(z, y0) exp(z)
 
   fc_co2 <- transform_forecast(fc_log_co2, trans_fun = trans_log,
-                           nsim = 20, level = 95, y0 = 1)
+                         nsim = 30)
   forecast::autoplot(fc_co2) + ggplot2::theme_minimal()
 }
 
-# ## Example 3: Percentage change in income (uschange$Income)
-if (requireNamespace("forecast", quietly = TRUE) &&
+# ## Example 3: Percentage change in income and consumption
     requireNamespace("fpp2", quietly = TRUE)) {
   income <- uschange[, "Income"]  # quarterly percentage changes (\%)
+  consumption <- uschange[, "Consumption"]  # quarterly percentage changes (\%)
 
-  ## transformation: pct change -> index with base 1
+ forecast::checkresiduals(income)
+ forecast::checkresiduals(consumption)
+ 
   trans_pct <- function(r, y0) {
-    y0 * cumprod(1 + r / 100)
-  }
+  y0 * cumprod(1 + r / 100)
+}
 
-  fit_pct <- forecast::auto.arima(income)
-  fc_pct  <- forecast::forecast(fit_pct, h = 24)
-  forecast::autoplot(fc_pct)
-  fc_idx  <- transform_forecast(fc_pct, trans_fun = trans_pct,
-                            nsim = 200, level = 95, y0 = 1)
+## ARIMA model for income
+fit_income_pct <- forecast::auto.arima(income)
+fit_income_pct
 
-  plot(fc_idx)
-  forecast::autoplot(fc_idx) + ggplot2::theme_minimal()
+fc_income_pct  <- forecast::forecast(fit_income_pct, h = 48)
+forecast::autoplot(fc_income_pct)
+
+ fc_income  <- transform_forecast(fc_income_pct, trans_fun = trans_pct,
+                           nsim = 200, level = 95, y0 = 1)
+ forecast::autoplot(fc_income) + ggplot2::theme_minimal()
+ 
+ ## ARIMA model for consumption
+
+ fit_cons_pct0 <- forecast::auto.arima(consumption, seasonal = F)
+ fit_cons_pct0
+ fc_cons_pct0  <- forecast::forecast(fit_cons_pct0, h = 48)
+ 
+ fc_cons0  <- transform_forecast(fc_cons_pct0, trans_fun = trans_pct, 
+                                nsim = 200, level = 95, y0 = 1)
+ forecast::autoplot(fc_cons0)
+ 
+ ## ARIMAX model for consumption with income as xreg
+  
+ fit_cons_pct <- forecast::auto.arima(consumption, xreg = income)
+ fit_cons_pct
+ 
+ fc_income_pct$mean |> head()
+ 
+ fc_cons_pct  <- forecast::forecast(fit_cons_pct, h = 48, xreg = fc_income_pct$mean)
+ forecast::autoplot(fc_cons_pct)
+ 
+ fc_cons  <- transform_forecast(fc_cons_pct, trans_fun = trans_pct, xreg_future = fc_income$mean, 
+                                nsim = 200, level = 95, y0 = 1)
+ forecast::autoplot(fc_cons)
+
+#'  
  }
  }
  

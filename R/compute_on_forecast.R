@@ -92,13 +92,14 @@
 #' the simulated paths. The result is returned as a new `"forecast"` object
 #' with `x`, `mean`, `lower`, and `upper` on the output scale.
 #'
-#' @param fc_object A `"forecast"` object (from the \pkg{forecast} package)
+#' @param fc A `"forecast"` object (from the \pkg{forecast} package)
 #'   for a univariate time series, typically obtained via
 #'   \code{forecast::forecast()}.
 #' @param trans_fun A function of the form \code{function(x, y0) ...}
 #'   that takes a numeric vector `x` on the model scale and a scalar
 #'   starting value `y0` on the output scale and returns a numeric vector
 #'   of the same length on the output scale.
+#' @param xreg_future Optional matrix or vector of future values for regressors in ARMAX model. 
 #' @param nsim Integer; number of simulated future paths to use. Larger
 #'   values give smoother prediction intervals but take longer to compute.
 #' @param level Numeric; prediction interval coverage in percent.
@@ -128,8 +129,7 @@
 #'     exp(z)
 #'   }
 #'   fc_lynx <- transform_forecast(fc_log, trans_fun = trans_log,
-#'                             nsim = 20, level = 95, y0 = 1)
-#'   plot(fc_lynx)
+#'                             nsim = 20)
 #'   forecast::autoplot(fc_lynx) + ggplot2::theme_minimal()
 #' }
 #'
@@ -144,103 +144,170 @@
 #'   trans_log <- function(z, y0) exp(z)
 #'
 #'   fc_co2 <- transform_forecast(fc_log_co2, trans_fun = trans_log,
-#'                            nsim = 20, level = 95, y0 = 1)
+#'                          nsim = 30)
 #'   forecast::autoplot(fc_co2) + ggplot2::theme_minimal()
-#' }
-#' 
-
-#' # ## Example 3: Percentage change in income (uschange$Income)
-#' if (requireNamespace("forecast", quietly = TRUE) &&
+#'}
+#'
+#' # ## Example 3: Percentage change in income and consumption
+#if (requireNamespace("forecast", quietly = TRUE) &&
 #'     requireNamespace("fpp2", quietly = TRUE)) {
 #'   income <- uschange[, "Income"]  # quarterly percentage changes (%)
+#'   consumption <- uschange[, "Consumption"]  # quarterly percentage changes (%)
 #' 
-#'   ## transformation: pct change -> index with base 1
+#'  forecast::checkresiduals(income)
+#'  forecast::checkresiduals(consumption)
+#'  
 #'   trans_pct <- function(r, y0) {
-#'     y0 * cumprod(1 + r / 100)
-#'   }
+#'   y0 * cumprod(1 + r / 100)
+#' }
 #' 
-#'   fit_pct <- forecast::auto.arima(income)
-#'   fc_pct  <- forecast::forecast(fit_pct, h = 24)
-#'   forecast::autoplot(fc_pct)
-#'   fc_idx  <- transform_forecast(fc_pct, trans_fun = trans_pct,
-#'                             nsim = 200, level = 95, y0 = 1)
+#' ## ARIMA model for income
+#' fit_income_pct <- forecast::auto.arima(income)
+#' fit_income_pct
+#'
+#' fc_income_pct  <- forecast::forecast(fit_income_pct, h = 48)
+#' forecast::autoplot(fc_income_pct)
 #' 
-#'   plot(fc_idx)
-#'   forecast::autoplot(fc_idx) + ggplot2::theme_minimal()
+#'  fc_income  <- transform_forecast(fc_income_pct, trans_fun = trans_pct,
+#'                            nsim = 200, level = 95, y0 = 1)
+#'  forecast::autoplot(fc_income) + ggplot2::theme_minimal()
+#'  
+#'  ## ARIMA model for consumption
+#' 
+#'  fit_cons_pct0 <- forecast::auto.arima(consumption, seasonal = F)
+#'  fit_cons_pct0
+#'  fc_cons_pct0  <- forecast::forecast(fit_cons_pct0, h = 48)
+#'  
+#'  fc_cons0  <- transform_forecast(fc_cons_pct0, trans_fun = trans_pct, 
+#'                                 nsim = 200, level = 95, y0 = 1)
+#'  forecast::autoplot(fc_cons0)
+#'  
+#'  ## ARIMAX model for consumption with income as xreg
+#'   
+#'  fit_cons_pct <- forecast::auto.arima(consumption, xreg = income)
+#'  fit_cons_pct
+#'  
+#'  fc_income_pct$mean |> head()
+#'  
+#'  fc_cons_pct  <- forecast::forecast(fit_cons_pct, h = 48, 
+#'                  xreg = fc_income_pct$mean)
+#'  forecast::autoplot(fc_cons_pct)
+#'  
+#'  fc_cons  <- transform_forecast(fc_cons_pct, trans_fun = trans_pct, 
+#'                                 xreg_future = fc_income$mean, 
+#'                                 nsim = 200, level = 95, y0 = 1)
+#'  forecast::autoplot(fc_cons)
+#' 
+#' #'  
 #'  }
 #'  }
 #'  
 #' @export
-transform_forecast <- function(fc_object, trans_fun,
-                           nsim = 2000L, level = 95, y0 = 1) {
+transform_forecast <- function(fc,
+                               trans_fun,          # e.g. trans_pct
+                               xreg_future = NULL,
+                               nsim        = 1000,
+                               level       = 95,
+                               y0          = 1    # baseline index level
+                               ) {
 
-  ## Input validation (same as before, but allow y_hist = NULL)
-  .check_forecast_input(fc_object, trans_fun, y0, level)
+  if (!inherits(fc, "forecast"))
+    stop("'fc' must be an object of class 'forecast'")
 
-  d <- fc_object$x
-  h <- length(fc_object$mean)
+  fit <- fc$model
+  if (!inherits(fit, "Arima"))
+    stop("'fc$model' must be an 'Arima' object from forecast::Arima()")
 
-  # ## 0) Historical series on output scale
-  # if (is.null(y_hist)) {
-  #   # reconstruct from model-scale data and y0
-  #   y_hist <- trans_fun(as.numeric(d), y0)
-  #   attributes(y_hist) <- attributes(d)
-  # } else {
-  #   # user-supplied; basic sanity check
-  #   if (!is.numeric(y_hist) || is.null(tsp(y_hist)))
-  #     stop("`y_hist` must be a numeric 'ts' object.", call. = FALSE)
-  # }
+  h <- length(fc$mean)
 
-  
-  ## 0) Historical series on output scale
-  y_hist <- trans_fun(as.numeric(d), y0)
-  attributes(y_hist) <- attributes(d)
+  ## --- Construct index for the observed data -----------------------------
 
-  
-  ## last historical value on output scale
-  Y_last <- as.numeric(utils::tail(y_hist, 1))
+  # fc$x is the historical percentage-change series r_t
+  r_hist <- as.numeric(fc$x)
 
-  ## 1) Simulated future on model scale
-  sim_mat <- replicate(
-    nsim,
-    stats::simulate(fc_object$model, nsim = h, future = TRUE)
-  )
+  # Index for history based at y0 (e.g. 1):
+  # y_t = y0 * cumprod(1 + r_t/100)
+  y_hist <- trans_fun(r_hist, y0 = y0)
 
+  # Last historical index level
+  y_last <- tail(y_hist, 1)
+##  cat("Last historical index level (y_last): ", y_last, "\n")
 
-  
-  ## 2) Transform each path to output scale, anchored at Y_last
-  level_mat <- apply(sim_mat, 2, trans_fun, y0 = Y_last)
-  level_mat
-  
-  ## 3) Mean and prediction interval
-  mean_level  <- rowMeans(level_mat)
-  level
-  alpha       <- (100 - level) / 200
-  alpha
+  ## --- xreg handling -----------------------------------------------------
+  model_has_xreg <- !is.null(fit$xreg)
 
-    lower_level <- apply(level_mat, 1, stats::quantile, probs = alpha)
-  upper_level <- apply(level_mat, 1, stats::quantile, probs = 1 - alpha)
+  if (model_has_xreg && is.null(xreg_future)) {
+    stop("Model was fitted with xreg; you must supply 'xreg_future'.")
+  }
 
-  upper_level
-  lower_level
-  
-  
-  
-  ## 4) ts objects on same time scale as original forecast
-  freq     <- stats::frequency(fc_object$mean)
-  start_fc <- stats::start(fc_object$mean)
+  if (!model_has_xreg && !is.null(xreg_future)) {
+    warning("Model was fitted without xreg; 'xreg_future' will be ignored.")
+    xreg_future <- NULL
+  }
 
-  mean_ts  <- stats::ts(mean_level,  start = start_fc, frequency = freq)
-  lower_ts <- stats::ts(lower_level, start = start_fc, frequency = freq)
-  upper_ts <- stats::ts(upper_level, start = start_fc, frequency = freq)
+  if (!is.null(xreg_future)) {
+    xreg_future <- as.matrix(xreg_future)
+    if (nrow(xreg_future) != h) {
+      stop("nrow(xreg_future) must equal forecast horizon h = ", h,
+           ", but is ", nrow(xreg_future), ".")
+    }
+  }
 
-  ## 5) New forecast object
-  fc_new        <- fc_object
-  fc_new$x      <- y_hist
-  fc_new$mean   <- mean_ts
+  ## --- Levels for prediction intervals ----------------------------------
+  level <- sort(as.numeric(level))
+  if (any(level <= 0 | level >= 100))
+    stop("'level' must be between 0 and 100")
+
+  ## --- Simulate future percentage changes and backtransform -------------
+  sim_mat <- replicate(nsim, {
+    r_sim <- if (is.null(xreg_future)) {
+      simulate(fit, nsim = h, future = TRUE)
+    } else {
+      simulate(fit, nsim = h, future = TRUE, xreg = xreg_future)
+    }
+
+    r_sim <- as.numeric(r_sim)
+
+    # Backtransform: future index starting from *last observed* index level
+    trans_fun(r_sim, y0 = y_last)
+  })
+
+  # h x nsim matrix of index values
+  mean_fc <- rowMeans(sim_mat)
+
+  alpha <- (100 - level) / 200
+  probs <- rbind(alpha, 1 - alpha)
+  lower <- upper <- matrix(NA_real_, nrow = h, ncol = length(level))
+  for (j in seq_along(level)) {
+    q <- apply(sim_mat, 1, quantile, probs = probs[, j])
+    lower[, j] <- q[1, ]
+    upper[, j] <- q[2, ]
+  }
+  colnames(lower) <- colnames(upper) <- paste0(level, "%")
+
+  ## --- Time structure ----------------------------------------------------
+  x_old   <- fc$x
+  mean_ts <- fc$mean
+
+  # ts for history index
+  y_hist_ts <- ts(y_hist,
+                  start     = start(x_old),
+                  frequency = frequency(x_old))
+
+  # ts for forecast mean
+  mean_bt <- ts(mean_fc,
+                start     = start(mean_ts),
+                frequency = frequency(mean_ts))
+
+  ## --- Build new forecast object ----------------------------------------
+  fc_new        <- fc
+  fc_new$x      <- y_hist_ts     # history on index/“absolute” scale
+  fc_new$mean   <- mean_bt       # back-transformed forecasts
+  fc_new$lower  <- lower
+  fc_new$upper  <- upper
   fc_new$level  <- level
-  fc_new$lower  <- stats::setNames(cbind(lower_ts), paste0(level, "%"))
-  fc_new$upper  <- stats::setNames(cbind(upper_ts), paste0(level, "%"))
+  fc_new$method <- paste0(fc$method,
+                          " (back-transformed from % changes via simulation)")
 
   fc_new
 }
@@ -248,6 +315,345 @@ transform_forecast <- function(fc_object, trans_fun,
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# transform_forecast <- function(fc,
+#                                trans_fun,
+#                                nsim        = 1000,
+#                                level       = 95,
+#                                y0          = 1,
+#                                xreg_future = NULL,
+#                                backtransform_x = TRUE) {
+#   # fc: forecast object from forecast::forecast(Arima(...))
+#   # trans_fun: inverse transformation, applied ELEMENTWISE
+#   #            (vector in, same-length vector out), e.g. exp, or function(z,y0) y0*exp(z)
+#   # nsim: number of simulated paths
+#   # level: numeric vector of confidence levels (e.g. 95 or c(80,95))
+#   # y0: passed to trans_fun
+#   # xreg_future: future xreg values (matrix or vector) for horizon h
+#   # backtransform_x: if TRUE, also backtransform fc$x (and fc$fitted if present)
+# 
+#   if (!inherits(fc, "forecast"))
+#     stop("'fc' must be an object of class 'forecast'")
+# 
+#   fit <- fc$model
+#   if (!inherits(fit, "Arima"))
+#     stop("'fc$model' must be an 'Arima' object from the forecast package")
+# 
+#   # Forecast horizon
+#   h <- length(fc$mean)
+# 
+#   # Did the model use xreg when fitted?
+#   model_has_xreg <- !is.null(fit$xreg)
+# 
+#   # --- xreg_future checks ---------------------------------------------------
+#   if (model_has_xreg && is.null(xreg_future)) {
+#     stop("This ARIMA model was fitted with xreg, so you must supply 'xreg_future'.")
+#   }
+# 
+#   if (!model_has_xreg && !is.null(xreg_future)) {
+#     warning("Model was fitted without xreg; 'xreg_future' will be ignored.")
+#     xreg_future <- NULL
+#   }
+# 
+#   if (!is.null(xreg_future)) {
+#     xreg_future <- as.matrix(xreg_future)
+#     if (nrow(xreg_future) != h) {
+#       stop("nrow(xreg_future) must equal forecast horizon h = ", h,
+#            ", but is ", nrow(xreg_future), ".")
+#     }
+#   }
+# 
+#   # --- level checks ---------------------------------------------------------
+#   level <- sort(as.numeric(level))
+#   if (any(level <= 0 | level >= 100))
+#     stop("'level' must be between 0 and 100")
+# 
+#   y_hist  <- trans_fun(as.numeric(fc$x), y0 = y0)
+#   y_last  <- tail(y_hist, 1)
+#   
+#   
+#     # --- Simulate on model (transformed) scale and backtransform -------------
+#   sim_mat <- replicate(nsim, {
+#     z_sim <- if (is.null(xreg_future)) {
+#       simulate(fit, nsim = h, future = TRUE)
+#     } else {
+#       simulate(fit, nsim = h, future = TRUE, xreg = xreg_future)
+#     }
+# 
+#     # Backtransform simulated path to original scale
+# ##    trans_fun(as.numeric(z_sim), y0 = y0)
+#         trans_fun(as.numeric(z_sim), y0 = y0) + y_last
+#   })
+# 
+#   # sim_mat: h x nsim on ORIGINAL scale
+#   mean_fc <- rowMeans(sim_mat)
+# 
+#   # lower/upper for each level
+#   alpha <- (100 - level) / 200
+#   probs <- rbind(alpha, 1 - alpha)
+# 
+#   lower <- upper <- matrix(NA_real_, nrow = h, ncol = length(level))
+#   for (j in seq_along(level)) {
+#     q <- apply(sim_mat, 1, quantile, probs = probs[, j])
+#     lower[, j] <- q[1, ]
+#     upper[, j] <- q[2, ]
+#   }
+#   colnames(lower) <- colnames(upper) <- paste0(level, "%")
+# 
+#   # Preserve time index from fc$mean
+#   mean_ts <- fc$mean
+#   mean_bt <- ts(mean_fc,
+#                 start     = start(mean_ts),
+#                 frequency = frequency(mean_ts))
+# 
+#   # --- Build new forecast object -------------------------------------------
+#   fc_new <- fc
+#   fc_new$mean  <- mean_bt
+#   fc_new$lower <- lower
+#   fc_new$upper <- upper
+#   fc_new$level <- level
+# 
+#   # Optionally backtransform history and fitted values as well
+#   if (backtransform_x && !is.null(fc$x)) {
+#     x_old <- fc$x
+#     x_bt  <- trans_fun(as.numeric(x_old), y0 = y0)
+#     fc_new$x <- ts(x_bt,
+#                    start     = start(x_old),
+#                    frequency = frequency(x_old))
+#   }
+# 
+#   if (backtransform_x && !is.null(fc$fitted)) {
+#     f_old <- fc$fitted
+#     f_bt  <- trans_fun(as.numeric(f_old), y0 = y0)
+#     fc_new$fitted <- ts(f_bt,
+#                         start     = start(f_old),
+#                         frequency = frequency(f_old))
+#   }
+# 
+#   fc_new$method <- paste0(fc$method, " (back-transformed via simulation)")
+#   fc_new
+# }
+
+
+
+
+
+# transform_forecast <- function(fc,
+#                                trans_fun,
+#                                nsim        = 1000,
+#                                level       = 95,
+#                                y0          = 1,
+#                                xreg_future = NULL) {
+#   # fc: forecast object from forecast::forecast(Arima(...))
+#   # trans_fun: function(z, y0) returning back-transformed vector
+#   # nsim: number of simulated paths
+#   # level: numeric vector of confidence levels, e.g. 95 or c(80, 95)
+#   # y0: parameter passed to trans_fun
+#   # xreg_future: future xreg (matrix / vector) for the forecast horizon
+# 
+#   if (!inherits(fc, "forecast"))
+#     stop("'fc' must be an object of class 'forecast'")
+# 
+#   fit <- fc$model
+#   if (!inherits(fit, "Arima"))
+#     stop("'fc$model' must be an 'Arima' object from the forecast package")
+# 
+#   # Forecast horizon
+#   h <- length(fc$mean)
+# 
+#   # Did the model use xreg when fitted?
+#   model_has_xreg <- !is.null(fit$xreg)
+# 
+#   # --- Check xreg_future consistency ---------------------------------------
+#   if (model_has_xreg && is.null(xreg_future)) {
+#     stop("This ARIMA model was fitted with xreg, ",
+#          "so you must supply 'xreg_future'.")
+#   }
+# 
+#   if (!model_has_xreg && !is.null(xreg_future)) {
+#     warning("Model was fitted without xreg; 'xreg_future' will be ignored.")
+#     xreg_future <- NULL
+#   }
+# 
+#   if (!is.null(xreg_future)) {
+#     xreg_future <- as.matrix(xreg_future)
+#     if (nrow(xreg_future) != h) {
+#       stop("nrow(xreg_future) must equal forecast horizon h = ", h,
+#            ", but is ", nrow(xreg_future), ".")
+#     }
+#   }
+# 
+#   # Ensure 'level' is a numeric vector
+#   level <- sort(as.numeric(level))
+#   if (any(level <= 0 | level >= 100))
+#     stop("'level' must be between 0 and 100")
+# 
+#   # --- Simulation on model scale -------------------------------------------
+#   # Each column of sim_mat is one simulated path on ORIGINAL (model) scale
+#   sim_mat <- replicate(nsim, {
+#     if (is.null(xreg_future)) {
+#       z <- simulate(fit, nsim = h, future = TRUE)
+#     } else {
+#       z <- simulate(fit, nsim = h, future = TRUE, xreg = xreg_future)
+#     }
+#     # Back-transform this simulated path
+#     trans_fun(z, y0 = y0)
+#   })
+# 
+#   # sim_mat: h x nsim matrix on transformed-back scale
+#   # --- Compute summary stats -----------------------------------------------
+#   mean_fc <- rowMeans(sim_mat)
+# 
+#   # Build lower/upper matrices for each level
+#   alpha  <- (100 - level) / 200
+#   probs  <- rbind(alpha, 1 - alpha)  # 2 x L
+# 
+#   lower <- upper <- matrix(NA_real_, nrow = h, ncol = length(level))
+#   for (j in seq_along(level)) {
+#     q <- apply(sim_mat, 1, quantile, probs = probs[, j])
+#     lower[, j] <- q[1, ]
+#     upper[, j] <- q[2, ]
+#   }
+# 
+#   # Preserve ts attributes for mean
+#   mean_ts <- fc$mean
+#   mean_bt <- ts(mean_fc,
+#                 start     = stats::start(mean_ts),
+#                 frequency = stats::frequency(mean_ts))
+# 
+#   # lower/upper as matrices with ts attributes if you like
+#   colnames(lower) <- colnames(upper) <- paste0(level, "%")
+# 
+#   # --- Construct new forecast object --------------------------------------
+#   fc_new <- fc
+#   fc_new$mean  <- mean_bt
+#   fc_new$lower <- lower
+#   fc_new$upper <- upper
+#   fc_new$level <- level
+# 
+#   # Optionally back-transform the historical series as well:
+#   # (comment out if you prefer to leave fc$x as is)
+# #  if (!is.null(fc$x)) {
+# #    fc_new$x <- trans_fun(fc$x, y0 = y0)
+# #  }
+# 
+# #   if (!is.null(fc$x)) {
+# #   x_old <- fc$x
+# #   fc_new$x <- ts(
+# #     trans_fun(as.numeric(x_old), y0 = y0),
+# #     start     = start(x_old),
+# #     frequency = frequency(x_old)
+# #   )
+# # }
+# 
+#   fc_new$method <- paste0(fc$method, " (back-transformed via simulation)")
+# 
+#   fc_new
+# }
+
+
+
+
+
+
+#' #' @export
+#' transform_forecast <- function(fc_object, trans_fun,
+#'                            nsim = 2000L, level = 95, y0 = 1, xreg_future=NULL) {
+#' 
+#'   ## Input validation (same as before, but allow y_hist = NULL)
+#'   .check_forecast_input(fc_object, trans_fun, y0, level)
+#' 
+#'   d <- fc_object$x
+#'   h <- length(fc_object$mean)
+#' 
+#'   # ## 0) Historical series on output scale
+#'   # if (is.null(y_hist)) {
+#'   #   # reconstruct from model-scale data and y0
+#'   #   y_hist <- trans_fun(as.numeric(d), y0)
+#'   #   attributes(y_hist) <- attributes(d)
+#'   # } else {
+#'   #   # user-supplied; basic sanity check
+#'   #   if (!is.numeric(y_hist) || is.null(tsp(y_hist)))
+#'   #     stop("`y_hist` must be a numeric 'ts' object.", call. = FALSE)
+#'   # }
+#' 
+#'   
+#'   ## 0) Historical series on output scale
+#'   y_hist <- trans_fun(as.numeric(d), y0)
+#'   attributes(y_hist) <- attributes(d)
+#' 
+#'   
+#'   ## last historical value on output scale
+#'   Y_last <- as.numeric(utils::tail(y_hist, 1))
+#' 
+#'   ## 1) Simulated future on model scale
+#'   sim_mat <- replicate(
+#'     nsim,
+#'     stats::simulate(fc_object$model, nsim = h, future = TRUE)
+#'   )
+#' 
+#' 
+#'   
+#'   ## 2) Transform each path to output scale, anchored at Y_last
+#'   level_mat <- apply(sim_mat, 2, trans_fun, y0 = Y_last)
+#'   level_mat
+#'   
+#'   ## 3) Mean and prediction interval
+#'   mean_level  <- rowMeans(level_mat)
+#'   level
+#'   alpha       <- (100 - level) / 200
+#'   alpha
+#' 
+#'     lower_level <- apply(level_mat, 1, stats::quantile, probs = alpha)
+#'   upper_level <- apply(level_mat, 1, stats::quantile, probs = 1 - alpha)
+#' 
+#'   upper_level
+#'   lower_level
+#'   
+#'   
+#'   
+#'   ## 4) ts objects on same time scale as original forecast
+#'   freq     <- stats::frequency(fc_object$mean)
+#'   start_fc <- stats::start(fc_object$mean)
+#' 
+#'   mean_ts  <- stats::ts(mean_level,  start = start_fc, frequency = freq)
+#'   lower_ts <- stats::ts(lower_level, start = start_fc, frequency = freq)
+#'   upper_ts <- stats::ts(upper_level, start = start_fc, frequency = freq)
+#' 
+#'   ## 5) New forecast object
+#'   fc_new        <- fc_object
+#'   fc_new$x      <- y_hist
+#'   fc_new$mean   <- mean_ts
+#'   fc_new$level  <- level
+#'   fc_new$lower  <- stats::setNames(cbind(lower_ts), paste0(level, "%"))
+#'   fc_new$upper  <- stats::setNames(cbind(upper_ts), paste0(level, "%"))
+#' 
+#'   fc_new
+#' }
+#' 
+#' 
+#' 
+#' 
 
 
 

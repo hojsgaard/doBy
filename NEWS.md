@@ -1,7 +1,8 @@
-doBy v4.7.2 (Release date: 2025-12-02)
+doBy v4.7.2 (Release date: 2025-12-04)
 =======================================
 
 * lag_data() added
+* transform_forecast() expanded
 
 doBy v4.7.1 (Release date: 2025-12-01)
 =======================================
