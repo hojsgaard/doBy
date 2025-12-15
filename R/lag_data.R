@@ -23,7 +23,7 @@
 #'   have the same length as `y` (when `y` is supplied).
 #' @param lags Integer vector of lags to include. The default `lags = 0`
 #'   means that only the contemporaneous regressor is used. For example,
-#'   `lags = 0:2` gives columns corresponding to \(x_t, x_{t-1}, x_{t-2}\).
+#'   `lags = 0:2` gives columns corresponding to (x(t), x(t-1), x(t-2)).
 #' @param include_intercept Logical; if `TRUE` (default) an intercept
 #'   column named `"Intercept"` is prepended to the design matrix.
 #' @param preserve_ts Logical; if `TRUE` and `y` is a `ts` object, the

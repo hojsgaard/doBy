@@ -141,10 +141,12 @@ forecast::autoplot(fc_income_pct)
  
  fc_income_pct$mean |> head()
  
- fc_cons_pct  <- forecast::forecast(fit_cons_pct, h = 48, xreg = fc_income_pct$mean)
+ fc_cons_pct  <- forecast::forecast(fit_cons_pct, h = 48, 
+                 xreg = fc_income_pct$mean)
  forecast::autoplot(fc_cons_pct)
  
- fc_cons  <- transform_forecast(fc_cons_pct, trans_fun = trans_pct, xreg_future = fc_income$mean, 
+ fc_cons  <- transform_forecast(fc_cons_pct, trans_fun = trans_pct, 
+                                xreg_future = fc_income$mean, 
                                 nsim = 200, level = 95, y0 = 1)
  forecast::autoplot(fc_cons)
 

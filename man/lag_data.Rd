@@ -31,7 +31,7 @@ have the same length as \code{y} (when \code{y} is supplied).}
 
 \item{lags}{Integer vector of lags to include. The default \code{lags = 0}
 means that only the contemporaneous regressor is used. For example,
-\code{lags = 0:2} gives columns corresponding to \(x_t, x_{t-1}, x_{t-2}\).}
+\code{lags = 0:2} gives columns corresponding to (x(t), x(t-1), x(t-2)).}
 
 \item{include_intercept}{Logical; if \code{TRUE} (default) an intercept
 column named \code{"Intercept"} is prepended to the design matrix.}
