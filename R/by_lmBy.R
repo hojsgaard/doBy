@@ -28,6 +28,7 @@
 #' 
 #' lm_lst <- lmBy(1 / uptake ~ log(conc) | Treatment, data=CO2)
 #' coef(lm_lst)
+#' coef(lm_lst, augment=TRUE)
 #' 
 #' fitted(lm_lst)
 #' residuals(lm_lst)
@@ -35,6 +36,12 @@
 #' summary(lm_lst)
 #' coef(summary(lm_lst))
 #' coef(summary(lm_lst), simplify=TRUE)
+#'
+#' lm_lst2 <- lmBy(1 / uptake ~ log(conc) | Treatment,
+#'      id = ~Plant + Type, data=CO2)
+#'
+#' coef(lm_lst2)
+#' coef(lm_lst2, augment=TRUE)
 #' 
 #' @export
 #' @rdname by-lmby
@@ -73,6 +80,7 @@ lmBy <- function(formula., data., id=NULL, ...){
 
   id.data <- do.call(rbind, lapply(group_data,
                                    function(wd) {
+                                       ## Picks the first row.
                                        wd[1, id.vars, drop=FALSE]
                                    }))
   

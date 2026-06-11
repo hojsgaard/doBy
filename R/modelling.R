@@ -1,26 +1,25 @@
 #' Align and combine fixed-effect coefficients from multiple models
 #'
-#' @description
-#' Extracts and aligns the fixed-effect estimates from a list of fitted model objects,
-#' returning them in a single tidy data frame with consistent columns for easy comparison.
-#' Works with a mix of model types such as `lm`, `glm`, `gls`, `lmer`, etc.
+#' @description Extracts and aligns the fixed-effect estimates from a
+#'     list of fitted model objects, returning them in a single tidy
+#'     data frame with consistent columns for easy comparison.  Works
+#'     with a mix of model types such as `lm`, `glm`, `gls`, `lmer`,
+#'     etc.
 #' 
-#' For models without p-values (e.g., `lmer`), the function computes approximate
-#' Wald statistics and two-sided normal p-values.
+#' For models without p-values (e.g., `lmer`), the function computes
+#' approximate Wald statistics and two-sided normal p-values.
 #'
-#' @param models A named list of fitted model objects. Each element should be a
-#' model that can be passed to `broom::tidy()`.
+#' @param models A named list of fitted model objects. Each element
+#'     should be a model that can be passed to `broom::tidy()`.
 #'
 #' @return A tibble with columns:
-#' \describe{
-#'   \item{model}{The name of the model (from the list).}
-#'   \item{term}{The term name (coefficient).}
-#'   \item{estimate}{The estimated coefficient.}
-#'   \item{std.error}{The standard error.}
-#'   \item{statistic}{The Wald statistic (estimate / std.error).}
-#'   \item{p.value}{Two-sided normal p-value.}
-#' }
-#'
+#' - `model`: Model name.
+#' - `term`: Coefficient name.
+#' - `estimate`: Estimated coefficient.
+#' - `std.error`: Standard error.
+#' - `statistic`: Wald statistic (`estimate / std.error`).
+#' - `p.value`: Two-sided normal p-value.
+#' 
 #'
 #' @examples
 #' # Example using the built-in CO2 dataset
@@ -28,7 +27,8 @@
 #'
 #' # Fit models
 #' lm_fit  <- lm(uptake ~ conc + Type + Treatment, data = CO2)
-#' glm_fit <- glm(uptake ~ conc + Type + Treatment, family = Gamma(identity), data = CO2)
+#' glm_fit <- glm(uptake ~ conc + Type + Treatment,
+#'   family = Gamma(identity), data = CO2)
 #'
 #' # Combine estimates
 #' models_list <- list(lm = lm_fit, glm = glm_fit)
@@ -38,6 +38,7 @@
 #' @importFrom purrr imap_dfr
 #' @export
 align_coefs <- function(models) {
+  
   purrr::imap_dfr(models, function(mod, label) {
     out <- broom::tidy(mod)
     
@@ -54,50 +55,78 @@ align_coefs <- function(models) {
     # Compute missing statistic and p.value if possible
     out |> 
       dplyr::mutate(
-        statistic = ifelse(is.na(.data$statistic) & !is.na(.data$estimate) & !is.na(.data$std.error),
-                           .data$estimate / .data$std.error, .data$statistic),
-        p.value = ifelse(is.na(.data$p.value) & !is.na(.data$statistic),
-                         2 * (1 - pnorm(abs(.data$statistic))),
-                         .data$p.value),
-        model = label
-      ) |> 
-      dplyr::select(dplyr::all_of(c("model", "term", "estimate", "std.error", "statistic", "p.value")))
-  })
+                 statistic = ifelse(is.na(.data$statistic) &
+                                    !is.na(.data$estimate) &
+                                    !is.na(.data$std.error),
+                                    .data$estimate / .data$std.error,
+                                    .data$statistic),
+                 p.value = ifelse(is.na(.data$p.value) &
+                                  !is.na(.data$statistic),
+                                  2 * (1 - pnorm(abs(.data$statistic))),                                 
+                                  .data$p.value),
+                 model = label
+             ) |> 
+        dplyr::select(dplyr::all_of(c("model", "term", "estimate", "std.error", "statistic", "p.value")))
+  }
+  )
 }
 
 
+# align_coef <- function(...) {
+#   models <- rlang::list2(...)
+# 
+#   if (length(models) == 1L &&
+#       is.list(models[[1L]]) &&
+#       !inherits(models[[1L]], c("lm", "glm"))) {
+#     models <- models[[1L]]
+#   }
+# 
+#   # ...
+# }
 
-##' @title Add predicted values of different types to dataframe
+
+##' @title Add predicted values of different types to dataframe / tibble
 ##' 
 ##' @param data dataframe or tibble
 ##' @param model model object
 ##' @param var name of new variable in dataframe / tibble
 ##' @param type type of predicted value
-##' @param transformation A possible transformation of predicted variable, e.g. reciprocal(), log() etc
+##' @param transformation A possible transformation of predicted
+##'     variable, e.g. reciprocal(), log() etc
 ##' @return dataframe / tibble
 ##' @author Søren Højsgaard
+##' @seealso [doBy::add_resid()], [doBy::response()]
 ##' @examples
 ##' data(cars)
 ##' lm1 <- lm(dist ~ speed + I(speed^2), data=cars)
-##' lm1 |> response() |> head()
 ##' cars <- cars |> add_pred(lm1)
+##' cars <- cars |> add_pred(lm1, var="pred_log",
+##'   transformation=log)
+##' cars <- cars |> add_pred(lm1, var="pred_reicp",
+##'   transformation=reciprocal)
 ##' cars |> head()
-##' cars <- cars |> add_resid(lm1)
-##' cars
-##' 
 ##' @export
 add_pred <- function (data, model, var = "pred", type = NULL, transformation=NULL) 
 {
     pred2 <- function (model, data, type = NULL) 
     {
         if (is.null(type)) {
-            stats::predict(model, data)
+            out <- stats::predict(model, data)
         }
         else {
-            stats::predict(model, data, type = type)
+            out <- stats::predict(model, data, type = type)
         }
+        
+        if (inherits(out, "matrix")){
+            if (ncol(out)==1){
+                out <- drop(out)                       
+            } else {
+                stop("result is matrix with more than one column\n")
+            }
+        }
+        return(out)
     }
-
+    
     pp <- pred2(model, data, type = type)
     if (!is.null(transformation)){
         pp <- transformation(pp)
@@ -105,26 +134,7 @@ add_pred <- function (data, model, var = "pred", type = NULL, transformation=NUL
     data[[var]] <- pp
     data
 }
-
-## ##' @title Reciprocal function
-## ##' @description  A function returning the reciprocal of its argument
-## ##' @param x An R object for which 1/x makes sense
-## ##' @author Søren Højsgaard
-## ##' @export
-## reciprocal <- function(x){
-##   1/x    
-## }
-
-## ##' @title Power function
-## ##' @description  A function returning x raised to the power p.
-## ##' @param x An object for which x^p makes sense
-## ##' @param p A power
-## ##' @author Søren Højsgaard
-## ##' @export
-## pow <- function(x, p){
-##   x^p    
-## }
-
+    
 
 ##' @title Add residuals of different types to dataframe
 ##' 
@@ -134,14 +144,14 @@ add_pred <- function (data, model, var = "pred", type = NULL, transformation=NUL
 ##' @param type type of residual value 
 ##' @return dataframe / tibble
 ##' @author Søren Højsgaard
+##' @seealso [doBy::add_pred()], [doBy::response()]
 ##' @examples
 ##' data(cars)
 ##' lm1 <- lm(dist ~ speed + I(speed^2), data=cars)
-##' lm1 |> response() |> head()
-##' cars <- cars |> add_pred(lm1)
-##' cars |> head()
 ##' cars <- cars |> add_resid(lm1)
-##' cars 
+##' cars <- cars |> add_resid(lm1, var="rstd", type="rstandard")
+##' cars <- cars |> add_resid(lm1, var="rstu", type="rstudent")
+##' cars  |> head()
 ##'
 ##' @export
 add_resid <- function (data, model, var = "resid", type) {
@@ -149,9 +159,11 @@ add_resid <- function (data, model, var = "resid", type) {
     resid2 <- function(model, type){
         UseMethod("resid2")
     }
-    resid2.lm <- function(model,
-                          type=c("working", "response", "deviance", 
-                                 "pearson", "partial", "rstandard", "rstudent")){
+    resid2.lm <-
+        function(model,
+                 type=c("working", "response", "deviance", 
+                        "pearson", "partial", "rstandard",
+                        "rstudent")){
         type <- match.arg(type)
 
         if (identical(type, "rstandard")){
@@ -170,10 +182,8 @@ add_resid <- function (data, model, var = "resid", type) {
         return(residuals(model, type=type))
     }
     
-    
     if (missing(type))
         type="working"
-
 
     data[[var]] <- resid2(model, type)
     data
@@ -182,18 +192,12 @@ add_resid <- function (data, model, var = "resid", type) {
 
 ##' @title Get response variable from model
 ##' @param object lm or glm object 
-## ' @param data dataframe or tibble
-## ' @param model model object
-## ' @param var name of new variable in dataframe / tibble
-## ' @param type type of residual value
 ##' @examples
 ##' data(cars)
 ##' lm1 <- lm(dist ~ speed + I(speed^2), data=cars)
 ##' lm1 |> response() |> head()
-##' cars <- cars |> add_pred(lm1)
-##' cars |> head()
-##' cars <- cars |> add_resid(lm1)
-##' cars 
+##' ## Same as
+##' ((lm1 |> fitted()) + (lm1 |> residuals())) |> head()
 ##' @export
 response <- function(object){
 
@@ -226,6 +230,10 @@ response <- function(object){
 
 
 
+
+
+## FIXME WHAT IS THIS???
+
 ##' @title Add interaction columns to data frame
 ##' @param .data dataframe
 ##' @param .formula right hand sided formula
@@ -233,7 +241,7 @@ response <- function(object){
 ##' @author Søren Højsgaard
 ##' @export
 add_int <- function(.data, .formula) {
-
+    
     ff <- rhsf2list(.formula)
     lapply(ff, function(g){
         if (length(g)>1){
@@ -259,3 +267,7 @@ rhsf2list <- function (.formula) {
                     recursive = FALSE)
     .formula2
 }
+
+
+
+

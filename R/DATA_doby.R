@@ -8,7 +8,7 @@
 #'     different wavelengths.  Each milk sample was additionally
 #'     analysed for fat, lactose, protein and dry matter.
 #' @concept dataset
-#' @name nir_milk
+#' @name data_nir_milk
 #' @docType data
 #' 
 #' @format
@@ -38,7 +38,7 @@
 #' 
 "nir_milk"
 
-#' @rdname nir_milk
+#' @rdname data_nir_milk
 "NIRmilk"
 
 
@@ -46,6 +46,7 @@
 #' @description Height of a sample of math teachers in Danish high
 #'     schools collected at a continued education day at Mariager Fjord Gymnasium in 2019.
 #' @concept dataset
+#' @name data_math_teachers
 #' @format:
 #' \describe{
 #'   \item{height}{Height in centimeters}
@@ -66,6 +67,7 @@
 ##' @description dataframe with heights of 39 boys and 54 girls from
 ##'     age 1 to 18 and the ages at which they were collected.
 ##' @concept dataset
+##' @name data_berkeley_growth
 ##' @format
 ##' \describe{
 ##'   \item{gender}{Gender of child}
@@ -105,7 +107,7 @@
 #' Data comes from the UCI Machine Learning Repository. The grape variety
 #' \code{Cult} is the class identifier.  
 #' @concept dataset
-#' @name data-wine
+#' @name data_wine
 #' @docType data
 #' @format A data frame with 178 observations on the following 14 variables.
 #'   \describe{
@@ -146,7 +148,7 @@
 
 #' @title Income data, years of educations and ethnicity
 #' @description Data on income, years of educations and ethnicity for a samle of adult Americans aged over 25. The year of sampling is not avalable in the source.
-#' @name income
+#' @name data_income
 #' @concept dataset
 #' @docType data
 #' @format This data frame contains:
@@ -174,7 +176,7 @@
 #'     different synthetic materials, a standard material A and a
 #'     cheaper material B.
 #' 
-#' @name shoes
+#' @name data_shoes
 #' @docType data
 #' @format This data frame contains:
 #' \describe{
@@ -189,16 +191,16 @@
 #' 
 NULL
 
-#' @rdname shoes
+#' @rdname data_shoes
 "shoes"
 
-#' @rdname shoes
+#' @rdname data_shoes
 "shoes_long"
 
 
 #' @title crickets data
 #' @description Mating songs of male tree crickets.
-#' @name crickets
+#' @name data_crickets
 #' @concept dataset
 #' @docType data
 #' @format This data frame contains:
@@ -240,7 +242,7 @@ NULL
 #'     the sowing time defines the "split plot". Each plot was 25 square meters and
 #'     the yield is recorded in kg. See 'details' for the experimental layout.
 #'
-#' @name beets
+#' @name data_beets
 #' @concept dataset
 #' @docType data
 #' @format The format is: chr "beets"
@@ -341,7 +343,7 @@ NULL
 #' Measurement of lean meat percentage of 344 pig carcasses together with
 #' auxiliary information collected at three Danish slaughter houses
 #' 
-#' @name carcass
+#' @name data_carcass
 #' @concept dataset
 #' @aliases carcass carcassall
 #' @format carcassall: A data frame with 344 observations on the following 17
@@ -423,7 +425,7 @@ NULL
 #' If a stomach is empty, a single observation is recorded with
 #' \code{prey.type} \code{Empty} and a \code{prey.mass} of zero.
 #' 
-#' @name codstom
+#' @name data_codstom
 #' @docType data
 #'
 #' @format A data frame with 10000 observations on the following 10 variables.
@@ -503,7 +505,7 @@ NULL
 #' Crime rates per 100,000 inhabitants in states of the USA for different crime
 #' types in 1977.
 #' 
-#' @name crimeRate
+#' @name data_crimeRate
 #' @concept dataset
 #' @docType data
 #' @format This data frame contains:
@@ -529,7 +531,7 @@ NULL
 #' Crime rates per 100,000 inhabitants in states of the USA for different crime
 #' types in 1977.
 #' 
-#' @name crime_rate
+#' @name data_crime_rate
 #' @concept dataset
 #' @docType data
 #' @format This data frame contains:
@@ -563,7 +565,7 @@ NULL
 #' Growth curves of pigs in a 3x3 factorial experiment
 #' 
 #' The \code{dietox} data frame has 861 rows and 7 columns.
-#'
+#' @name data_dietox
 #' @details Data contains weight of slaughter pigs measured weekly for 12
 #'     weeks. Data also contains the start weight (i.e. the weight at week
 #'     1). The treatments are 3 different levels of Evit = vitamin E (dose: 0,
@@ -610,7 +612,7 @@ NULL
 #'
 #' @description Fish oil in pig food
 #'
-#' @name fatacid
+#' @name data_fatacid
 #' @docType data
 #' @concept dataset
 #' @format A dataframe.
@@ -640,7 +642,7 @@ NULL
 #' @description Dataset to examine if respiratory function in children
 #'   was influenced by smoking.
 #'
-#' @name fev
+#' @name data_fev
 #' @docType data
 #'
 #' @format A data frame with 654 observations on the following 5 variables.
@@ -670,7 +672,7 @@ NULL
 #' Heat development in cement under hardening related to the chemical
 #' composition.
 #' 
-#' @name haldCement
+#' @name data_haldCement
 #' @docType data
 #' @concept dataset
 #' @format A data frame with 13 observations on the following 5 variables.
@@ -705,7 +707,7 @@ NULL
 
 #' Yield from Danish agricultural production of grain and root crop. 
 #'
-#' @name cropyield
+#' @name data_cropyield
 #' @docType data
 #' @format A dataframe with 97 rows and 7 columns. 
 #'   \describe{
@@ -734,7 +736,7 @@ NULL
 #'
 #' @aliases milkman_rdm1
 #' @concept dataset
-#' @name milkman
+#' @name data_milkman
 #' @docType data
 #'
 #' @format
@@ -786,7 +788,7 @@ NULL
 #' are two sizes: \code{length} is the longest length and \code{width} is the
 #' shortest length across a potato.  
 #' 
-#' @name potatoes
+#' @name data_potatoes
 #' @docType data
 #' @concept dataset
 #' @format A data frame with 20 observations on the following 3 variables.

@@ -55,6 +55,9 @@ parseGroupFormula <- function(form)
 }
 
 
+
+
+
 #' Where are the n largest or n smallest elements in a numeric vector ?
 #' 
 #' Determines the locations, i.e., indices of the n largest or n smallest

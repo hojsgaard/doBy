@@ -16,7 +16,7 @@
 #'     
 #' @importFrom modelr rmse
 
-#' @importFrom microbenchmark microbenchmark
+## #' @importFrom microbenchmark microbenchmark
 #' @importFrom Deriv Deriv
 #' @importFrom utils str help
 #' @importFrom methods setOldClass

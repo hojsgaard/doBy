@@ -5,7 +5,7 @@
 #' @param data A data frame or matrix.
 #' @param center Logical; if TRUE, center the variables.
 #' @param scale Logical; if TRUE, scale the variables.
-#'
+#' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
 #' @return A list of data frames or matrices (same class as input), one per group.
 #'
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
