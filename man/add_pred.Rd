@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{add_pred}
 \alias{add_pred}
-\title{Add predicted values of different types to dataframe}
+\title{Add predicted values of different types to dataframe / tibble}
 \usage{
 add_pred(data, model, var = "pred", type = NULL, transformation = NULL)
 }
@@ -15,23 +15,27 @@ add_pred(data, model, var = "pred", type = NULL, transformation = NULL)
 
 \item{type}{type of predicted value}
 
-\item{transformation}{A possible transformation of predicted variable, e.g. reciprocal(), log() etc}
+\item{transformation}{A possible transformation of predicted
+variable, e.g. reciprocal(), log() etc}
 }
 \value{
 dataframe / tibble
 }
 \description{
-Add predicted values of different types to dataframe
+Add predicted values of different types to dataframe / tibble
 }
 \examples{
 data(cars)
 lm1 <- lm(dist ~ speed + I(speed^2), data=cars)
-lm1 |> response() |> head()
 cars <- cars |> add_pred(lm1)
+cars <- cars |> add_pred(lm1, var="pred_log",
+  transformation=log)
+cars <- cars |> add_pred(lm1, var="pred_reicp",
+  transformation=reciprocal)
 cars |> head()
-cars <- cars |> add_resid(lm1)
-cars
-
+}
+\seealso{
+\code{\link[=add_resid]{add_resid()}}, \code{\link[=response]{response()}}
 }
 \author{
 Søren Højsgaard

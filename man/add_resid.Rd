@@ -24,12 +24,14 @@ Add residuals of different types to dataframe
 \examples{
 data(cars)
 lm1 <- lm(dist ~ speed + I(speed^2), data=cars)
-lm1 |> response() |> head()
-cars <- cars |> add_pred(lm1)
-cars |> head()
 cars <- cars |> add_resid(lm1)
-cars 
+cars <- cars |> add_resid(lm1, var="rstd", type="rstandard")
+cars <- cars |> add_resid(lm1, var="rstu", type="rstudent")
+cars  |> head()
 
+}
+\seealso{
+\code{\link[=add_pred]{add_pred()}}, \code{\link[=response]{response()}}
 }
 \author{
 Søren Højsgaard

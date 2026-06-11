@@ -19,7 +19,9 @@
 #'     \code{null_basis()}). 
 #' @return A logical vector. 
 #' @author Søren Højsgaard, \email{sorenh@@math.aau.dk}
-#' @references \url{http://web.mit.edu/18.06/www/Essays/newpaper_ver3.pdf}
+#'
+#' @references Gilbert Strang, MIT: The Four Fundamental Subspaces \url{https://web.mit.edu/18.06/www/Essays/newpaper_ver3.pdf}
+#'
 #' @keywords utilities
 #' 
 #' @export is_estimable

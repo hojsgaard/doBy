@@ -16,8 +16,6 @@ Get response variable from model
 data(cars)
 lm1 <- lm(dist ~ speed + I(speed^2), data=cars)
 lm1 |> response() |> head()
-cars <- cars |> add_pred(lm1)
-cars |> head()
-cars <- cars |> add_resid(lm1)
-cars 
+## Same as
+((lm1 |> fitted()) + (lm1 |> residuals())) |> head()
 }

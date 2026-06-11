@@ -28,7 +28,6 @@ Imports:
     MASS,
     Matrix,
     modelr,
-    microbenchmark,
     rlang,
     purrr,
     tibble,
@@ -40,6 +39,7 @@ Suggests:
     markdown,
     rmarkdown,
     multcomp,
+    microbenchmark,
     pbkrtest (>= 0.5.2),
     survival,
     testthat (>= 2.1.0)
