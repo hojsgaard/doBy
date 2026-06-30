@@ -29,7 +29,7 @@ null space of \eqn{X}. Hence, with a basis \eqn{B} for the null space,
 perpendicular to each column basis vector in \eqn{B}.
 }
 \references{
-\url{http://web.mit.edu/18.06/www/Essays/newpaper_ver3.pdf}
+Gilbert Strang, MIT: The Four Fundamental Subspaces \url{https://web.mit.edu/18.06/www/Essays/newpaper_ver3.pdf}
 }
 \author{
 Søren Højsgaard, \email{sorenh@math.aau.dk}

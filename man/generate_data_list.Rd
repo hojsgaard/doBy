@@ -4,15 +4,37 @@
 \alias{generate_data_list}
 \title{Generate data list}
 \usage{
-generate_data_list(data., K, method = c("subgroups", "resample"))
+generate_data_list(data., M, method = c("subgroups", "resample"))
 }
 \arguments{
 \item{data.}{A data frame}
 
-\item{K}{Number of folds}
+\item{M}{Number of folds}
 
 \item{method}{Method for generating data}
 }
 \description{
 Generate data list
+}
+\details{
+There are n rows in data. The function returns a list of M
+datasets. If method="subgroups" each dataset in the list has
+(approximately) n-M randomly selected rows from data. If
+method="resample" each dataset has n rows obtained by sampling
+with replacement from the original data. The function is
+heavily inspired by the boot::cv.glm function.
+}
+\note{
+This is a recent addition. Suggestions and comments are
+welcome. The addition may be removed without warning.
+}
+\examples{
+dat <- cars[1:15,]
+set.seed(1411)
+dl1 <- generate_data_list(dat, 4)
+dl1[[1]]
+dl1 |> sapply(nrow)
+dl2 <- generate_data_list(dat, 4, method="resample")
+dl2 |> sapply(nrow)
+
 }

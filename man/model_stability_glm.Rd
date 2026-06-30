@@ -7,8 +7,9 @@
 model_stability_glm(
   data.,
   model,
-  n.searches = 10,
-  method = c("subgroups", "resample"),
+  M = 10,
+  method = c("resample", "subgroups"),
+  mc.cores = getOption("mc.cores", 2L),
   ...
 )
 }
@@ -17,12 +18,76 @@ model_stability_glm(
 
 \item{model}{A glm object}
 
-\item{n.searches}{Number of searches}
+\item{M}{Number of searches}
 
-\item{method}{Method for generating data}
+\item{method}{Method for generating data. Either \code{subgroup} like in
+bootstrapping or \code{resample} by resampling the entire datasets
+with replications.}
+
+\item{mc.cores}{Number of cores, defaults to getOption("mc.cores", 2L)}
 
 \item{...}{Additional arguments to be passed to \code{\link{step}}}
 }
+\value{
+A list with several slots of information. The most
+important ones:
+\itemize{
+\item \code{rhs_matrix} : A matrix representatation of
+formulas for the different models. As many rows as there are
+predictors, as many columns as there are different models (the
+same model might be selected on several datasets.)
+\item \code{model_freq} : How many time each model is selected.
+\item \code{pred_freq} : How many time does each predictor appear in a
+model.
+\item \code{model_parm} : How many parameters are in each model.
+}
+}
 \description{
-Model stability for glm objects
+A way of assessing variability in selected models
+across different datasets.
+}
+\details{
+From \code{data.}, \code{M} datasets are generated. Options are
+\itemize{
+\item "resamples": M datasets with resamples of data with replacement, i.e. bootstrap samples.
+\item "subgroups": M datasets with subgroups each consisting of n-M randomly selected observations.
+}
+
+On each of these datasets, a stepwise selection
+(using \code{step}) is performed.
+}
+\note{
+This is a recent addition. Suggestions and comments are
+welcome. The addition may be removed without warning.
+}
+\examples{
+
+set.seed(1234)
+dat <- personality[,1:20]
+idx <- sample(1:nrow(dat), 0.6*nrow(dat))
+train <- dat[idx, ]
+test <- dat[-idx, ]
+fit <- stats::glm(agreebl ~ ., data = train)
+
+M <- 8
+
+#stab <- doBy::model_stability_glm(data=train, model=fit, M=M, method="resample", mc.cores=2)
+stab <- doBy::model_stability_glm(data=train, model=fit, M=M, method="subgroups", mc.cores=2)
+stab
+
+formula_list <- formula(stab)
+fit_list <- formula(stab, fit=TRUE)
+
+formula_list
+stab
+
+(cv.train <- doBy::cv_glm_fitlist(train, fit_list, K=5))
+
+(cv.test <- doBy::cv_glm_fitlist(test, fit_list, K=5))
+ylim <- range(c(cv.train, cv.test))
+par(mfrow=c(1,2))
+plot(stab$model_parm, cv.train, ylim=ylim)
+plot(stab$model_parm, cv.test, ylim=ylim)
+
+
 }

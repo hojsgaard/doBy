@@ -22,8 +22,7 @@
 #'
 #' @references Gilbert Strang, MIT: The Four Fundamental Subspaces \url{https://web.mit.edu/18.06/www/Essays/newpaper_ver3.pdf}
 #'
-#' @keywords utilities
-#' 
+#' @keywords utilities 
 #' @export is_estimable
 is_estimable <- function(K, null.basis){
     if (is.null(null.basis) ||

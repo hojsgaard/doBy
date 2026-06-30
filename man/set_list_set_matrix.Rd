@@ -20,6 +20,10 @@ matrix2set_list(set_matrix)
 \description{
 Matrix representatation of list of vectors and vice versa
 }
+\note{
+This is a recent addition. Suggestions and comments are
+welcome. The addition may be removed without warning.
+}
 \examples{
 l <- list(c(1,2,3), c(3,2,4), c(3,2,4))
 m1 <- set_list2matrix(l)

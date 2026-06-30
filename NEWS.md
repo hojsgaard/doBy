@@ -1,12 +1,11 @@
-doBy v4.7.2 (Release date: 2026-06-11)
+doBy v4.7.2 (Release date: 2026-06-30)
 =======================================
 
 * lag_data() added
 * transform_forecast() expanded
 * microbenchmark moved from Imports to Suggests
-* `align_coefs`, `add_pred`, `add_resid`, `response`
-added
-
+* `align_coefs`, `add_pred`, `add_resid`, `response` added
+* Improved documentation of model stability selection.
 
 doBy v4.7.1 (Release date: 2025-12-01)
 =======================================

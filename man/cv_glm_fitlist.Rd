@@ -11,8 +11,12 @@ cv_glm_fitlist(data., fit_list, K = 10)
 
 \item{fit_list}{A list of glm objects}
 
-\item{K}{Number of folds}
+\item{K}{Number of folds in cross validation.}
 }
 \description{
 Cross-validation for list of glm objects
+}
+\details{
+A wrapper for calling boot::cv.glm for each model in
+fit_list.
 }

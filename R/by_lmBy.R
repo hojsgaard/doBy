@@ -8,8 +8,7 @@
 #' 
 ##########################################################################
 #'
-#' @aliases lmBy coef.lmBy coef.summary_lmBy summary.lmBy fitted.lmBy
-#'     residuals.lmBy getBy
+#' @aliases lmBy coef.lmBy coef.summary_lmBy summary.lmBy fitted.lmBy residuals.lmBy getBy
 #' @param formula. A linear model formula object of the form `y ~ x1 +
 #'     ... + xn | g1 + ... + gm`.  In the formula object, `y`
 #'     represents the response, `x1, ..., xn` the covariates, and the

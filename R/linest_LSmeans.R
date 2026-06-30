@@ -12,8 +12,7 @@
 #'     For example having \code{y ~ log(x)} will cause an error. Instead one
 #'     must define the variable \code{logx = log(x)} and do \code{y ~ logx}.
 #' 
-#' @aliases LSmeans LSmeans.default LSmeans.lmerMod popMeans
-#'     popMeans.default popMeans.lmerMod
+#' @aliases LSmeans LSmeans.default LSmeans.lmerMod popMeans popMeans.default popMeans.lmerMod
 #' 
 #' @param object Model object
 #' @param effect A vector of variables. For each configuration of

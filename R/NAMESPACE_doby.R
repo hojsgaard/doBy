@@ -1,18 +1,20 @@
 #' @import methods
+#'
 #' @importFrom MASS ginv Null
 #'
 #' @importFrom Matrix rowMeans colMeans rowSums colSums
+#'
 #' @importFrom stats model.response model.weights rstandard rstudent residuals tsp is.ts time window
+#'
 #' @importFrom forecast auto.arima Arima autoplot forecast
 #' 
 #' @importClassesFrom Matrix Matrix
+#'
 #' @importFrom Matrix Matrix sparseMatrix
+#' 
 #' @importMethodsFrom Matrix t isSymmetric "%*%" solve diag
 
-#' @importFrom stats as.formula coef delete.response family fitted
-#'     formula ftable lm logLik median model.frame model.matrix pchisq pnorm
-#'     pt qnorm qt residuals sd summary.lm terms vcov aggregate
-#'     printCoefmat confint predict resid rstandard step update sigma frequency quantile simulate start ts
+#' @importFrom stats as.formula coef delete.response family fitted formula ftable lm logLik median model.frame model.matrix pchisq pnorm pt qnorm qt residuals sd summary.lm terms vcov aggregate printCoefmat confint predict resid rstandard step update sigma frequency quantile simulate start ts
 #'     
 #' @importFrom modelr rmse
 

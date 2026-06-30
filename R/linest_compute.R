@@ -5,8 +5,7 @@
 #'
 #' @name linest
 #' 
-#' @aliases linest linest.lm linest.glm linest.geeglm linest.lmerMod
-#'     linest.merMod linest.default
+#' @aliases linest linest.lm linest.glm linest.geeglm linest.lmerMod linest.merMod linest.default
 #' 
 #' @param object Model object
 #' @param L Either \code{NULL} or a matrix with p columns where p is

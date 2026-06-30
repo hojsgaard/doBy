@@ -6,8 +6,7 @@
 ###############################################################################
 #' @details If writing ~a + b + c as formula, then only a is considered.
 #' 
-#' @aliases firstobs lastobs firstobs.default lastobs.default firstobs.formula
-#'     lastobs.formula
+#' @aliases firstobs lastobs firstobs.default lastobs.default firstobs.formula lastobs.formula
 #' @param x A vector
 #' @param formula A formula (only the first term is used, see 'details').
 #' @param data A data frame

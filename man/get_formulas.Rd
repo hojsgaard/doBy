@@ -16,3 +16,7 @@ get_formulas(object, unique = TRUE, text = FALSE)
 \description{
 Get formulas from model_stability_glm_class object
 }
+\note{
+This is a recent addition. Suggestions and comments are
+welcome. The addition may be removed without warning.
+}

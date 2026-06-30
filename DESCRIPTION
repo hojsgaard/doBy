@@ -43,5 +43,5 @@ Suggests:
     pbkrtest (>= 0.5.2),
     survival,
     testthat (>= 2.1.0)
-RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.0.0
