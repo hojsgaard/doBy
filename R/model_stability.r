@@ -45,8 +45,8 @@
 #'
 #' M <- 8
 #' 
-#' #stab <- doBy::model_stability_glm(data=train, model=fit, M=M, method="resample", mc.cores=2)
-#' stab <- doBy::model_stability_glm(data=train, model=fit, M=M, method="subgroups", mc.cores=2)
+#' #stab <- doBy::model_stability_glm(data=train, model=fit, M=M, method="resample", mc.cores=1)
+#' stab <- doBy::model_stability_glm(data=train, model=fit, M=M, method="subgroups", mc.cores=1)
 #' stab
 #'
 #' formula_list <- formula(stab)
