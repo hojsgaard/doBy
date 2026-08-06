@@ -14,13 +14,13 @@
 #' 
 #' @importMethodsFrom Matrix t isSymmetric "%*%" solve diag
 
-#' @importFrom stats as.formula coef delete.response family fitted formula ftable lm logLik median model.frame model.matrix pchisq pnorm pt qnorm qt residuals sd summary.lm terms vcov aggregate printCoefmat confint predict resid rstandard step update sigma frequency quantile simulate start ts
+#' @importFrom stats as.formula coef delete.response family fitted formula ftable lm logLik median model.frame model.matrix pchisq pnorm pt qnorm qt residuals sd summary.lm terms vcov aggregate printCoefmat confint predict resid rstandard step update sigma frequency quantile simulate start ts complete.cases
 #'     
 #' @importFrom modelr rmse
 
 ## #' @importFrom microbenchmark microbenchmark
 #' @importFrom Deriv Deriv
-#' @importFrom utils str help
+#' @importFrom utils str help combn
 #' @importFrom methods setOldClass
 #' @importFrom cowplot plot_grid
 #' @importFrom rlang enquo
