@@ -1,5 +1,5 @@
 Package: doBy
-Version: 4.7.2
+Version: 4.7.2.0001
 Title: Groupwise Statistics, LSmeans, Linear Estimates, Utilities 
 Authors@R: c(
     person(given = "Ulrich", family = "Halekoh",
@@ -30,6 +30,7 @@ Imports:
     modelr,
     rlang,
     purrr,
+    patchwork,
     tibble,
     tidyr,
 Suggests:
