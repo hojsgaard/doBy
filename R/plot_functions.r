@@ -173,7 +173,10 @@ interaction_plot <- function(.data, .formula, interval="conf.int"){
 #' @examples
 #' library(ggplot2)
 #' response_plot(iris, Sepal.Width ~ ., geoms=geom_point())
-#' response_plot(iris, Sepal.Width ~ ., geoms=geom_point(), global_aes=list(color="Species"))
+#' response_plot(iris, Sepal.Width ~ ., geoms=geom_point(), 
+#'   global_aes=list(alpha=0.5, color="Species"))
+#' response_plot(iris, Sepal.Width ~ ., geoms=geom_point(), 
+#'   global_aes=list(color="Species"))
 #' personality |> response_plot(easygon~., geoms=geom_point(), global_aes=NULL)
 #' 
 response_plot <- function(data., formula., geoms=NULL, global_aes=NULL, plot=TRUE, nrow=NULL, ncol=NULL) {  

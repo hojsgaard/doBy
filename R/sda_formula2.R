@@ -48,6 +48,11 @@
 #' @author Søren Højsgaard
 #' @export
 sda_formula <- function(formula, data., diagonal = FALSE, ...) {
+  
+  if (!requireNamespace("sda", quietly = TRUE)) {
+    stop("Package 'sda' is required for this function.")
+  }
+  
   cl <- match.call()
 
   mf <- model.frame(formula, data = data.)
@@ -88,6 +93,69 @@ sda_formula <- function(formula, data., diagonal = FALSE, ...) {
 
   class(fit) <- c("sda_formula", class(fit))
   fit
+}
+ 
+
+#' @export
+print.sda_formula <- function(x, ...) {
+  cat("Shrinkage Discriminant Analysis Model (formula interface)\n")
+  cat("Call:\n")
+  print(x$call)
+  cat("\n")
+  x2 <- x
+  x2$call <- x2$formula <- x2$formula <- x2$response_name <- x2$terms <- 
+    x2$X_train <- x2$predictor_names <- x2$contrasts <- x2$xlevels <- NULL
+  class(x2) <- "sda"
+  x2 <<- x2
+  NextMethod("print", x2, ...)
+}
+
+
+#' @export
+print.sda_formula <- function(x, ...) {
+  cat("Shrinkage Discriminant Analysis Model (formula interface)\n")
+  cat("Call:\n")
+  print(x$call)
+  cat("\n")
+
+  x2 <- x
+
+  remove_names <- c(
+    "call", "formula", "response_name", "terms",
+    "X_train", "predictor_names", "contrasts", "xlevels"
+  )
+
+  x2[remove_names] <- NULL
+  class(x2) <- "sda"
+
+  print_method <- getS3method("print", "sda")
+  print_method(x2, ...)
+  
+  invisible(x)
+}
+
+
+#' @export
+print.sda_formula <- function(x, ...) {
+  cat("Shrinkage Discriminant Analysis Model (formula interface)\n")
+  cat("Call:\n")
+  print(x$call)
+  cat("\n")
+
+  x2 <- x
+
+  remove_names <- c(
+    "call", "formula", "response_name", "terms",
+    "X_train", "predictor_names", "contrasts", "xlevels"
+  )
+
+  x2[remove_names] <- NULL
+attr(x2$beta, "class") <- NULL
+  class(x2) <- "sda"
+  print.default(unclass(x2), ...)
+  #print.default(x2, ...)
+
+  invisible(x)
 }
 
 

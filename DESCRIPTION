@@ -30,7 +30,6 @@ Imports:
     modelr,
     rlang,
     purrr,
-    patchwork,
     tibble,
     tidyr,
 Suggests:
@@ -43,6 +42,7 @@ Suggests:
     microbenchmark,
     pbkrtest (>= 0.5.2),
     survival,
+    sda,
     testthat (>= 2.1.0)
 Roxygen: list(markdown = TRUE)
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0

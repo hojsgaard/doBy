@@ -45,12 +45,14 @@ S3method(linest,lmerMod)
 S3method(linest,merMod)
 S3method(popMeans,default)
 S3method(popMeans,lmerMod)
+S3method(predict,sda_formula)
 S3method(print,esticon_class)
 S3method(print,linest_class)
 S3method(print,linest_matrix_class)
 S3method(print,lmBy)
 S3method(print,model_stability_glm_class)
 S3method(print,model_stability_glm_summary_class)
+S3method(print,sda_formula)
 S3method(print,section_function)
 S3method(print,splitByData)
 S3method(print,summary_lmBy)
@@ -86,6 +88,7 @@ export(cv_glm_fitlist)
 export(descStat)
 export(divide)
 export(doby.xtabs)
+export(ellipse_plot)
 export(esticon)
 export(expr_to_fun)
 export(firstobs)
@@ -124,7 +127,6 @@ export(order_by)
 export(parseGroupFormula)
 export(pick1)
 export(pick2)
-export(plot_class_region)
 export(plot_lm)
 export(popMeans)
 export(pow)
@@ -143,6 +145,7 @@ export(sapply_by)
 export(scaleBy)
 export(scale_by)
 export(scale_df)
+export(sda_formula)
 export(section_fun)
 export(section_fun_env)
 export(section_fun_sub)
@@ -189,85 +192,108 @@ import(ggplot2)
 import(methods)
 importClassesFrom(Matrix,Matrix)
 importFrom(Deriv,Deriv)
-importFrom(MASS,Null)
-importFrom(MASS,ginv)
-importFrom(Matrix,Matrix)
-importFrom(Matrix,colMeans)
-importFrom(Matrix,colSums)
-importFrom(Matrix,rowMeans)
-importFrom(Matrix,rowSums)
-importFrom(Matrix,sparseMatrix)
+importFrom(MASS,
+  Null,
+  ginv
+)
+importFrom(Matrix,
+  Matrix,
+  colMeans,
+  colSums,
+  rowMeans,
+  rowSums,
+  sparseMatrix
+)
 importFrom(boot,cv.glm)
 importFrom(broom,tidy)
 importFrom(cowplot,plot_grid)
-importFrom(dplyr,mutate)
-importFrom(dplyr,select)
-importFrom(forecast,Arima)
-importFrom(forecast,auto.arima)
-importFrom(forecast,autoplot)
-importFrom(forecast,forecast)
+importFrom(dplyr,
+  mutate,
+  select
+)
+importFrom(forecast,
+  Arima,
+  auto.arima,
+  autoplot,
+  forecast
+)
+importFrom(ggplot2,
+  aes,
+  geom_point,
+  ggplot,
+  scale_color_manual,
+  stat_ellipse,
+  theme_minimal
+)
 importFrom(methods,setOldClass)
 importFrom(modelr,rmse)
 importFrom(purrr,imap_dfr)
-importFrom(rlang,abort)
-importFrom(rlang,as_name)
-importFrom(rlang,enquo)
-importFrom(rlang,enquos)
-importFrom(rlang,eval_tidy)
-importFrom(rlang,f_rhs)
-importFrom(rlang,is_formula)
-importFrom(rlang,quo_get_expr)
-importFrom(stats,aggregate)
-importFrom(stats,as.formula)
-importFrom(stats,coef)
-importFrom(stats,complete.cases)
-importFrom(stats,confint)
-importFrom(stats,delete.response)
-importFrom(stats,family)
-importFrom(stats,fitted)
-importFrom(stats,formula)
-importFrom(stats,frequency)
-importFrom(stats,ftable)
-importFrom(stats,is.ts)
-importFrom(stats,lm)
-importFrom(stats,logLik)
-importFrom(stats,median)
-importFrom(stats,model.frame)
-importFrom(stats,model.matrix)
-importFrom(stats,model.response)
-importFrom(stats,model.weights)
-importFrom(stats,pchisq)
-importFrom(stats,pnorm)
-importFrom(stats,predict)
-importFrom(stats,printCoefmat)
-importFrom(stats,pt)
-importFrom(stats,qnorm)
-importFrom(stats,qt)
-importFrom(stats,quantile)
-importFrom(stats,resid)
-importFrom(stats,residuals)
-importFrom(stats,rstandard)
-importFrom(stats,rstudent)
-importFrom(stats,sd)
-importFrom(stats,sigma)
-importFrom(stats,simulate)
-importFrom(stats,start)
-importFrom(stats,step)
-importFrom(stats,summary.lm)
-importFrom(stats,terms)
-importFrom(stats,time)
-importFrom(stats,ts)
-importFrom(stats,tsp)
-importFrom(stats,update)
-importFrom(stats,vcov)
-importFrom(stats,window)
+importFrom(rlang,
+  abort,
+  as_name,
+  enquo,
+  enquos,
+  eval_tidy,
+  f_rhs,
+  is_formula,
+  quo_get_expr
+)
+importFrom(stats,
+  aggregate,
+  as.formula,
+  coef,
+  complete.cases,
+  confint,
+  delete.response,
+  family,
+  fitted,
+  formula,
+  frequency,
+  ftable,
+  is.ts,
+  lm,
+  logLik,
+  median,
+  model.frame,
+  model.matrix,
+  model.response,
+  model.weights,
+  na.pass,
+  pchisq,
+  pnorm,
+  predict,
+  printCoefmat,
+  pt,
+  qnorm,
+  qt,
+  quantile,
+  resid,
+  residuals,
+  rstandard,
+  rstudent,
+  sd,
+  sigma,
+  simulate,
+  start,
+  step,
+  summary.lm,
+  terms,
+  time,
+  ts,
+  tsp,
+  update,
+  vcov,
+  window
+)
 importFrom(tibble,as_tibble)
 importFrom(tidyr,pivot_longer)
-importFrom(utils,combn)
-importFrom(utils,head)
-importFrom(utils,help)
-importFrom(utils,str)
-importFrom(utils,tail)
+importFrom(utils,
+  combn,
+  head,
+  help,
+  str,
+  tail
+)
 importMethodsFrom(Matrix,"%*%")
 importMethodsFrom(Matrix,diag)
 importMethodsFrom(Matrix,isSymmetric)
