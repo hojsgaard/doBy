@@ -8,7 +8,7 @@ model_stability_glm(
   data.,
   model,
   M = 10,
-  method = c("resample", "subgroups"),
+  method = c("resample", "subgroup"),
   mc.cores = getOption("mc.cores", 2L),
   ...
 )
@@ -68,26 +68,47 @@ idx <- sample(1:nrow(dat), 0.6*nrow(dat))
 train <- dat[idx, ]
 test <- dat[-idx, ]
 fit <- stats::glm(agreebl ~ ., data = train)
+M <- 20
+stab.rs <- doBy::model_stability_glm(data=train, model=fit, M=M, method="resample",
+    mc.cores=2, steps=1)
+stab.sb <- doBy::model_stability_glm(data=train, model=fit, M=M, method="subgroup",
+    mc.cores=2, steps=1)
+stab.rs
+stab.sb 
 
-M <- 8
+X <- stab.rs$rhs_matrix
+n <- rownames(X)
+f <- stab.rs$pred_freq
+vn <- rev(n[order(f)])
+i <- 3
+y <- "agreebl"
 
-#stab <- doBy::model_stability_glm(data=train, model=fit, M=M, method="resample", mc.cores=1)
-stab <- doBy::model_stability_glm(data=train, model=fit, M=M, method="subgroups", mc.cores=1)
-stab
+frm <- as.formula(paste0(paste0(y, "~"), paste0(vn[1:i], collapse="+")))
+fm <- lm(frm, data=train)
+modelr::rmse(fm, data=test)
 
-formula_list <- formula(stab)
-fit_list <- formula(stab, fit=TRUE)
+rr <- sapply(1:length(vn), function(i){
+  frm <- as.formula(paste0(paste0(y, "~"), paste0(vn[1:i], collapse="+")))
+  fm <- lm(frm, data=train)
+  modelr::rmse(fm, data=test)
+})  
 
-formula_list
-stab
 
-(cv.train <- doBy::cv_glm_fitlist(train, fit_list, K=5))
+fit_list.rs <- formula(stab.rs, fit=TRUE)
+## formula_list.rs <- formula(stab.rs)
+fit_list.sb <- formula(stab.sb, fit=TRUE)
+## formula_list.sb <- formula(stab.sb)
 
-(cv.test <- doBy::cv_glm_fitlist(test, fit_list, K=5))
-ylim <- range(c(cv.train, cv.test))
-par(mfrow=c(1,2))
-plot(stab$model_parm, cv.train, ylim=ylim)
-plot(stab$model_parm, cv.test, ylim=ylim)
+(cv.train.rs <- doBy::cv_glm_fitlist(train, fit_list.rs, K=5))
+(cv.test.rs  <- doBy::cv_glm_fitlist(test,  fit_list.rs, K=5))
+(cv.train.sb <- doBy::cv_glm_fitlist(train, fit_list.sb, K=5))
+(cv.test.sb  <- doBy::cv_glm_fitlist(test,  fit_list.sb, K=5))
 
+ylim <- range(c(cv.train.rs, cv.test.rs, cv.train.sb, cv.test.sb))
+par(mfrow=c(2, 2))
+plot(jitter(stab.rs$model_parm, .5), cv.train.rs, ylim=ylim, lwd=2, col="blue")
+plot(jitter(stab.rs$model_parm, .5), cv.test.rs, ylim=ylim, lwd=2, col="blue")
+plot(jitter(stab.sb$model_parm, .5), cv.train.sb, ylim=ylim, lwd=2, col="blue")
+plot(jitter(stab.sb$model_parm, .5), cv.test.sb, ylim=ylim, lwd=2, col="blue")
 
 }

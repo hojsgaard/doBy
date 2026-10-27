@@ -32,5 +32,7 @@ model and then invokes the prediction method for \code{sda} objects. If
 \examples{
 fit <- sda_formula(Species ~ ., data. = iris)
 predict(fit, newdata = iris[1:5, ])
-
+}
+\author{
+Søren Højsgaard
 }

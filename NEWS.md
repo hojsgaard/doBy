@@ -2,6 +2,7 @@ doBy v4.7.3 (Release date: )
 =======================================
 
 * `plot_class_region` for lda and qda objects
+* `lag1_plot` for time series added
 
 
 doBy v4.7.2 (Release date: 2026-06-30)
