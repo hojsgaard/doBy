@@ -1,3 +1,81 @@
+#' Plot successive observations of a time series
+#'
+#' Creates a lag-1 scatterplot of x(t+1) against x(t), with a fitted
+#' regression line. The slope and its standard error are displayed.
+#'
+#' @param dat A numeric vector or univariate time series with at least
+#'   three observations. Pairs containing missing or non-finite values
+#'   are excluded from the regression.
+#'
+#' @return Invisibly, a list with components \code{dat} (the original
+#'   input), \code{hd} (all but the last observation), and \code{tl}
+#'   (all but the first observation). The plot is printed.
+#'
+#' @examples
+#' set.seed(123)
+#' x <- arima.sim(model = list(ar = 0.7), n = 100)
+#' lag1_plot(x)
+#' 
+#' dat <- arima.sim(model=list(ar=c(0.7)), n=100)
+#' lag1_plot(dat)
+#'
+#' dat <- arima.sim(model=list(ar=c(0.1, 0.4)), n=100)
+#' lag1_plot(dat)
+#'
+#' dat <- LakeHuron
+#' lag1_plot(dat)
+#'
+#' @export
+lag1_plot <- function(dat) {
+  if (!is.numeric(dat) || NCOL(dat) != 1L || length(dat) < 3L) {
+    stop("'dat' must be a numeric vector or univariate time series ",
+         "with at least three observations.")
+  }
+
+  x <- as.numeric(dat)
+  hd <- head(x, -1L)
+  tl <- tail(x, -1L)
+
+  dd <- data.frame(hd = hd, tl = tl)
+  dd <- dd[is.finite(dd$hd) & is.finite(dd$tl), , drop = FALSE]
+
+  if (nrow(dd) < 3L || length(unique(dd$hd)) < 2L) {
+    stop("At least three finite pairs and variation in x(t) are required.")
+  }
+
+  fit <- stats::lm(tl ~ hd, data = dd)
+  slope <- summary(fit)$coefficients["hd", ]
+
+  label <- sprintf(
+    " Slope = %.3f\nStd. error of slope = %.3f",
+    slope["Estimate"], slope["Std. Error"]
+  )
+
+  limits <- range(c(dd$hd, dd$tl))
+
+  p <- ggplot2::ggplot(dd, ggplot2::aes(x = hd, y = tl)) +
+    ggplot2::geom_point() +
+    ggplot2::geom_abline(
+      intercept = stats::coef(fit)[1L],
+      slope = stats::coef(fit)[2L],
+      colour = "blue"
+    ) +
+    ggplot2::annotate(
+      "text", x = -Inf, y = Inf, label = label,
+      hjust = -0.05, vjust = 1.1
+    ) +
+    ggplot2::coord_fixed(xlim = limits, ylim = limits) +
+    ggplot2::labs(x = "x(t)", y = "x(t+1)") +
+    ggplot2::theme_bw()
+
+  print(p)
+
+  invisible(list(dat = dat, hd = hd, tl = tl))
+}
+
+
+
+
 #' @title Plot linear model object
 #'
 #' @param lm_fit An object of class 'lm'

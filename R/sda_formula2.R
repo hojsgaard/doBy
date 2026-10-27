@@ -181,7 +181,7 @@ attr(x2$beta, "class") <- NULL
 #' @examples
 #' fit <- sda_formula(Species ~ ., data. = iris)
 #' predict(fit, newdata = iris[1:5, ])
-#'
+#' @author Søren Højsgaard
 #' @method predict sda_formula
 #' @export
 predict.sda_formula <- function(object, newdata, verbose = FALSE, ...) {
