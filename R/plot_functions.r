@@ -68,9 +68,10 @@ lag1_plot <- function(dat) {
     ggplot2::labs(x = "x(t)", y = "x(t+1)") +
     ggplot2::theme_bw()
 
-  print(p)
+  #print(p)
 
-  invisible(list(dat = dat, hd = hd, tl = tl))
+                                        #invisible(list(dat = dat, hd = hd, tl = tl))
+  return(p)
 }
 
 
