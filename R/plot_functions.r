@@ -7,6 +7,8 @@
 #'   three observations. Pairs containing missing or non-finite values
 #'   are excluded from the regression.
 #'
+#' @param text_scale Size of text. 
+#'
 #' @return Invisibly, a list with components \code{dat} (the original
 #'   input), \code{hd} (all but the last observation), and \code{tl}
 #'   (all but the first observation). The plot is printed.
@@ -26,54 +28,99 @@
 #' lag1_plot(dat)
 #'
 #' @export
-lag1_plot <- function(dat) {
-  if (!is.numeric(dat) || NCOL(dat) != 1L || length(dat) < 3L) {
-    stop("'dat' must be a numeric vector or univariate time series ",
-         "with at least three observations.")
-  }
 
-  x <- as.numeric(dat)
+
+lag1_plot <- function(dat, text_scale = 1) {
+    if (!is.numeric(dat) || NCOL(dat) != 1L || length(dat) < 3L) {
+        stop("'dat' must be a numeric vector or univariate time series ",
+             "with at least three observations.")
+    }
+
+    x <- as.numeric(dat)
   hd <- head(x, -1L)
   tl <- tail(x, -1L)
 
-  dd <- data.frame(hd = hd, tl = tl)
-  dd <- dd[is.finite(dd$hd) & is.finite(dd$tl), , drop = FALSE]
+    dd <- data.frame(hd = head(x, -1L), tl = tail(x, -1L))
+    dd <- dd[is.finite(dd$hd) & is.finite(dd$tl), , drop = FALSE]
 
-  if (nrow(dd) < 3L || length(unique(dd$hd)) < 2L) {
-    stop("At least three finite pairs and variation in x(t) are required.")
-  }
+    if (nrow(dd) < 3L || length(unique(dd$hd)) < 2L) {
+        stop("At least three finite pairs and variation in x(t) are required.")
+    }
 
-  fit <- stats::lm(tl ~ hd, data = dd)
-  slope <- summary(fit)$coefficients["hd", ]
+    fit <- stats::lm(tl ~ hd, data = dd)
+    slope <- summary(fit)$coefficients["hd", ]
 
-  label <- sprintf(
-    " Slope = %.3f\nStd. error of slope = %.3f",
-    slope["Estimate"], slope["Std. Error"]
-  )
+    label <- sprintf("Slope = %.3f\nSE = %.3f",
+                     slope["Estimate"], slope["Std. Error"])
 
-  limits <- range(c(dd$hd, dd$tl))
+    limits <- range(c(dd$hd, dd$tl))
 
-  p <- ggplot2::ggplot(dd, ggplot2::aes(x = hd, y = tl)) +
-    ggplot2::geom_point() +
-    ggplot2::geom_abline(
-      intercept = stats::coef(fit)[1L],
-      slope = stats::coef(fit)[2L],
-      colour = "blue"
-    ) +
-    ggplot2::annotate(
-      "text", x = -Inf, y = Inf, label = label,
-      hjust = -0.05, vjust = 1.1
-    ) +
-    ggplot2::coord_fixed(xlim = limits, ylim = limits) +
-    ggplot2::labs(x = "x(t)", y = "x(t+1)") +
-    ggplot2::theme_bw()
-
-  #print(p)
-
-                                        #invisible(list(dat = dat, hd = hd, tl = tl))
-  return(p)
+    p <- ggplot2::ggplot(dd, ggplot2::aes(x = hd, y = tl)) +
+        ggplot2::geom_point() +
+        ggplot2::geom_abline(
+            intercept = stats::coef(fit)[1L],
+            slope = stats::coef(fit)[2L],
+            color = "blue"
+        ) +
+        ggplot2::annotate(
+            "text", x = -Inf, y = Inf, label = label,
+            hjust = -0.05, vjust = 1.1,
+            size = 3.9 * text_scale
+        ) +
+        ggplot2::coord_fixed(xlim = limits, ylim = limits) +
+        ggplot2::labs(x = "x(t)", y = "x(t+1)") +
+        ggplot2::theme_bw(base_size = 11 * text_scale)
+return(p)
 }
 
+
+## lag1_plot <- function(dat) {
+##   if (!is.numeric(dat) || NCOL(dat) != 1L || length(dat) < 3L) {
+##     stop("'dat' must be a numeric vector or univariate time series ",
+##          "with at least three observations.")
+##   }
+
+##   x <- as.numeric(dat)
+##   hd <- head(x, -1L)
+##   tl <- tail(x, -1L)
+
+##   dd <- data.frame(hd = hd, tl = tl)
+##   dd <- dd[is.finite(dd$hd) & is.finite(dd$tl), , drop = FALSE]
+
+##   if (nrow(dd) < 3L || length(unique(dd$hd)) < 2L) {
+##     stop("At least three finite pairs and variation in x(t) are required.")
+##   }
+
+##   fit <- stats::lm(tl ~ hd, data = dd)
+##   slope <- summary(fit)$coefficients["hd", ]
+
+##   label <- sprintf(
+##     " Slope = %.3f\nStd. error of slope = %.3f",
+##     slope["Estimate"], slope["Std. Error"]
+##   )
+
+##   limits <- range(c(dd$hd, dd$tl))
+
+##   p <- ggplot2::ggplot(dd, ggplot2::aes(x = hd, y = tl)) +
+##     ggplot2::geom_point() +
+##     ggplot2::geom_abline(
+##       intercept = stats::coef(fit)[1L],
+##       slope = stats::coef(fit)[2L],
+##       colour = "blue"
+##     ) +
+##     ggplot2::annotate(
+##       "text", x = -Inf, y = Inf, label = label,
+##       hjust = -0.05, vjust = 1.1
+##     ) +
+##     ggplot2::coord_fixed(xlim = limits, ylim = limits) +
+##     ggplot2::labs(x = "x(t)", y = "x(t+1)") +
+##     ggplot2::theme_bw()
+
+##   #print(p)
+
+##                                         #invisible(list(dat = dat, hd = hd, tl = tl))
+##   return(p)
+## }
 
 
 
