@@ -142,17 +142,34 @@ lag_data <- function(formula = NULL, data = NULL,
         x <- mf[[2]]
     }
 
-    stopifnot(
-        is.numeric(y), is.numeric(x),
-        is.null(dim(y)), is.null(dim(x)),
-        length(y) == length(x),
-        is.numeric(lags), length(lags) > 0L,
-        all(is.finite(lags)),
-        all(lags >= 0 & lags == floor(lags)),
-        max(lags) < length(y)
-    )
+stopifnot(
+    is.numeric(x), is.null(dim(x)),
+    is.numeric(lags), length(lags) > 0L,
+    all(is.finite(lags)),
+    all(lags >= 0 & lags == floor(lags)),
+    max(lags) < length(x)
+)
 
-    rows <- seq.int(max(lags) + 1L, length(y))
+if (!is.null(y)) {
+    stopifnot(
+        is.numeric(y), is.null(dim(y)),
+        length(y) == length(x)
+    )
+}
+
+    rows <- seq.int(max(lags) + 1L, length(x))
+    
+    ## stopifnot(
+    ##     is.numeric(y), is.numeric(x),
+    ##     is.null(dim(y)), is.null(dim(x)),
+    ##     length(y) == length(x),
+    ##     is.numeric(lags), length(lags) > 0L,
+    ##     all(is.finite(lags)),
+    ##     all(lags >= 0 & lags == floor(lags)),
+    ##     max(lags) < length(y)
+    ## )
+
+    ## rows <- seq.int(max(lags) + 1L, length(y))
 
     X <- vapply(lags, function(k) as.numeric(x[rows - k]),
                 numeric(length(rows)))
