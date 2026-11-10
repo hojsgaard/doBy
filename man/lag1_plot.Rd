@@ -4,12 +4,14 @@
 \alias{lag1_plot}
 \title{Plot successive observations of a time series}
 \usage{
-lag1_plot(dat)
+lag1_plot(dat, text_scale = 1)
 }
 \arguments{
 \item{dat}{A numeric vector or univariate time series with at least
 three observations. Pairs containing missing or non-finite values
 are excluded from the regression.}
+
+\item{text_scale}{Size of text.}
 }
 \value{
 Invisibly, a list with components \code{dat} (the original

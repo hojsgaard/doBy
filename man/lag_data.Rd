@@ -56,15 +56,15 @@ that are retained after lagging.}
 }
 }
 \description{
-Helper for building lagged design matrices for time series or
-longitudinal data. The function aligns a response vector \code{y}
-and a single regressor \code{x} (possibly with several lags) and
-returns a list with the cleaned response, the design matrix and
-the row indices used.
+Helper for building lagged design matrices for time
+series or longitudinal data. The function aligns a response
+vector \code{y} and a single regressor \code{x} (possibly with several
+lags) and returns a list with the cleaned response, the design
+matrix and the row indices used.
 
 You can either:
 \itemize{
-\item supply \code{y} and \code{x} directly, or
+\item supply vectors \code{y} and \code{x} directly, or
 \item use a formula of the form \code{y ~ x} together with \code{data}.
 }
 }
@@ -74,11 +74,6 @@ internally. The first column is taken as the response. All remaining
 columns are considered regressors. If the right-hand side contains
 only an intercept, \code{x} is set to \code{NULL} and no lagged regressors are
 constructed.
-
-If multiple regressors are present on the right-hand side, they are
-combined into a matrix, but in the current implementation this is
-only allowed when no lagging is requested (i.e., \code{lags} is \code{0}).
-Attempting to lag multiple regressors will result in an error.
 
 For a given vector of lags, a lag matrix is built with one column
 per lag. The column names are \code{"lag0"}, \code{"lag1"}, etc., corresponding
