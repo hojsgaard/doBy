@@ -1,14 +1,13 @@
 #' Construct lagged regressors and aligned response
 #'
-#' @description
-#' Helper for building lagged design matrices for time series or
-#' longitudinal data. The function aligns a response vector `y`
-#' and a single regressor `x` (possibly with several lags) and
-#' returns a list with the cleaned response, the design matrix and
-#' the row indices used.
+#' @description Helper for building lagged design matrices for time
+#'     series or longitudinal data. The function aligns a response
+#'     vector `y` and a single regressor `x` (possibly with several
+#'     lags) and returns a list with the cleaned response, the design
+#'     matrix and the row indices used.
 #'
 #' You can either:
-#' * supply `y` and `x` directly, or
+#' * supply vectors `y` and `x` directly, or
 #' * use a formula of the form `y ~ x` together with `data`.
 #'
 #' @param formula An optional model formula. The left-hand side is
@@ -38,11 +37,11 @@
 #' only an intercept, `x` is set to `NULL` and no lagged regressors are
 #' constructed.
 #'
-#' If multiple regressors are present on the right-hand side, they are
-#' combined into a matrix, but in the current implementation this is
-#' only allowed when no lagging is requested (i.e., `lags` is `0`).
-#' Attempting to lag multiple regressors will result in an error.
-#'
+## ' If multiple regressors are present on the right-hand side, they are
+## ' combined into a matrix, but in the current implementation this is
+## ' only allowed when no lagging is requested (i.e., `lags` is `0`).
+## ' Attempting to lag multiple regressors will result in an error.
+## '
 #' For a given vector of lags, a lag matrix is built with one column
 #' per lag. The column names are `"lag0"`, `"lag1"`, etc., corresponding
 #' to the entries in `lags`. Rows which involve undefined values (due to
@@ -128,108 +127,152 @@
 #' fit_arx
 #'
 #' @export
-lag_data <- function(formula = NULL,
-                          data = NULL,
-                          y = NULL,
-                          x = NULL,
-                          lags = 0,
-                          include_intercept = TRUE,
-                          preserve_ts = FALSE) {
+#'
 
-  # --- Handle formula interface ---
-  if (!is.null(formula)) {
+lag_data <- function(formula = NULL, data = NULL,
+                     y = NULL, x = NULL, lags = 0,
+                     include_intercept = TRUE,
+                     preserve_ts = FALSE) {
 
-    # Get model frame
-    mf <- model.frame(formula, data = data)
+    if (!is.null(formula)) {
+        mf <- model.frame(formula, data = data, na.action = na.pass)
+        if (ncol(mf) != 2L)
+            stop("Formula must specify one response and one predictor.")
+        y <- mf[[1]]
+        x <- mf[[2]]
+    }
 
-    # Extract y and RHS variables
-    y <- mf[[1]]
-    Xvars <- mf[-1]
+    stopifnot(
+        is.numeric(y), is.numeric(x),
+        is.null(dim(y)), is.null(dim(x)),
+        length(y) == length(x),
+        is.numeric(lags), length(lags) > 0L,
+        all(is.finite(lags)),
+        all(lags >= 0 & lags == floor(lags)),
+        max(lags) < length(y)
+    )
 
-    # If only intercept on RHS: no xreg
-    if (ncol(Xvars) == 0 || all(sapply(Xvars, function(v) all(v == 1)))) {
-      x <- NULL
+    rows <- seq.int(max(lags) + 1L, length(y))
+
+    X <- vapply(lags, function(k) as.numeric(x[rows - k]),
+                numeric(length(rows)))
+    colnames(X) <- paste0("lag", lags)
+
+    if (include_intercept)
+        X <- cbind(Intercept = 1, X)
+
+    yy <- if (preserve_ts && is.ts(y)) {
+        window(y, start = time(y)[rows[1L]])
     } else {
-      # If multiple regressors: combine into a single matrix
-      x <- as.matrix(Xvars)
-      if (ncol(x) > 1 && !is.null(lags) && any(lags != 0)) {
-        stop("Lagging multiple regressors not implemented in this version.")
-      }
-      # For now: require only 1 regressor for lagging
-      if (ncol(x) > 1) stop("Only one RHS variable allowed when using lags.")
-      x <- drop(x)  # ensure a vector
-    }
-  }
-
-  # --- Now fallback to previous behaviour if formula NULL ---
-  if (is.null(y) && is.null(x)) {
-    stop("Need either formula=..., or y=..., or x=...")
-  }
-
-  # -----------------------------------------------------------
-  # --- Build X matrix (single regressor) ----------------------
-  # -----------------------------------------------------------
-  if (!is.null(x)) {
-    x <- as.numeric(x)
-    n_x <- length(x)
-    max_lag <- max(lags)
-
-    # Build full lag matrix
-    lagmat <- sapply(lags, function(k) {
-      if (k == 0L) x else c(rep(NA, k), x[1:(n_x - k)])
-    })
-    colnames(lagmat) <- paste0("lag", lags)
-
-    # Add intercept if requested
-    if (include_intercept) {
-      lagmat <- cbind(Intercept = 1, lagmat)
+        as.numeric(y)[rows]
     }
 
-    valid_idx <- (max_lag + 1):n_x
-    X_clean <- lagmat[valid_idx, , drop = FALSE]
-
-  } else {
-    X_clean  <- NULL
-    max_lag  <- 0
-    valid_idx <- NULL
-  }
-
-  # -----------------------------------------------------------
-  # --- Align y -----------------------------------------------
-  # -----------------------------------------------------------
-  if (!is.null(y)) {
-
-    n_y <- length(y)
-
-    if (max_lag >= n_y) {
-      stop("max_lag too large: no y left after truncation.")
-    }
-
-    if (!is.null(x)) {
-      row_idx <- valid_idx
-    } else {
-      row_idx <- seq_len(n_y)  # no lagging needed
-    }
-
-    if (preserve_ts && is.ts(y)) {
-      t_start <- time(y)[row_idx[1]]
-      y_clean <- window(y, start = t_start)
-    } else {
-      y_clean <- as.numeric(y)[row_idx]
-    }
-
-  } else {
-    y_clean <- NULL
-    row_idx <- valid_idx
-  }
-
-  # -----------------------------------------------------------
-  # --- Return result -----------------------------------------
-  # -----------------------------------------------------------
-  list(
-    y       = y_clean,
-    X       = X_clean,
-    rows    = row_idx,
-    max_lag = max_lag
-  )
+    list(y = yy, X = X, rows = rows, max_lag = max(lags))
 }
+
+
+## lag_data <- function(formula = NULL,
+##                           data = NULL,
+##                           y = NULL,
+##                           x = NULL,
+##                           lags = 0,
+##                           include_intercept = TRUE,
+##                           preserve_ts = FALSE) {
+
+##   # --- Handle formula interface ---
+##   if (!is.null(formula)) {
+
+##     # Get model frame
+##     mf <- model.frame(formula, data = data)
+
+##     # Extract y and RHS variables
+##     y <- mf[[1]]
+##     Xvars <- mf[-1]
+
+##     # If only intercept on RHS: no xreg
+##     if (ncol(Xvars) == 0 || all(sapply(Xvars, function(v) all(v == 1)))) {
+##       x <- NULL
+##     } else {
+##       # If multiple regressors: combine into a single matrix
+##       x <- as.matrix(Xvars)
+##       if (ncol(x) > 1 && !is.null(lags) && any(lags != 0)) {
+##         stop("Lagging multiple regressors not implemented in this version.")
+##       }
+##       # For now: require only 1 regressor for lagging
+##       if (ncol(x) > 1) stop("Only one RHS variable allowed when using lags.")
+##       x <- drop(x)  # ensure a vector
+##     }
+##   }
+
+##   # --- Now fallback to previous behaviour if formula NULL ---
+##   if (is.null(y) && is.null(x)) {
+##     stop("Need either formula=..., or y=..., or x=...")
+##   }
+
+##   # -----------------------------------------------------------
+##   # --- Build X matrix (single regressor) ----------------------
+##   # -----------------------------------------------------------
+##   if (!is.null(x)) {
+##     x <- as.numeric(x)
+##     n_x <- length(x)
+##     max_lag <- max(lags)
+
+##     # Build full lag matrix
+##     lagmat <- sapply(lags, function(k) {
+##       if (k == 0L) x else c(rep(NA, k), x[1:(n_x - k)])
+##     })
+##     colnames(lagmat) <- paste0("lag", lags)
+
+##     # Add intercept if requested
+##     if (include_intercept) {
+##       lagmat <- cbind(Intercept = 1, lagmat)
+##     }
+
+##     valid_idx <- (max_lag + 1):n_x
+##     X_clean <- lagmat[valid_idx, , drop = FALSE]
+
+##   } else {
+##     X_clean  <- NULL
+##     max_lag  <- 0
+##     valid_idx <- NULL
+##   }
+
+##   # -----------------------------------------------------------
+##   # --- Align y -----------------------------------------------
+##   # -----------------------------------------------------------
+##   if (!is.null(y)) {
+
+##     n_y <- length(y)
+
+##     if (max_lag >= n_y) {
+##       stop("max_lag too large: no y left after truncation.")
+##     }
+
+##     if (!is.null(x)) {
+##       row_idx <- valid_idx
+##     } else {
+##       row_idx <- seq_len(n_y)  # no lagging needed
+##     }
+
+##     if (preserve_ts && is.ts(y)) {
+##       t_start <- time(y)[row_idx[1]]
+##       y_clean <- window(y, start = t_start)
+##     } else {
+##       y_clean <- as.numeric(y)[row_idx]
+##     }
+
+##   } else {
+##     y_clean <- NULL
+##     row_idx <- valid_idx
+##   }
+
+##   # -----------------------------------------------------------
+##   # --- Return result -----------------------------------------
+##   # -----------------------------------------------------------
+##   list(
+##     y       = y_clean,
+##     X       = X_clean,
+##     rows    = row_idx,
+##     max_lag = max_lag
+##   )
+## }
