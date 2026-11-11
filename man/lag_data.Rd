@@ -10,7 +10,7 @@ lag_data(
   y = NULL,
   x = NULL,
   lags = 0,
-  include_intercept = TRUE,
+  intercept = TRUE,
   preserve_ts = FALSE
 )
 }
@@ -33,7 +33,7 @@ have the same length as \code{y} (when \code{y} is supplied).}
 means that only the contemporaneous regressor is used. For example,
 \code{lags = 0:2} gives columns corresponding to (x(t), x(t-1), x(t-2)).}
 
-\item{include_intercept}{Logical; if \code{TRUE} (default) an intercept
+\item{intercept}{Logical; if \code{TRUE} (default) an intercept
 column named \code{"Intercept"} is prepended to the design matrix.}
 
 \item{preserve_ts}{Logical; if \code{TRUE} and \code{y} is a \code{ts} object, the
@@ -48,7 +48,7 @@ A list with components
 and \code{y} was a \code{ts} object, then this is a \code{ts} object; otherwise
 a numeric vector.}
 \item{X}{The design matrix of lagged regressors, including an
-intercept column if \code{include_intercept = TRUE}. If \code{x} is \code{NULL},
+intercept column if \code{intercept = TRUE}. If \code{x} is \code{NULL},
 then \code{X} is \code{NULL}.}
 \item{rows}{Integer vector of row indices from the original data
 that are retained after lagging.}

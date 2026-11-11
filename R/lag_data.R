@@ -23,7 +23,7 @@
 #' @param lags Integer vector of lags to include. The default `lags = 0`
 #'   means that only the contemporaneous regressor is used. For example,
 #'   `lags = 0:2` gives columns corresponding to (x(t), x(t-1), x(t-2)).
-#' @param include_intercept Logical; if `TRUE` (default) an intercept
+#' @param intercept Logical; if `TRUE` (default) an intercept
 #'   column named `"Intercept"` is prepended to the design matrix.
 #' @param preserve_ts Logical; if `TRUE` and `y` is a `ts` object, the
 #'   returned `y` will also be a `ts` object obtained via
@@ -55,7 +55,7 @@
 #'     and `y` was a `ts` object, then this is a `ts` object; otherwise
 #'     a numeric vector.}
 #'   \item{X}{The design matrix of lagged regressors, including an
-#'     intercept column if `include_intercept = TRUE`. If `x` is `NULL`,
+#'     intercept column if `intercept = TRUE`. If `x` is `NULL`,
 #'     then `X` is `NULL`.}
 #'   \item{rows}{Integer vector of row indices from the original data
 #'     that are retained after lagging.}
@@ -131,7 +131,7 @@
 
 lag_data <- function(formula = NULL, data = NULL,
                      y = NULL, x = NULL, lags = 0,
-                     include_intercept = TRUE,
+                     intercept = TRUE,
                      preserve_ts = FALSE) {
 
     if (!is.null(formula)) {
@@ -175,7 +175,7 @@ if (!is.null(y)) {
                 numeric(length(rows)))
     colnames(X) <- paste0("lag", lags)
 
-    if (include_intercept)
+    if (intercept)
         X <- cbind(Intercept = 1, X)
 
     yy <- if (preserve_ts && is.ts(y)) {
@@ -193,7 +193,7 @@ if (!is.null(y)) {
 ##                           y = NULL,
 ##                           x = NULL,
 ##                           lags = 0,
-##                           include_intercept = TRUE,
+##                           intercept = TRUE,
 ##                           preserve_ts = FALSE) {
 
 ##   # --- Handle formula interface ---
@@ -241,7 +241,7 @@ if (!is.null(y)) {
 ##     colnames(lagmat) <- paste0("lag", lags)
 
 ##     # Add intercept if requested
-##     if (include_intercept) {
+##     if (intercept) {
 ##       lagmat <- cbind(Intercept = 1, lagmat)
 ##     }
 
