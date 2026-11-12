@@ -132,42 +132,47 @@ lag_data <- function(formula = NULL, data = NULL,
                      intercept = FALSE,
                      preserve_ts = FALSE) {
 
-    if (!is.null(formula)) {
-        mf <- model.frame(formula, data = data, na.action = na.pass)
-        if (ncol(mf) != 2L)
-            stop("Formula must specify one response and one predictor.")
-        y <- mf[[1]]
-        x <- mf[[2]]
+
+if (!is.null(formula)) {
+    data_tsp <- tsp(data)
+
+    mf <- model.frame(formula, data = data, na.action = na.pass)
+    if (ncol(mf) != 2L)
+        stop("Formula must specify one response and one predictor.")
+
+    y <- mf[[1]]
+    x <- mf[[2]]
+
+    if (preserve_ts && !is.null(data_tsp)) {
+        y <- ts(y, start = data_tsp[1], frequency = data_tsp[3])
+        x <- ts(x, start = data_tsp[1], frequency = data_tsp[3])
+    }
+}
+    
+    ## if (!is.null(formula)) {
+    ##     mf <- model.frame(formula, data = data, na.action = na.pass)
+    ##     if (ncol(mf) != 2L)
+    ##         stop("Formula must specify one response and one predictor.")
+    ##     y <- mf[[1]]
+    ##     x <- mf[[2]]
+    ## }
+
+    stopifnot(
+        is.numeric(x), is.null(dim(x)),
+        is.numeric(lags), length(lags) > 0L,
+        all(is.finite(lags)),
+        all(lags >= 0 & lags == floor(lags)),
+        max(lags) < length(x)
+    )
+    
+    if (!is.null(y)) {
+        stopifnot(
+            is.numeric(y), is.null(dim(y)),
+            length(y) == length(x)
+        )
     }
 
-stopifnot(
-    is.numeric(x), is.null(dim(x)),
-    is.numeric(lags), length(lags) > 0L,
-    all(is.finite(lags)),
-    all(lags >= 0 & lags == floor(lags)),
-    max(lags) < length(x)
-)
-
-if (!is.null(y)) {
-    stopifnot(
-        is.numeric(y), is.null(dim(y)),
-        length(y) == length(x)
-    )
-}
-
     rows <- seq.int(max(lags) + 1L, length(x))
-    
-    ## stopifnot(
-    ##     is.numeric(y), is.numeric(x),
-    ##     is.null(dim(y)), is.null(dim(x)),
-    ##     length(y) == length(x),
-    ##     is.numeric(lags), length(lags) > 0L,
-    ##     all(is.finite(lags)),
-    ##     all(lags >= 0 & lags == floor(lags)),
-    ##     max(lags) < length(y)
-    ## )
-
-    ## rows <- seq.int(max(lags) + 1L, length(y))
 
     X <- vapply(lags, function(k) as.numeric(x[rows - k]),
                 numeric(length(rows)))
