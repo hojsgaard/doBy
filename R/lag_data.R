@@ -23,7 +23,7 @@
 #' @param lags Integer vector of lags to include. The default `lags = 0`
 #'   means that only the contemporaneous regressor is used. For example,
 #'   `lags = 0:2` gives columns corresponding to (x(t), x(t-1), x(t-2)).
-#' @param intercept Logical; if `TRUE` (default) an intercept
+#' @param intercept Logical; default to `FALSE`. If `TRUE`  an intercept
 #'   column named `"Intercept"` is prepended to the design matrix.
 #' @param preserve_ts Logical; if `TRUE` and `y` is a `ts` object, the
 #'   returned `y` will also be a `ts` object obtained via
@@ -131,7 +131,7 @@
 
 lag_data <- function(formula = NULL, data = NULL,
                      y = NULL, x = NULL, lags = 0,
-                     intercept = TRUE,
+                     intercept = FALSE,
                      preserve_ts = FALSE) {
 
     if (!is.null(formula)) {

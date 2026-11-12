@@ -10,7 +10,7 @@ lag_data(
   y = NULL,
   x = NULL,
   lags = 0,
-  intercept = TRUE,
+  intercept = FALSE,
   preserve_ts = FALSE
 )
 }
@@ -33,7 +33,7 @@ have the same length as \code{y} (when \code{y} is supplied).}
 means that only the contemporaneous regressor is used. For example,
 \code{lags = 0:2} gives columns corresponding to (x(t), x(t-1), x(t-2)).}
 
-\item{intercept}{Logical; if \code{TRUE} (default) an intercept
+\item{intercept}{Logical; default to \code{FALSE}. If \code{TRUE}  an intercept
 column named \code{"Intercept"} is prepended to the design matrix.}
 
 \item{preserve_ts}{Logical; if \code{TRUE} and \code{y} is a \code{ts} object, the
