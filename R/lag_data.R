@@ -127,8 +127,6 @@
 #' fit_arx
 #'
 #' @export
-#'
-
 lag_data <- function(formula = NULL, data = NULL,
                      y = NULL, x = NULL, lags = 0,
                      intercept = FALSE,
